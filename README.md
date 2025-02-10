@@ -1,5 +1,5 @@
 
-![alt text](image.png)
+<div style="text-align: center;"><img src="image.png" width="700px"> </div>
 
 # Refereezy - Digitalitzem l'esport, automatitzem actes, proporcionem seguiment en directe.
 ---
@@ -10,6 +10,4 @@
 - Jesus Guerrero
 - Anguelina Levchenko
 
-<div> hola mundo 
-
-<img src="image.png" width="300px"> </div>
+ </div>
