@@ -1,5 +1,5 @@
 
-<div style="text-align: center;"><img src="image.png" width="700px"> </div>
+<div style="width: 100%;"><img src="image.png" width="700px" style="margin: 0 auto;"> </div>
 
 # Refereezy - Digitalitzem l'esport, automatitzem actes, proporcionem seguiment en directe.
 ---
