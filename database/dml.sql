@@ -12,7 +12,7 @@ INSERT INTO TEAM (name, logo, primary_color, secondary_color, client_id) VALUES
 ('Team B', 'logo_b.png', 'Blue', 'Black', 1),
 ('Team C', 'logo_c.png', 'Green', 'Yellow', 2);
 
-INSERT INTO MATCH (date, matchday_id, client_id, local_team_id, visitor_team_id) VALUES
+INSERT INTO MATCHES (date, matchday_id, client_id, local_team_id, visitor_team_id) VALUES
 ('2025-01-15', 1, 1, 1, 2),
 ('2025-02-20', 2, 2, 3, 1);
 
