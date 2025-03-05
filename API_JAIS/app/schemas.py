@@ -1,8 +1,10 @@
+from datetime import datetime
 from pydantic import BaseModel
 from typing import List, Optional
 
 #  Model para Team
 class TeamBase(BaseModel):
+    id : int
     name: str
     country: str
     primary_Color: str
@@ -20,6 +22,7 @@ class TeamResponse(TeamBase):
 
 #  Model para Player
 class PlayerBase(BaseModel):
+    id: int
     name: str
     jersey_number: int
     dni: str
@@ -36,12 +39,12 @@ class PlayerResponse(PlayerBase):
 
 #  Model para Match
 class MatchBase(BaseModel):
-    name: str
-    country: str
-    primary_Color: str
-    secondary_Color: str
-    logo: str
+    id: int
+    date: datetime
+    matchgroup_id: int
     client_id: int
+    local_team_id: int
+    visitor_team_id: int
 
 class MatchCreate(MatchBase):
     pass
@@ -53,11 +56,9 @@ class MatchResponse(MatchBase):
 
 #  Model para Referee
 class RefereeBase(BaseModel):
+    id: int
     name: str
-    country: str
-    primary_Color: str
-    secondary_Color: str
-    logo: str
+    dni: str
     client_id: int
 
 class RefereeCreate(RefereeBase):
@@ -70,11 +71,10 @@ class RefereeResponse(RefereeBase):
 
 #  Model para MatchGroup
 class MatchGroupBase(BaseModel):
+    id: int
     name: str
-    country: str
-    primary_Color: str
-    secondary_Color: str
-    logo: str
+    visibilty: str
+    code: str
     client_id: int
 
 class MatchGroupCreate(MatchGroupBase):
@@ -88,11 +88,10 @@ class MatchGroupResponse(MatchGroupBase):
 #  Model para Client
 class ClientBase(BaseModel):
     name: str
-    country: str
-    primary_Color: str
-    secondary_Color: str
-    logo: str
-    client_id: int
+    plan: str
+    plan_expiration: datetime
+    email: str
+    phone: str
 
 class ClientCreate(ClientBase):
     pass
