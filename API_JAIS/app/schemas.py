@@ -1,14 +1,12 @@
 from datetime import datetime
 from pydantic import BaseModel
-from typing import List, Optional
 
 #  Model para Team
 class TeamBase(BaseModel):
     id : int
     name: str
-    country: str
-    primary_Color: str
-    secondary_Color: str
+    primary_color: str
+    secondary_color: str
     logo: str
     client_id: int
 
@@ -24,7 +22,7 @@ class TeamResponse(TeamBase):
 class PlayerBase(BaseModel):
     id: int
     name: str
-    jersey_number: int
+    dorsal_number: int
     dni: str
     team_id: int
     client_id: int

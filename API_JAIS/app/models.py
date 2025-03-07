@@ -1,82 +1,106 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from database import Base
 
-class Team(Base):
-    __tablename__ = "teams"
+class Client(Base):
+    __tablename__ = "client"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
-    country = Column(String)
-    primary_Color = Column(String)
-    secondary_Color = Column(String)
-    logo = Column(String)
+    name = Column(String, nullable=False)
+    plan = Column(String)
+    plan_expiration = Column(Date)
+    email = Column(String, unique=True)
+    phone = Column(String)
 
-    players = relationship("Player", back_populates="team")  
+    teams = relationship("Team", back_populates="client", cascade="all, delete")
+    players = relationship("Player", back_populates="client", cascade="all, delete")
+    referees = relationship("Referee", back_populates="client", cascade="all, delete")
+    match_groups = relationship("MatchGroup", back_populates="client", cascade="all, delete")
+    matches = relationship("Match", back_populates="client", cascade="all, delete")
+
+class Team(Base):
+    __tablename__ = "team"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    logo = Column(String)
+    primary_color = Column(String)
+    secondary_color = Column(String)
+    client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
+    
+    client = relationship("Client", back_populates="teams")
+    players = relationship("Player", back_populates="team", cascade="all, delete")
 
 class Player(Base):
-    __tablename__ = "players"
+    __tablename__ = "player"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    jersey_number = Column(Integer)
-    dni = Column(String, unique=True)
-    
-    team_id = Column(Integer, ForeignKey("teams.id"))
-    team = relationship("Team", back_populates="players")  
+    name = Column(String, nullable=False)
+    dorsal_number = Column(Integer, nullable=False)
+    dni = Column(String, unique=True, nullable=False)
+    team_id = Column(Integer, ForeignKey("team.id"))
+    client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
 
-    client_id = Column(Integer, ForeignKey("clients.id"))
-    client = relationship("Client", back_populates="players")  
+    team = relationship("Team", back_populates="players")
+    client = relationship("Client", back_populates="players")
 
 class Referee(Base):
-    __tablename__ = "referees"
+    __tablename__ = "referee"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    dni = Column(String, unique=True)
+    name = Column(String, nullable=False)
+    dni = Column(String, unique=True, nullable=False)
+    client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
 
-    client_id = Column(Integer, ForeignKey("clients.id"))
-    client = relationship("Client", back_populates="referee")  
+    client = relationship("Client", back_populates="referees")
+    matches = relationship("MatchReferee", back_populates="referee", cascade="all, delete")
 
 class MatchGroup(Base):
-    __tablename__ = "match_groups"
+    __tablename__ = "match_group"
 
     id = Column(Integer, primary_key=True, index=True)
-    visibility = Column(String)
-    name = Column(String)
-    code = Column(String, unique=True)
+    visibility = Column(String, nullable=False)
+    code = Column(String, unique=True, nullable=False)
+    client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
 
-    client_id = Column(Integer, ForeignKey("clients.id"))
-    client = relationship("Client", back_populates="matchGroup") 
-
-    matches = relationship("Match", back_populates="group")  
+    client = relationship("Client", back_populates="match_groups")
+    matches = relationship("Match", back_populates="match_group", cascade="all, delete")
 
 class Match(Base):
     __tablename__ = "matches"
 
     id = Column(Integer, primary_key=True, index=True)
-    date = Column(DateTime)
-    
-    home_team_id = Column(Integer, ForeignKey("teams.id"))
-    away_team_id = Column(Integer, ForeignKey("teams.id"))
-    referee_id = Column(Integer, ForeignKey("referees.id"))
-    group_id = Column(Integer, ForeignKey("match_groups.id"))
+    date = Column(DateTime, nullable=False)
+    matchgroup_id = Column(Integer, ForeignKey("match_group.id"))
+    client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
+    local_team_id = Column(Integer, ForeignKey("team.id"), nullable=False)
+    visitor_team_id = Column(Integer, ForeignKey("team.id"), nullable=False)
 
-    home_team = relationship("Team", foreign_keys=[home_team_id])
-    away_team = relationship("Team", foreign_keys=[away_team_id])
-    referee = relationship("Referee")
-    group = relationship("MatchGroup", back_populates="matches")  
+    match_group = relationship("MatchGroup", back_populates="matches")
+    client = relationship("Client", back_populates="matches")
+    local_team = relationship("Team", foreign_keys=[local_team_id])
+    visitor_team = relationship("Team", foreign_keys=[visitor_team_id])
+    referees = relationship("MatchReferee", back_populates="match", cascade="all, delete")
 
-class Client(Base):
-    __tablename__ = "clients"
+class MatchReferee(Base):
+    __tablename__ = "match_referees"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    plan = Column(String)
-    plan_expiration = Column(DateTime)
-    email = Column(String, unique=True)
-    phone = Column(String)
+    match_id = Column(Integer, ForeignKey("matches.id"), primary_key=True)
+    referee_id = Column(Integer, ForeignKey("referee.id"), primary_key=True)
 
-    players = relationship("Player", back_populates="client")  
-    referees = relationship("Referee", back_populates="client")  
-    match_groups = relationship("MatchGroup", back_populates="client") 
+    match = relationship("Match", back_populates="referees")
+    referee = relationship("Referee", back_populates="matches")
+
+class Clock(Base):
+    __tablename__ = "clock"
+
+    code = Column(String, primary_key=True)
+
+class Temp2FA(Base):
+    __tablename__ = "temp_2fa"
+
+    twofa_code = Column(String, primary_key=True)
+    clock_code = Column(String, ForeignKey("clock.code"), nullable=False)
+    expiration = Column(DateTime, nullable=False)
+    paired = Column(Boolean, nullable=False)
+    referee_id = Column(Integer, ForeignKey("referee.id"))

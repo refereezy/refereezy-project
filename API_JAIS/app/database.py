@@ -2,8 +2,8 @@
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# Configurar la conexión amb MariaDB
-DATABASE_URL = "mysql+pymysql://root:1234@localhost:3306/refereezy"
+# Configurar la conexión con PostgreSQL
+DATABASE_URL = "postgresql+psycopg2://postgres:system@localhost:5433/refereezy"
 
 # Crear el motor de la base de dades
 engine = create_engine(DATABASE_URL)
