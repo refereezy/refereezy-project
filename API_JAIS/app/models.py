@@ -99,8 +99,11 @@ class Clock(Base):
 class Temp2FA(Base):
     __tablename__ = "temp_2fa"
 
-    twofa_code = Column(String, primary_key=True)
-    clock_code = Column(String, ForeignKey("clock.code"), nullable=False)
+    referee_id = Column(Integer, ForeignKey("referee.id", ondelete="CASCADE"), primary_key=True)
+    twofa_code = Column(String(2))
+    clock_code = Column(String, ForeignKey("clock.code", ondelete="CASCADE"), nullable=False)
     expiration = Column(DateTime, nullable=False)
     paired = Column(Boolean, nullable=False)
-    referee_id = Column(Integer, ForeignKey("referee.id"))
+
+    referee = relationship("Referee")
+    
