@@ -34,5 +34,5 @@ INSERT INTO CLOCK (code) VALUES
 ('CLK456');
 
 INSERT INTO TEMP_2FA (twofa_code, clock_code, expiration, paired, referee_id) VALUES
-('2FA001', 'CLK123', '2025-06-01 12:00:00', TRUE, 1),
-('2FA002', 'CLK456', '2025-06-02 14:30:00', FALSE, 2);
+(12, 'CLK123', '2025-06-01 12:00:00', TRUE, 1),
+(59, 'CLK456', '2025-06-02 14:30:00', FALSE, 2);

@@ -100,7 +100,7 @@ class Temp2FA(Base):
     __tablename__ = "temp_2fa"
 
     referee_id = Column(Integer, ForeignKey("referee.id", ondelete="CASCADE"), primary_key=True)
-    twofa_code = Column(String(2))
+    twofa_code = Column(Integer)
     clock_code = Column(String, ForeignKey("clock.code", ondelete="CASCADE"), nullable=False)
     expiration = Column(DateTime, nullable=False)
     paired = Column(Boolean, nullable=False)

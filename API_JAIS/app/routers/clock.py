@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from dependencies import get_db
-from typing import List
 from models import Temp2FA, Clock
 import random
 import string
 from datetime import datetime, timedelta
+from pydantic import BaseModel
 
 router = APIRouter(tags=["Pairing"])
 
-class Temp2FAData:
+class Temp2FAData(BaseModel):
   referee_id: int
   clock_code: str
   
@@ -29,16 +29,16 @@ def gen_code(db: Session = Depends(get_db)):
   
   return { "code": code }
 
-@router.get("/2fa/{id}")
-def gen_2fa(id: str, db: Session = Depends(get_db)):
+@router.post("/2fa/gen-for/{referee_id}/{clock_code}")
+def gen_2fa(referee_id: int, clock_code: str, db: Session = Depends(get_db)):
   
-  temp_2fa = db.query(Temp2FA).filter(Temp2FA.referee_id == id).first()
+  temp_2fa = db.query(Temp2FA).filter(Temp2FA.referee_id == referee_id).first()
   
   if not temp_2fa:
     temp_2fa = Temp2FA()
-    temp_2fa.referee_id = id
+    temp_2fa.referee_id = referee_id
     temp_2fa.twofa_code = random.randint(1, 99)
-    temp_2fa.clock_code = None
+    temp_2fa.clock_code = clock_code
     temp_2fa.expiration = datetime.utcnow() + timedelta(minutes=10)
     temp_2fa.paired = False
     
@@ -46,7 +46,7 @@ def gen_2fa(id: str, db: Session = Depends(get_db)):
     
   else:
     temp_2fa.twofa_code = random.randint(1, 99)
-    temp_2fa.clock_code = None
+    temp_2fa.clock_code = clock_code
     temp_2fa.expiration = datetime.utcnow() + timedelta(minutes=10)
     temp_2fa.paired = False
   
@@ -56,15 +56,16 @@ def gen_2fa(id: str, db: Session = Depends(get_db)):
   return {"twofa_code": temp_2fa.twofa_code}
   
 
-@router.put("/2fa/assign/")
-def assign_2fa(data: Temp2FAData, db: Session = Depends(get_db)): 
+@router.put("/2fa/assign/{referee_id}/{clock_code}")
+def assign_2fa(referee_id: int, clock_code: str, db: Session = Depends(get_db)): 
   
-  temp_2fa = db.query(Temp2FA).filter(Temp2FA.referee_id == data.referee_id).first()
+  temp_2fa = db.query(Temp2FA).filter(Temp2FA.referee_id == referee_id).first()
   
   if not temp_2fa:
     raise HTTPException(status_code=404, detail="2FA not found")
   
-  temp_2fa.clock_code = data.clock_code
+  temp_2fa.clock_code = clock_code
+  temp_2fa.paired = True
   
   db.commit()
   db.refresh(temp_2fa)
@@ -73,9 +74,9 @@ def assign_2fa(data: Temp2FAData, db: Session = Depends(get_db)):
   
 
 
-@router.delete("/2fa/{id}")
-def delete_2fa(id: int, db: Session = Depends(get_db)):
-  obj = db.query(Temp2FA).filter(Temp2FA.referee_id == id).first()
+@router.delete("/2fa/{referee_id}")
+def delete_2fa(referee_id: int, db: Session = Depends(get_db)):
+  obj = db.query(Temp2FA).filter(Temp2FA.referee_id == referee_id).first()
   clock = db.query(Clock).filter(Clock.code == obj.clock_code).first()
   db.delete(clock)
   db.commit()
@@ -83,14 +84,14 @@ def delete_2fa(id: int, db: Session = Depends(get_db)):
   return {"message": "2FA deleted"}
   
 
-@router.get("/2fa/{code}")
-def find_2fa(code: str, db: Session = Depends(get_db)):
+@router.get("/2fa/{clock_code}")
+def get_2fa(clock_code: str, db: Session = Depends(get_db)):
   temp_2fa = db.query(Temp2FA).filter(
-    Temp2FA.clock_code == code, (Temp2FA.paired == True) | (Temp2FA.expiration > datetime.utcnow())
-    ).first()
-  
+    Temp2FA.clock_code == clock_code, (Temp2FA.paired == True) | (Temp2FA.expiration > datetime.utcnow())
+  ).first()
+
   if not temp_2fa:
     raise HTTPException(status_code=404, detail="2FA not found")
-  
+
   return temp_2fa
 

@@ -73,10 +73,10 @@ CREATE TABLE IF NOT EXISTS MATCH_REFEREE (
 
 CREATE TABLE IF NOT EXISTS TEMP_2FA (
     referee_id INT PRIMARY KEY,
-    twofa_code VARCHAR(50),
-    clock_code VARCHAR(50) NOT NULL,
+    twofa_code INT NOT NULL CHECK(twofa_code >= 00 and twofa_code <= 99),
+    clock_code VARCHAR(5),
     expiration TIMESTAMP NOT NULL,
     paired BOOLEAN NOT NULL,
-    FOREIGN KEY (clock_code) REFEREE CLOCK(code) ON DELETE CASCADE
+    FOREIGN KEY (clock_code) REFERENCES CLOCK(code) ON DELETE CASCADE,
     FOREIGN KEY (referee_id) REFERENCES REFEREE(id) ON DELETE CASCADE
 );
