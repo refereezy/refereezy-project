@@ -17,14 +17,24 @@ CREATE TABLE IF NOT EXISTS MATCH_GROUP (
     FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS MATCH (
+CREATE TABLE IF NOT EXISTS TEAM (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    logo TEXT,
+    primary_color VARCHAR(50),
+    secondary_color VARCHAR(50),
+    client_id INT NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS MATCHES (
     id SERIAL PRIMARY KEY,
     date DATE NOT NULL,
-    matchday_id INT,
+    matchgroup_id INT,
     client_id INT NOT NULL,
     local_team_id INT NOT NULL,
     visitor_team_id INT NOT NULL,
-    FOREIGN KEY (matchday_id) REFERENCES MATCH_GROUP(id) ON DELETE SET NULL,
+    FOREIGN KEY (matchgroup_id) REFERENCES MATCH_GROUP(id) ON DELETE SET NULL,
     FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE,
     FOREIGN KEY (local_team_id) REFERENCES TEAM(id) ON DELETE CASCADE,
     FOREIGN KEY (visitor_team_id) REFERENCES TEAM(id) ON DELETE CASCADE
@@ -38,20 +48,10 @@ CREATE TABLE IF NOT EXISTS REFEREE (
     FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS TEAM (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    logo TEXT,
-    primary_color VARCHAR(50),
-    secondary_color VARCHAR(50),
-    client_id INT NOT NULL,
-    FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS PLAYER (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    jersey_number INT NOT NULL,
+    dorsal_number INT NOT NULL,
     dni VARCHAR(20) UNIQUE NOT NULL,
     team_id INT,
     client_id INT NOT NULL,
@@ -67,15 +67,16 @@ CREATE TABLE IF NOT EXISTS MATCH_REFEREE (
     match_id INT,
     referee_id INT,
     PRIMARY KEY (match_id, referee_id),
-    FOREIGN KEY (match_id) REFERENCES MATCH(id) ON DELETE CASCADE,
+    FOREIGN KEY (match_id) REFERENCES MATCHES(id) ON DELETE CASCADE,
     FOREIGN KEY (referee_id) REFERENCES REFEREE(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS 2FA_TEMP (
-    twofa_code VARCHAR(50) PRIMARY KEY,
-    clock_code VARCHAR(50) NOT NULL,
+CREATE TABLE IF NOT EXISTS TEMP_2FA (
+    referee_id INT PRIMARY KEY,
+    twofa_code INT NOT NULL CHECK(twofa_code >= 00 and twofa_code <= 99),
+    clock_code VARCHAR(5),
     expiration TIMESTAMP NOT NULL,
     paired BOOLEAN NOT NULL,
-    referee_id INT,
+    FOREIGN KEY (clock_code) REFERENCES CLOCK(code) ON DELETE CASCADE,
     FOREIGN KEY (referee_id) REFERENCES REFEREE(id) ON DELETE CASCADE
 );
