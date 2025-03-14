@@ -1,0 +1,6 @@
+uvicorn
+dotenv
+requests
+fastapi
+SQLAlchemy
+postgresql
