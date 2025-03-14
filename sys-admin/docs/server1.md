@@ -18,25 +18,10 @@ psql --version
 psql -U postgres
 
 CREATE DATABASE refereezy;
-CREATE USER admin WITH PASSWORD 'jais';
+CREATE USER admin WITH PASSWORD '******';
 GRANT ALL PRIVILEGES ON DATABASE refereezy TO admin;
 
 ```
-
-## Connexió amb Rellotge per Cloudflare
-
-
-```bash
-# Instal·lem cloudflare i activem el servei.
-sudo curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb &&
-
-sudo dpkg -i cloudflared.deb &&
-
-# Substituïm key-cloudflare per la clau del nostre domini.
-sudo cloudflared service install 'key-cloudflare'
-
-```
-
 
 ## Servei WEB
 
