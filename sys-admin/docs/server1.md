@@ -19,6 +19,7 @@ psql -U postgres
 
 CREATE DATABASE refereezy;
 CREATE USER admin WITH PASSWORD 'jais';
+GRANT ALL PRIVILEGES ON DATABASE refereezy TO admin;
 
 ```
 
