@@ -3,4 +3,4 @@ dotenv
 requests
 fastapi
 SQLAlchemy
-postgresql
+psycopg2
