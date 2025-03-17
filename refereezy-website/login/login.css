@@ -1,0 +1,157 @@
+/* Importar estilos base compartidos */
+@import url('../shared/base.css');
+
+/* Estilos específicos de la página de login */
+.login-section {
+    padding: 2rem 1rem;
+}
+
+.container {
+    max-width: 56rem;
+    margin: 0 auto;
+}
+
+.login-card {
+    position: relative;
+    background: linear-gradient(to right, #7ed957, #27c02e);
+    border-radius: 1rem;
+    padding: 1px;
+}
+
+.login-card::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background-color: #2b2b2b;
+    border-radius: 1rem;
+}
+
+.diagonal-background {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 1rem;
+}
+
+.stripe-top {
+    position: absolute;
+    inset: 0;
+    background-color: #7ed957;
+    transform: skewY(-6deg);
+}
+
+.stripe-bottom {
+    position: absolute;
+    inset: 0;
+    background-color: #2b2b2b;
+    transform: skewY(-6deg) translateY(8rem);
+}
+
+.login-content {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ball-container {
+    position: relative;
+    width: 24rem;
+    height: 24rem;
+    margin-bottom: 2rem;
+}
+
+.soccer-ball {
+    width: 140%;
+    height: 140%;
+    transform: rotate(45deg);
+    position: absolute;
+    top: -10%;
+    left: -20%;
+}
+
+.form-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.login-input {
+    width: 14rem;
+    padding: 0.5rem 1rem;
+    background-color: #e5e5e5;
+    border-radius: 0.375rem;
+    border: none;
+    color: black;
+}
+
+.login-submit-button {
+    width: 10rem;
+    padding: 0.5rem 1.5rem;
+    background-color: #7ed957;
+    color: black;
+    border-radius: 0.375rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.login-submit-button:hover {
+    background-color: #6bc746;
+}
+
+.register-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white;
+    margin-top: 3rem; /* Modificado de 1rem a 3rem */
+}
+
+.register-button {
+    padding: 0.5rem 1.5rem;
+    background-color: #2b2b2b;
+    border-radius: 0.375rem;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.register-button:hover {
+    background-color: #3b3b3b;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .ball-container {
+        width: 20rem;
+        height: 20rem;
+    }
+
+    .soccer-ball {
+        width: 140%;
+        height: 140%;
+        top: -10%;
+    }
+
+    .login-input {
+        width: 11rem;
+    }
+
+    .login-submit-button {
+        width: 8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ball-container {
+        width: 18rem;
+        height: 18rem;
+    }
+}

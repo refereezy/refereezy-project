@@ -1,0 +1,125 @@
+/* Players Section */
+.players-section {
+    padding: 3rem 1rem;
+}
+
+.container {
+    max-width: 64rem;
+    margin: 0 auto;
+}
+
+.players-card {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Title Section */
+.title-container {
+    position: relative;
+    padding: 1.5rem 0;
+    text-align: center;
+}
+
+.title-background {
+    position: absolute;
+    inset: 0;
+    background-color: var(--nav-background);
+    transform: skewY(-3deg);
+    transform-origin: top;
+}
+
+.title-container h1 {
+    position: relative;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--text);
+    z-index: 1;
+}
+
+/* Players Grid */
+.players-content {
+    min-height: 200px;
+    padding: 2rem;
+}
+
+.players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.player-card {
+    background-color: rgba(43, 43, 43, 0.8);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.player-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
+}
+
+.player-info {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.player-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.player-name {
+    font-size: 1.125rem;
+    color: var(--text);
+}
+
+/* No Players Message */
+.no-players-message {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text);
+}
+
+.no-players-message p {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.add-player-link {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background-color: var(--nav-background);
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.add-player-link:hover {
+    background-color: rgba(43, 43, 43, 0.9);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .title-container h1 {
+        font-size: 2rem;
+    }
+
+    .players-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+}
