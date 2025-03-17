@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Forma ovalada para hacer el botón redondo -->
+    <solid android:color="@color/black" /> <!-- Color de fondo transparente -->
+    <corners android:radius="1000dp" /> <!-- Esquinas completamente redondeadas -->
+    <size android:width="50dp" android:height="50dp" /> <!-- Tamaño del botón -->
+    <stroke android:width="3dp" android:color="@color/white"/>
+</shape>
