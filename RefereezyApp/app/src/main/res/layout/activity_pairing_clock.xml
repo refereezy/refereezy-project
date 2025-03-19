@@ -5,24 +5,32 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     tools:context=".PairingClockActivity">
 
 
-    <androidx.cardview.widget.CardView
+
+    <net.orandja.shadowlayout.ShadowLayout
+        android:id="@+id/watchSampleFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/watch_os_frame"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/card_view"
-        android:layout_width="250dp"
-        android:layout_height="320dp"
-        android:layout_centerInParent="true"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="12dp"
-        app:cardBackgroundColor="@color/cardBackground">
+
+        app:shadow_radius="16"
+        app:shadow_downscale="1"
+        app:shadow_color="#D3D3D3"
+        app:shadow_with_content="true"
+        app:shadow_with_color="false"
+        app:shadow_cast_only_background="true">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="208dp"
+            android:layout_height="248dp"
             android:gravity="center"
             android:padding="20dp">
 
@@ -42,11 +50,10 @@
                 android:layout_below="@id/textView"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:indeterminate="true"
-                android:visibility="gone"/>
+                android:indeterminate="true"/>
 
             <Button
-                android:id="@+id/checkButton"
+                android:id="@+id/checkBtn"
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:layout_below="@id/progressBar"
@@ -56,8 +63,55 @@
                 android:textColor="@android:color/black"
                 android:background="@drawable/button_bg"/>
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+    </net.orandja.shadowlayout.ShadowLayout>
+
+    <TextView
+        android:id="@+id/pairingHelp"
+        app:layout_constraintTop_toBottomOf="@id/watchSampleFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
+        android:text="Escribe el código que te aparece en el reloj"/>
 
 
+    <EditText
+        android:id="@+id/clockCodeField"
+        style="@style/AppTextField"
+        app:layout_constraintTop_toBottomOf="@id/pairingHelp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginVertical="40dp"
+        android:layout_width="312dp"
+        android:textSize="16sp"
+        android:hint="Código de reloj..."
+        android:textColorHint="#808080" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/submitBtn"
+        app:layout_constraintTop_toBottomOf="@id/clockCodeField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="Confirmar"
+        android:textColor="@android:color/black"
+        android:background="@drawable/button_bg"/>
+
+    <Button
+        android:id="@+id/cancelBtn"
+        app:layout_constraintTop_toBottomOf="@id/submitBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="volver"
+        android:textColor="@android:color/black"
+        android:background="@drawable/button_bg"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

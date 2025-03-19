@@ -56,12 +56,12 @@
 
         <TextView
             android:id="@+id/userField"
-            style="@style/Account.TextField"
+            style="@style/AppTextField"
             android:text="Nombre de usuario"/>
 
         <TextView
             android:id="@+id/dniField"
-            style="@style/Account.TextField"
+            style="@style/AppTextField"
             android:text="DNI"/>
 
         <LinearLayout
@@ -70,7 +70,7 @@
 
             <EditText
                 android:id="@+id/passwordField"
-                style="@style/Account.TextField"
+                style="@style/AppTextField"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:textSize="15sp"
@@ -92,7 +92,7 @@
                 android:id="@+id/clockCodeField"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                style="@style/Account.TextField"
+                style="@style/AppTextField"
                 android:textSize="15sp"
                 android:text="Codigo reloj"/>
 

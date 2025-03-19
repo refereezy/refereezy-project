@@ -55,13 +55,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                style="@style/Match.Info.Title"
+                style="@style/MatchInfoTitle"
                 android:text="Hoy"/>
 
             <include layout="@layout/match_info_layout"/>
             <include layout="@layout/match_info_layout"/>
             <TextView
-                style="@style/Match.Info.Title"
+                style="@style/MatchInfoTitle"
                 android:text="Hoy"/>
 
             <include layout="@layout/match_info_layout"/>
