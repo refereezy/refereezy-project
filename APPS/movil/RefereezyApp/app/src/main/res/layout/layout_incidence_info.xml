@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/rounded_background"
+    android:padding="10dp"
+    android:layout_height="wrap_content">
+    
+    <TextView
+        android:id="@+id/time"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12:00"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_marginStart="128dp"
+        android:fontFamily="@font/k2d_medium"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/dorsal"
+        style="@style/NormalButton"
+        app:layout_constraintBaseline_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/time"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:text="2"
+        android:backgroundTint="#3F51B5"
+        android:layout_margin="40dp"
+        />
+
+    <ImageView
+        android:id="@+id/typeImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dorsal"
+        android:layout_marginStart="40dp"
+        android:src="@drawable/gol"
+        android:padding="3dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"/>
+
+
+    <ImageButton
+        android:id="@+id/deleteBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="100dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_bin"
+        android:background="@color/transparent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

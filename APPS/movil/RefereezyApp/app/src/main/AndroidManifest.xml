@@ -13,9 +13,29 @@
         android:theme="@style/Theme.RefereezyApp"
         tools:targetApi="31">
         <activity
+            android:name=".ActionListActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".IncidenceActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".PlayerPickActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".CardPickActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".TeamPickActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".ActionsActivity"
-            android:screenOrientation="landscape"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".PairingClockActivity"
             android:exported="false" />

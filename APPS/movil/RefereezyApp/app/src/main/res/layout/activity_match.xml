@@ -20,7 +20,8 @@
             android:layout_gravity="center_vertical|start"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@color/black"/>
+            android:src="@drawable/ic_menu"
+            android:background="@color/transparent"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,7 +40,9 @@
             android:layout_gravity="center_vertical|end"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@color/black"/>
+            android:padding="8dp"
+            android:src="@drawable/account_card"
+            android:background="@color/transparent"/>
 
     </FrameLayout>
 
@@ -55,16 +58,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                style="@style/MatchInfoTitle"
+                style="@style/MatchDayTitle"
                 android:text="Hoy"/>
 
-            <include layout="@layout/match_info_layout"/>
-            <include layout="@layout/match_info_layout"/>
+            <include layout="@layout/layout_match_info"/>
+            <include layout="@layout/layout_match_info"/>
             <TextView
-                style="@style/MatchInfoTitle"
+                style="@style/MatchDayTitle"
                 android:text="Hoy"/>
 
-            <include layout="@layout/match_info_layout"/>
+            <include layout="@layout/layout_match_info"/>
         </LinearLayout>
 
 

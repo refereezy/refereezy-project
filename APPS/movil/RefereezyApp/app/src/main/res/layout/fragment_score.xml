@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="32dp"
+    android:background="@drawable/scoreboard"
+    tools:context=".ScoreFragment">
+
+
+    <TextView
+        android:id="@+id/socreboardtxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="0 - 0"
+        android:textColor="@android:color/white"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_marginStart="100dp"
+        android:id="@+id/escudoIzquierdo"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_launcher_foreground" />
+
+    <ImageView
+        android:id="@+id/escudoDerecho"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="100dp"
+        android:layout_gravity="center_vertical|end"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_launcher_foreground" />
+
+</FrameLayout>
