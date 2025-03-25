@@ -8,18 +8,18 @@
     android:clipToPadding="false"
     >
     <net.orandja.shadowlayout.ShadowLayout
+        android:id="@+id/shadow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:shadow_color="@color/white"
+        app:shadow_color="#C2185B"
         app:shadow_with_content="true"
-        app:shadow_radius="8"
+        app:shadow_radius="5"
         app:shadow_with_color="false"
         app:shadow_cast_only_background="true"
         android:layout_margin="10dp"
         android:background="@drawable/player_circle"
         android:backgroundTint="@color/black"
-        android:backgroundTintMode="src_over"
-        >
+        android:backgroundTintMode="src_over">
 
         <TextView
             android:id="@+id/dorsal"

@@ -1,0 +1,22 @@
+package com.example.refereezyapp.data.models
+
+data class Incident(
+    val id: String = "",
+    val description: String = "",
+    val minute: Int = 0,
+    val player_id: Int = 0,
+    val type: IncidentType = IncidentType.OTHER
+)
+
+class PopulatedIncident(
+    val raw: Incident,
+    val player: Player
+)
+
+
+enum class IncidentType {
+    GOAL, YELLOW_CARD, RED_CARD, LESION, FIGHT, OTHER
+}
+
+
+
