@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel
+from typing import Optional
 
 #  Model para Team
 class TeamBase(BaseModel):
@@ -41,6 +42,7 @@ class MatchBase(BaseModel):
     date: datetime
     matchgroup_id: int
     client_id: int
+    referee_id: int
     local_team_id: int
     visitor_team_id: int
 
@@ -58,6 +60,7 @@ class RefereeBase(BaseModel):
     name: str
     dni: str
     client_id: int
+    clock_code: Optional[str]
 
 class RefereeCreate(RefereeBase):
     pass
@@ -98,3 +101,6 @@ class ClientResponse(ClientBase):
     id: int
     class Config:
         orm_mode = True
+        
+class ClockSchema(BaseModel):
+    code: str

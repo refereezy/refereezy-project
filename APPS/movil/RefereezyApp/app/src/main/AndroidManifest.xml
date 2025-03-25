@@ -16,40 +16,40 @@
         android:theme="@style/Theme.RefereezyApp"
         tools:targetApi="31">
         <activity
-            android:name=".ActionListActivity"
+            android:name=".screens.ActionListActivity"
             android:exported="false"
             android:screenOrientation="landscape"/>
         <activity
-            android:name=".IncidenceActivity"
+            android:name=".screens.IncidenceActivity"
             android:exported="false"
             android:screenOrientation="landscape"/>
         <activity
-            android:name=".PlayerPickActivity"
+            android:name=".screens.PlayerPickActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".CardPickActivity"
+            android:name=".screens.CardPickActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".TeamPickActivity"
+            android:name=".screens.TeamPickActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".ActionsActivity"
+            android:name=".screens.ActionsActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".PairingClockActivity"
+            android:name=".screens.PairingClockActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".screens.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MatchActivity"
+            android:name=".screens.MatchActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".screens.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

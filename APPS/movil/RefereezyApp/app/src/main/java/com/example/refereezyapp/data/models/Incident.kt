@@ -6,7 +6,12 @@ data class Incident(
     val minute: Int = 0,
     val player_id: Int = 0,
     val type: IncidentType = IncidentType.OTHER
-)
+) {
+
+    override fun toString(): String {
+        return "Incident(id=$id, description='$description', minute=$minute, player_id=$player_id, type=$type)"
+    }
+}
 
 class PopulatedIncident(
     val raw: Incident,

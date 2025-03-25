@@ -1,10 +1,11 @@
-package com.example.refereezyapp
+package com.example.refereezyapp.screens
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.refereezyapp.R
 import com.example.refereezyapp.data.FirebaseManager
 
 class MainActivity : AppCompatActivity() {
@@ -23,11 +24,9 @@ class MainActivity : AppCompatActivity() {
         FirebaseManager.getReport(1) {
             matchReport, error ->
             if (matchReport != null) {
-                println("Acta encontrada: ${matchReport.matchId}")
+                println("Acta encontrada exitosamente")
 
-                for (incidencia in matchReport.incidents) {
-                    println("Incidencia encontrada: ${incidencia.description}")
-                }
+                println(matchReport.toString())
 
             } else {
                 println("ERROR: $error")

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 android {
@@ -38,20 +39,30 @@ android {
 
 dependencies {
 
-
+    // android default
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
+    // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
     implementation("com.google.firebase:firebase-firestore-ktx:24.9.1")
-
+    // UI
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("net.orandja.shadowlayout:shadowlayout:1.0.1")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
 
+    // API
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.lyfecycleandroid)
+    implementation(libs.http.interceptor)
+    implementation(libs.glide)
+    kapt(libs.glide.compiler)
+
+    // tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

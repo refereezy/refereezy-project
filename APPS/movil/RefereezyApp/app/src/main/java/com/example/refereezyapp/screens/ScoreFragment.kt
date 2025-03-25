@@ -1,10 +1,11 @@
-package com.example.refereezyapp
+package com.example.refereezyapp.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.refereezyapp.R
 
 
 class ScoreFragment : Fragment() {

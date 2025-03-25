@@ -1,20 +1,21 @@
 package com.example.refereezyapp.data.models
 
-import com.google.type.DateTime
+import java.time.LocalDateTime
+
 
 data class Match (
     val id: Int,
-    val local: Team,
-    val visiting: Team,
-    val date: DateTime,
+    val local_team: Team,
+    val visitor_team: Team,
+    val date: LocalDateTime,
     val referee: Referee
 ) {
 
     fun isLocalPlayer(player: Player): Boolean {
-        return player.team == local
+        return player.team == local_team
     }
 
-    fun isVisitantePlayer(player: Player): Boolean {
-        return player.team == visiting
+    fun isVisitantPlayer(player: Player): Boolean {
+        return player.team == visitor_team
     }
 }

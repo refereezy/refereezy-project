@@ -51,9 +51,10 @@ class Referee(Base):
     name = Column(String, nullable=False)
     dni = Column(String, unique=True, nullable=False)
     client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
+    clock_code = Column(String, ForeignKey("clock.code"))
 
     client = relationship("Client", back_populates="referees")
-    matches = relationship("MatchReferee", back_populates="referee", cascade="all, delete")
+    matches = relationship("Match", back_populates="referee", cascade="all, delete")
 
 class MatchGroup(Base):
     __tablename__ = "match_group"
@@ -73,37 +74,20 @@ class Match(Base):
     date = Column(DateTime, nullable=False)
     matchgroup_id = Column(Integer, ForeignKey("match_group.id"))
     client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
+    referee_id = Column(Integer, ForeignKey("referee.id"), nullable=True)
     local_team_id = Column(Integer, ForeignKey("team.id"), nullable=False)
     visitor_team_id = Column(Integer, ForeignKey("team.id"), nullable=False)
 
     match_group = relationship("MatchGroup", back_populates="matches")
     client = relationship("Client", back_populates="matches")
+    referee = relationship("Referee", foreign_keys=[referee_id])
     local_team = relationship("Team", foreign_keys=[local_team_id])
     visitor_team = relationship("Team", foreign_keys=[visitor_team_id])
-    referees = relationship("MatchReferee", back_populates="match", cascade="all, delete")
 
-class MatchReferee(Base):
-    __tablename__ = "match_referees"
 
-    match_id = Column(Integer, ForeignKey("matches.id"), primary_key=True)
-    referee_id = Column(Integer, ForeignKey("referee.id"), primary_key=True)
-
-    match = relationship("Match", back_populates="referees")
-    referee = relationship("Referee", back_populates="matches")
 
 class Clock(Base):
     __tablename__ = "clock"
 
     code = Column(String, primary_key=True)
-
-class Temp2FA(Base):
-    __tablename__ = "temp_2fa"
-
-    referee_id = Column(Integer, ForeignKey("referee.id", ondelete="CASCADE"), primary_key=True)
-    twofa_code = Column(Integer)
-    clock_code = Column(String, ForeignKey("clock.code", ondelete="CASCADE"), nullable=False)
-    expiration = Column(DateTime, nullable=False)
-    paired = Column(Boolean, nullable=False)
-
-    referee = relationship("Referee")
     
