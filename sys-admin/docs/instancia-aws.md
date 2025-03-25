@@ -3,7 +3,12 @@
 
 ```bash
 sudo apt install git
-git clone https://github.com/refereezy/refereezy-project
+ssh-keygen 
+
+# Clonem el repositori del projecte amb SSH.
+# Afegim la clau pública al registre de claus del repositori.
+git clone git@github.com:refereezy/refereezy-project.git
+# Ens identifiquem.
 ```
 
 ## DOCKER
@@ -26,3 +31,17 @@ sudo usermod -aG docker ${USER}
 ```bash
 sudo apt install apache2
 ```
+
+## WireGuard
+
+Descarreguem l'arxiu VPN amb el qual ens connectarem a la xarxa VPN on s'allotja la nostra infraestructura de xarxa (router, servidor...)
+
+```bash
+sudo apt install wireguard
+sudo mv /path/to/downloads/isard-vpn.conf /etc/wireguard/
+sudo wg-quick up isard-vpn
+```
+
+Per no tenir que habilitar la VPN cada vegada que entrem al sistema, afegim una tasca al systemd.
+```bash
+sudo nano /etc/systemd/system/wireguard-autostart.service

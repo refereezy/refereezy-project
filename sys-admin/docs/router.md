@@ -4,17 +4,25 @@
 
 Modifiquem l'arxiu:
 ```bash
-sudo nano /etc/netplan/01-netcfg.yaml
+sudo nano /etc/netplan/01-network-manager-all.yaml
 ```
 Y afegim les següents linies:
 ```bash
 network:
   version: 2
   ethernets:
-    enp1s0:
+    enp3s0:
       dhcp4: no
       addresses:
         - 192.168.51.1/24
+
+sudo netplan apply
+```
+
+Provem connexió amb servidors:
+```bash
+ping 192.168.51.10
+ping 192.168.51.20
 ```
 
 ## Permitim tràfic cap a Internet
@@ -29,6 +37,4 @@ Guardem els canvis:
 sudo sysctl -p
 ```
 
-
-
-## 
+###
