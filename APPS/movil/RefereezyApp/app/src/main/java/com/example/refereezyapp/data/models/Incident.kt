@@ -16,7 +16,11 @@ data class Incident(
 class PopulatedIncident(
     val raw: Incident,
     val player: Player
-)
+) {
+    override fun toString(): String {
+        return raw.toString()
+    }
+}
 
 
 enum class IncidentType {

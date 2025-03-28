@@ -31,11 +31,11 @@ data class MatchReport (
     }
 }
 
-class PopulatedActa (
+class PopulatedReport (
     val raw: MatchReport,
     val local: Team,
     val visiting: Team,
-    val match: Match,
+    val match: PopulatedMatch,
     val incidents: MutableList<PopulatedIncident> = mutableListOf<PopulatedIncident>()
 
 )

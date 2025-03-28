@@ -49,6 +49,7 @@ dependencies {
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
     implementation("com.google.firebase:firebase-firestore-ktx:24.9.1")
+
     // UI
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("net.orandja.shadowlayout:shadowlayout:1.0.1")

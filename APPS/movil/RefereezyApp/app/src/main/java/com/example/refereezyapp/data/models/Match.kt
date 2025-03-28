@@ -2,8 +2,15 @@ package com.example.refereezyapp.data.models
 
 import java.time.LocalDateTime
 
-
 data class Match (
+    val id: Int,
+    val local_team_id: Int,
+    val visitor_team_id: Int,
+    val date: LocalDateTime,
+    val referee_id: Int
+)
+
+data class PopulatedMatch (
     val id: Int,
     val local_team: Team,
     val visitor_team: Team,

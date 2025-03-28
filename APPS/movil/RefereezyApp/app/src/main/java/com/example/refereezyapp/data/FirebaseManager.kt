@@ -8,13 +8,16 @@ import com.google.firebase.firestore.firestore
 
 object FirebaseManager {
 
+    private const val REPORT_COLLECTION = "reports"
+    private const val INCIDENT_COLLECTION = "incidents"
+
     private val db by lazy { Firebase.firestore }
 
 
-    fun getReport(idArbitro: Int, dataHandler: (result: MatchReport?, errorMessage: String?) -> Unit) {
+    fun getReport(refereeId: Int, dataHandler: (result: MatchReport?, errorMessage: String?) -> Unit) {
 
-        db.collection("reports")
-            .whereEqualTo("referee_id", idArbitro) // actas de arbitro
+        db.collection(REPORT_COLLECTION)
+            .whereEqualTo("referee_id", refereeId) // actas de arbitro
             .whereEqualTo("done", false) // solo actas sin acabar
             .limit(1) // to not saturate the result
             .get()
@@ -25,14 +28,14 @@ object FirebaseManager {
                     return@addOnSuccessListener
                 }
 
-                val actaRef = result.documents[0] // first
+                val reportRef = result.documents[0] // first
 
                 // maps the data to Report object, and adds the firebase_id to it
-                val matchReport = actaRef.toObject(MatchReport::class.java)!!.copy(id = actaRef.id)
+                val matchReport = reportRef.toObject(MatchReport::class.java)!!.copy(id = reportRef.id)
 
-                val incidenciasRef = actaRef.reference.collection("incidents") // gets the incidencts subcollection
+                val incidentRef = reportRef.reference.collection(INCIDENT_COLLECTION) // gets the incidencts subcollection
 
-                incidenciasRef.get()
+                incidentRef.get()
                     .addOnSuccessListener { resultIncidencias ->
                         val incidents = mutableListOf<Incident>() // list of incidencias
                         for (doc in resultIncidencias.documents) { // for each result
@@ -60,6 +63,71 @@ object FirebaseManager {
                 dataHandler(null, message) // Gives an error message
             }
 
+    }
+
+    fun initReport(matchId: Int, refereeId: Int): MatchReport {
+        val db = Firebase.firestore
+
+        val reportRef = db.collection(REPORT_COLLECTION).document()
+        val report = MatchReport(
+            id = reportRef.id,
+            match_id = matchId,
+            referee_id = refereeId)
+
+        reportRef.set(report)
+
+        return report
+    }
+
+    fun updateReportTimer(reportId: String, newTimer: List<Int>) {
+        val reportRef = db.collection(REPORT_COLLECTION).document(reportId)
+
+        if (newTimer.size != 2) {
+            Log.e("Firebase", "Invalid timer format")
+            return
+        }
+
+        reportRef.update("timer", newTimer)
+            .addOnFailureListener { e ->
+                val message = "Error updating timer: $e"
+                Log.e("Firebase", message)
+            }
+    }
+
+    fun updateReportDone(reportId: String, done: Boolean) {
+        val reportRef = db.collection(REPORT_COLLECTION).document(reportId)
+
+        reportRef.update("done", done)
+    }
+
+    fun addIncident(reportId: String, incident: Incident) {
+        val reportRef = db.collection(REPORT_COLLECTION).document(reportId) // get the report doc ref
+
+        reportRef.get().addOnCompleteListener { task ->
+            if (!task.isSuccessful || !task.result.exists()) {
+                Log.e("Firebase", "Report not found or does not exist")
+                return@addOnCompleteListener
+            }
+
+            val incidentRef = reportRef.collection(INCIDENT_COLLECTION).document()
+            incidentRef.set(incident.copy(id = incidentRef.id))
+        }
+
+    }
+
+    fun removeIncident(reportId: String, incidentId: String) {
+        val reportRef = db.collection(REPORT_COLLECTION).document(reportId)
+
+        reportRef.get().addOnCompleteListener { task ->
+            if (!task.isSuccessful || !task.result.exists()) {
+                Log.e("Firebase", "Report not found or does not exist")
+                return@addOnCompleteListener
+            }
+
+            val incidentRef = reportRef.collection(INCIDENT_COLLECTION).document(incidentId)
+
+            incidentRef.delete()
+        }
     }
 
 

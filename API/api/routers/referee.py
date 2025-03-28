@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from models import Referee
-from schemas import RefereeCreate, RefereeResponse
+from schemas import RefereeCreate, RefereeResponse, RefereeUpdate
 from dependencies import get_db
 from typing import List
 
@@ -45,3 +45,29 @@ def delete_referee(referee_id: int, db: Session = Depends(get_db)):
     db.delete(db_referee)
     db.commit()
     return {"message": "Referee deleted"}
+
+
+@router.get("/{referee_id}/matches")
+def get_referee_matches(referee_id: int, db: Session = Depends(get_db)):
+    referee = db.query(Referee).filter(Referee.id == referee_id).first()
+    if not referee:
+        raise HTTPException(status_code=404, detail="Referee not found")
+    return referee.matches
+
+@router.post("/login", response_model=RefereeResponse)
+def login_referee(dni: str, password: str, db: Session = Depends(get_db)):
+    referee = db.query(Referee).filter(Referee.dni == dni, Referee.password == password).first()
+    if not referee:
+        raise HTTPException(status_code=401, detail="Invalid DNI or password")
+    return referee
+
+@router.patch("/{referee_id}/password", response_model=RefereeResponse)
+def update_referee_password(referee_id: int, referee_update: RefereeUpdate, db: Session = Depends(get_db)):
+    db_referee = db.query(Referee).filter(Referee.id == referee_id).first()
+    if not db_referee:
+        raise HTTPException(status_code=404, detail="Referee not found")
+    if referee_update.password:
+        db_referee.password = referee_update.password
+    db.commit()
+    db.refresh(db_referee)
+    return db_referee

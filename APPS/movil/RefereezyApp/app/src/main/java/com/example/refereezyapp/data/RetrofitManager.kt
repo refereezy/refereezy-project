@@ -1,10 +1,19 @@
 package com.example.refereezyapp.data
 
+import com.example.refereezyapp.data.models.Clock
 import com.example.refereezyapp.data.models.Match
+import com.example.refereezyapp.data.models.PopulatedMatch
+import com.example.refereezyapp.data.models.Referee
+import com.example.refereezyapp.data.models.RefereeLogin
+import com.example.refereezyapp.data.models.RefereeUpdate
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.Path
 import java.security.SecureRandom
 import java.security.cert.CertificateException
@@ -16,13 +25,38 @@ import javax.net.ssl.X509TrustManager
 
 interface RetrofitService {
 
-    @GET("/match/{id}")
-    suspend fun getMatch(@Path("id") id: Int): Match
+    // test
+    @GET("/")
+    suspend fun testConnection(): String
+
+    // to login
+    @POST("/referee/login")
+    suspend fun login(@Body credentials: RefereeLogin): Referee
+
+    // to update password
+    @PATCH("/referee/{id}/password")
+    suspend fun changePassword(@Path("id") id: Int, @Body update: RefereeUpdate): Referee
+
+    // to pair a clock
+    @GET("/assignTo/{id}")
+    suspend fun assignClock(@Path("id") id: Int, @Body clock: Clock)
+
+    // cancel clock pairing
+    @DELETE("/revoke/{id}")
+    suspend fun revokeClock(@Path("id") id: Int)
+
+    // to get referee matches
+    @GET("/referee/{id}/matches")
+    suspend fun getRefereeMatches(@Path("id") id: Int): List<Match>
+
+    // to get matches with their data
+    @GET("/matches/populated/{id}")
+    suspend fun getMatch(@Path("id") id: Int): PopulatedMatch
 
 }
 
 object RetrofitManager {
-    private const val BASE_URL = "https://smcardona.tech"
+    private const val BASE_URL = "http://10.0.2.2:8000"
 
     //Desde aqui es posible colocar timeouts a las respuestas o asignar un Token si la app necesita uno
     private val client = getUnsafeOkHttpClient()
