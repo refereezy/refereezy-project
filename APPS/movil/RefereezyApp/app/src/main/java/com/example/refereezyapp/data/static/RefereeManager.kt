@@ -1,4 +1,4 @@
-package com.example.refereezyapp.data.managers
+package com.example.refereezyapp.data.static
 
 import com.example.refereezyapp.data.models.Referee
 

@@ -100,7 +100,7 @@ object FirebaseManager {
         reportRef.update("done", done)
     }
 
-    fun addIncident(reportId: String, incident: Incident) {
+    fun addIncident(reportId: String, incident: Incident, responseHandler: (res: Incident) -> Unit) {
         val reportRef = db.collection(REPORT_COLLECTION).document(reportId) // get the report doc ref
 
         reportRef.get().addOnCompleteListener { task ->
@@ -110,12 +110,19 @@ object FirebaseManager {
             }
 
             val incidentRef = reportRef.collection(INCIDENT_COLLECTION).document()
-            incidentRef.set(incident.copy(id = incidentRef.id))
+            val updated = incident.copy(id = incidentRef.id)
+            incidentRef.set(updated)
+                .addOnSuccessListener {
+                    responseHandler(updated)
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firebase", "Error adding incident: $e")
+                }
         }
 
     }
 
-    fun removeIncident(reportId: String, incidentId: String) {
+    fun removeIncident(reportId: String, incidentId: String, onSuccess: () -> Unit) {
         val reportRef = db.collection(REPORT_COLLECTION).document(reportId)
 
         reportRef.get().addOnCompleteListener { task ->
@@ -126,9 +133,10 @@ object FirebaseManager {
 
             val incidentRef = reportRef.collection(INCIDENT_COLLECTION).document(incidentId)
 
-            incidentRef.delete()
+            incidentRef.delete().addOnSuccessListener {
+                onSuccess()
+            }
         }
     }
-
 
 }

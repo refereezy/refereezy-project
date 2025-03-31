@@ -23,7 +23,7 @@ class Team(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    logo = Column(String)
+    logo_url = Column(String)
     primary_color = Column(String)
     secondary_color = Column(String)
     client_id = Column(Integer, ForeignKey("client.id"), nullable=False)

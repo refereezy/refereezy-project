@@ -6,29 +6,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.refereezyapp.R
-import com.example.refereezyapp.data.FirebaseManager
-import com.example.refereezyapp.data.static.ReportManager
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // primero buscar si hay un reporte pendiente
-        FirebaseManager.getReport(1) { report, errorMessage ->
-            if (errorMessage != null) {
-                ReportManager.setCurrentReport(report)
-            }
-        }
 
-
-
-        //startActivity(Intent(this, PlayerPickActivity::class.java))
     }
 }

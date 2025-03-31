@@ -12,17 +12,13 @@ INSERT INTO TEAM (name, logo, primary_color, secondary_color, client_id) VALUES
 ('Team B', 'logo_b.png', 'Blue', 'Black', 1),
 ('Team C', 'logo_c.png', 'Green', 'Yellow', 2);
 
-INSERT INTO MATCHES (date, matchgroup_id, client_id, local_team_id, visitor_team_id) VALUES
-('2025-01-15', 1, 1, 1, 2),
-('2025-02-20', 2, 2, 3, 1);
+INSERT INTO MATCHES (date, matchgroup_id, client_id, local_team_id, visitor_team_id, referee_id) VALUES
+('2025-01-15 15:00:00', 1, 1, 1, 2, 1),
+('2025-02-20 18:00:00', 2, 2, 3, 1, 2);
 
-INSERT INTO REFEREE (name, dni, client_id) VALUES
-('Mike Ref', '12345678A', 1),
-('Sarah Ref', '87654321B', 2);
-
-INSERT INTO MATCH_REFEREE (match_id, referee_id) VALUES
-(1, 1),
-(2, 2);
+INSERT INTO REFEREE (name, password, dni, clock_code, client_id) VALUES
+('Mike Ref', 'password123', '12345678A', 'CLK123', 1),
+('Sarah Ref', 'password456', '87654321B', 'CLK456', 2);
 
 INSERT INTO PLAYER (name, dorsal_number, dni, team_id, client_id) VALUES
 ('Player 1', 10, '11111111X', 1, 1),
@@ -32,7 +28,3 @@ INSERT INTO PLAYER (name, dorsal_number, dni, team_id, client_id) VALUES
 INSERT INTO CLOCK (code) VALUES
 ('CLK123'),
 ('CLK456');
-
-INSERT INTO TEMP_2FA (twofa_code, clock_code, expiration, paired, referee_id) VALUES
-(12, 'CLK123', '2025-06-01 12:00:00', TRUE, 1),
-(59, 'CLK456', '2025-06-02 14:30:00', FALSE, 2);

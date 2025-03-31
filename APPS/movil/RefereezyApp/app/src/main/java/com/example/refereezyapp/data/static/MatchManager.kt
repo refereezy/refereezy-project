@@ -1,4 +1,4 @@
-package com.example.refereezyapp.data.managers
+package com.example.refereezyapp.data.static
 
 import com.example.refereezyapp.data.models.Match
 import com.example.refereezyapp.data.models.PopulatedMatch
@@ -31,22 +31,17 @@ object MatchManager {
         matches.removeAll { it.id == matchId }
     }
 
-    fun updateMatch(match: Match) {
-        val index = matches.indexOfFirst { it.id == match.id }
-        if (index != -1) {
-            matches[index] = match
-        }
-    }
-
     fun getMatchById(matchId: Int): Match? {
         return matches.find { it.id == matchId }
     }
 
-    fun getMatchesForReferee(refereeId: Int): List<Match> {
-        return matches.filter { it.referee_id == refereeId }
+    fun populateMatch(match: Match): PopulatedMatch {
+        // rellena la lista de jugadores con los de los equipos por cada id
+        val localTeam = TeamManager.getTeamById(match.local_team_id)
+        val visitorTeam = TeamManager.getTeamById(match.visitor_team_id)
+
+        val populated = PopulatedMatch()
+
     }
-
-
-
 
 }

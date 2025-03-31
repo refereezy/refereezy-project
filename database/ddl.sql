@@ -1,11 +1,13 @@
 -- PostgreSQL
+CREATE TYPE Plan as ENUM ('Eazy', 'Exceptional', 'Enterprise');
 
 CREATE TABLE IF NOT EXISTS CLIENT (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    plan VARCHAR(100),
+    plan Plan NOT NULL DEFAULT 'Eazy',
     plan_expiration DATE,
     email VARCHAR(255) UNIQUE,
+    password TEXT,
     phone VARCHAR(20)
 );
 
@@ -20,9 +22,9 @@ CREATE TABLE IF NOT EXISTS MATCH_GROUP (
 CREATE TABLE IF NOT EXISTS TEAM (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    logo TEXT,
-    primary_color VARCHAR(50),
-    secondary_color VARCHAR(50),
+    logo_url TEXT, -- URL logo (Generada por API)
+    primary_color VARCHAR(50), -- # HEX
+    secondary_color VARCHAR(50), -- # HEX
     client_id INT NOT NULL,
     FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE
 );
@@ -35,6 +37,7 @@ CREATE TABLE IF NOT EXISTS MATCHES (
     client_id INT NOT NULL,
     local_team_id INT NOT NULL,
     visitor_team_id INT NOT NULL,
+
     FOREIGN KEY (matchgroup_id) REFERENCES MATCH_GROUP(id) ON DELETE SET NULL,
     FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE,
     FOREIGN KEY (local_team_id) REFERENCES TEAM(id) ON DELETE CASCADE,
