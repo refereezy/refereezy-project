@@ -33,6 +33,10 @@ interface RetrofitService {
     @POST("/referee/login")
     suspend fun login(@Body credentials: RefereeLogin): Referee
 
+    // to load referee object again
+    @GET("/referee/{id}/{password}")
+    suspend fun getReferee(@Path("id") id: Int, @Path("password") password: String): Referee
+
     // to update password
     @PATCH("/referee/{id}/password")
     suspend fun changePassword(@Path("id") id: Int, @Body update: RefereeUpdate): Referee

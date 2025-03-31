@@ -5,7 +5,7 @@ from schemas import RefereeCreate, RefereeResponse, RefereeUpdate
 from dependencies import get_db
 from typing import List
 
-router = APIRouter(prefix="/referees", tags=["Referees"])
+router = APIRouter(prefix="/referee", tags=["Referees"])
 
 @router.get("/", response_model=List[RefereeResponse])
 def get_referees(db: Session = Depends(get_db)):
@@ -16,6 +16,18 @@ def get_referee(referee_id: int, db: Session = Depends(get_db)):
     referee = db.query(Referee).filter(Referee.id == referee_id).first()
     if not referee:
         raise HTTPException(status_code=404, detail="Referee not found")
+    return referee
+
+@router.get("/{referee_id}/{password}", response_model=RefereeResponse)
+def map_referee(referee_id: int, password: str, db: Session = Depends(get_db)):
+    referee = db.query(Referee).filter(Referee.id == referee_id).first()
+    
+    if not referee:
+        raise HTTPException(status_code=404, detail="Referee not found")
+    
+    if referee.password != password:
+        raise HTTPException(status_code=401, detail="Unauthorized: Password does not match")
+        
     return referee
 
 @router.post("/", response_model=RefereeResponse)
@@ -64,10 +76,15 @@ def login_referee(dni: str, password: str, db: Session = Depends(get_db)):
 @router.patch("/{referee_id}/password", response_model=RefereeResponse)
 def update_referee_password(referee_id: int, referee_update: RefereeUpdate, db: Session = Depends(get_db)):
     db_referee = db.query(Referee).filter(Referee.id == referee_id).first()
+    
     if not db_referee:
         raise HTTPException(status_code=404, detail="Referee not found")
-    if referee_update.password:
+    
+    if referee_update.password == db_referee.password:
         db_referee.password = referee_update.password
+    else:
+        raise HTTPException(status_code=401, detail="Unauthorized: Password does not match")
+    
     db.commit()
     db.refresh(db_referee)
     return db_referee

@@ -50,8 +50,9 @@ class Referee(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     dni = Column(String, unique=True, nullable=False)
-    client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
     clock_code = Column(String, ForeignKey("clock.code"))
+    password = Column(String, nullable=False)
+    client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
 
     client = relationship("Client", back_populates="referees")
     matches = relationship("Match", back_populates="referee", cascade="all, delete")

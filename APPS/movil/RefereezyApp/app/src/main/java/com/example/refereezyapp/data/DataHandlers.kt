@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.refereezyapp.data.models.Clock
 import com.example.refereezyapp.data.models.Incident
 import com.example.refereezyapp.data.models.Match
-import com.example.refereezyapp.data.models.MatchReport
 import com.example.refereezyapp.data.models.PopulatedIncident
 import com.example.refereezyapp.data.models.PopulatedMatch
 import com.example.refereezyapp.data.models.PopulatedReport
@@ -18,19 +17,26 @@ import com.example.refereezyapp.data.models.RefereeUpdate
 import com.example.refereezyapp.data.static.MatchManager
 import com.example.refereezyapp.data.static.RefereeManager
 import com.example.refereezyapp.data.static.ReportManager
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class ConnectionService : ViewModel() {
 
-    fun testConnection() {
-        viewModelScope.launch {
+    fun testConnection(): Boolean {
+        var res = false
+
+        runBlocking {
             try {
                 val response = RetrofitManager.instance.testConnection()
                 Log.d("Retrofit", "Conexion exitosa: $response")
+                res = true
             } catch (e: Exception) {
                 Log.e("Retrofit", "Error de conexión: ${e.message}")
             }
         }
+
+        return res
     }
 }
 
@@ -38,17 +44,36 @@ class RefereeService : ViewModel() {
     private val _referee = MutableLiveData<Referee>()
     val referee: LiveData<Referee> get() = _referee
 
-    fun login(dni: String, password: String) {
-        viewModelScope.launch {
+    fun login(credentials: RefereeLogin): Referee? {
+
+        var res: Referee? = null
+
+        runBlocking {
             try {
-                val credentials = RefereeLogin(dni, password)
-                val response = RetrofitManager.instance.login(credentials)
-                _referee.value = response
-                RefereeManager.setCurrentReferee(response)
+                val response = async { RetrofitManager.instance.login(credentials) }.await()
+                res = response
             } catch (e: Exception) {
                 Log.e("Retrofit", "Error de conexión: ${e.message}")
             }
         }
+
+        return res
+    }
+
+    fun getReferee(id: Int, password: String): Referee? {
+
+        var res: Referee? = null
+
+        runBlocking {
+            try {
+                val response = async { RetrofitManager.instance.getReferee(id, password) }.await()
+                res = response
+            } catch (e: Exception) {
+                Log.e("Retrofit", "Error de conexión: ${e.message}")
+            }
+        }
+
+        return res
     }
 
     fun changePassword(referee: Referee, newPassword: String) {
@@ -100,10 +125,7 @@ class MatchService : ViewModel() {
     private val _matches = MutableLiveData<List<Match>>()
     val matches: LiveData<List<Match>> get() = _matches
 
-    private val _populatedMatch = MutableLiveData<PopulatedMatch>()
-    val populatedMatch: LiveData<PopulatedMatch> get() = _populatedMatch
-
-    fun getMatches(id: Int) {
+    fun loadMatches(id: Int) {
         viewModelScope.launch {
             try {
                 val response = RetrofitManager.instance.getRefereeMatches(id)
@@ -117,50 +139,83 @@ class MatchService : ViewModel() {
         }
     }
 
-    fun populateMatch(id: Int) {
-        viewModelScope.launch {
-            try {
-                val response = RetrofitManager.instance.getMatch(id)
-                MatchManager.setCurrentMatch(response)
-                _populatedMatch.value = response
-            } catch (e: Exception) {
-                Log.e("Retrofit", "Error de conexión: ${e.message}")
-            }
+    suspend fun populateMatch(id: Int): PopulatedMatch? {
+        try {
+            val response = RetrofitManager.instance.getMatch(id)
+            MatchManager.setCurrentMatch(response)
+            return response
+        } catch (e: Exception) {
+            Log.e("Retrofit", "Error de conexión: ${e.message}")
+            return null
         }
+
     }
 }
 
 object ReportService {
 
-    fun initReport(match: PopulatedMatch) {
+    fun initReport(match: PopulatedMatch): PopulatedReport {
         val report = FirebaseManager.initReport(
             match.raw.id, match.raw.referee_id)
 
         val populated = PopulatedReport(report, match)
+
+        MatchManager.setCurrentMatch(match)
         ReportManager.setCurrentReport(populated)
+
+        return populated
     }
 
-    fun updateReportTimer(reportId: String, newTimer: List<Int>) {
-        FirebaseManager.updateReportTimer(reportId, newTimer)
+    fun updateReportTimer(reportId: String, newTimer: List<Int>): Boolean {
+        var res = false
+        runBlocking {
+            res = async { FirebaseManager.updateReportTimer(reportId, newTimer) }.await()
+        }
+        return res
     }
 
-    fun updateReportDone(reportId: String, done: Boolean = true) {
-        FirebaseManager.updateReportDone(reportId, done)
+    fun updateReportDone(reportId: String, done: Boolean = true): Boolean  {
+        var res = false
+        runBlocking {
+            res = async { FirebaseManager.updateReportDone(reportId, done) }.await()
+        }
+        return res
     }
 
-    fun addIncident(report: PopulatedReport, incident: Incident) {
+    fun addIncident(report: PopulatedReport, incident: Incident): PopulatedIncident? {
 
-        FirebaseManager.addIncident(report.raw.id, incident) { updated ->
+        var res: PopulatedIncident? = null
+
+        runBlocking {
+            val incident = async { FirebaseManager.addIncident(report.raw.id, incident) }.await()
+
+            if (incident == null) {
+                return@runBlocking
+            }
+
             val player = report.match.getPlayerById(incident.player_id)
-            report.incidents.add(PopulatedIncident(updated, player))
+            val populated = PopulatedIncident(incident, player)
+
+            report.incidents.add(populated)
+            res = populated
+
         }
+
+        return res
 
     }
 
-    fun removeIncident(report: PopulatedReport, incident: Incident) {
-        FirebaseManager.removeIncident(report.raw.id, incident.id) {
-            report.incidents.removeIf { it.raw.id == incident.id }
+    fun removeIncident(report: PopulatedReport, incident: Incident): Boolean {
+
+        var success = false
+        runBlocking {
+            success = async { FirebaseManager.removeIncident(report.raw.id, incident.id) }.await()
+            if (success) {
+                report.incidents.removeIf { it.raw.id == incident.id }
+            }
         }
+
+        return success
     }
 
 

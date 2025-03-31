@@ -35,13 +35,5 @@ object MatchManager {
         return matches.find { it.id == matchId }
     }
 
-    fun populateMatch(match: Match): PopulatedMatch {
-        // rellena la lista de jugadores con los de los equipos por cada id
-        val localTeam = TeamManager.getTeamById(match.local_team_id)
-        val visitorTeam = TeamManager.getTeamById(match.visitor_team_id)
-
-        val populated = PopulatedMatch()
-
-    }
 
 }

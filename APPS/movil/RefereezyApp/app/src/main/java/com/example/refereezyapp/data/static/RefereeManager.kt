@@ -10,7 +10,7 @@ object RefereeManager {
         return currentReferee
     }
 
-    fun setCurrentReferee(referee: Referee?) {
+    fun setCurrentReferee(referee: Referee) {
         currentReferee = referee
     }
 
