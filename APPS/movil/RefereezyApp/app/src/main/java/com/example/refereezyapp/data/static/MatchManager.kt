@@ -27,6 +27,10 @@ object MatchManager {
         return matches.toList()
     }
 
+    fun clearMatches() {
+        matches.clear()
+    }
+
     fun removeMatch(matchId: Int) {
         matches.removeAll { it.id == matchId }
     }

@@ -16,9 +16,14 @@ object LocalStorageManager {
         sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
-    fun saveRefereeData(refereeId: String, refereePass: String) {
+    fun saveRefereeReference(refereeId: String, refereePass: String) {
         sharedPreferences.edit(commit = true) { putString(KEY_REFEREE_ID, refereeId) }
         sharedPreferences.edit(commit = true) { putString(KEY_REFEREE_PASS, refereePass) }
+    }
+
+    fun clearRefereeReference() {
+        sharedPreferences.edit(commit = true) { remove(KEY_REFEREE_ID) }
+        sharedPreferences.edit(commit = true) { remove(KEY_REFEREE_PASS) }
     }
 
     fun getRefereeId(): String? {

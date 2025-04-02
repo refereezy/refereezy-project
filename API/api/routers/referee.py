@@ -4,6 +4,7 @@ from models import Referee
 from schemas import RefereeCreate, RefereeResponse, RefereeUpdate, RefereeLogin
 from dependencies import get_db
 from typing import List
+from datetime import datetime, timedelta
 
 router = APIRouter(prefix="/referee", tags=["Referees"])
 
@@ -61,7 +62,10 @@ def delete_referee(referee_id: int, db: Session = Depends(get_db)):
 
 @router.get("/{referee_id}/matches")
 def get_referee_matches(referee_id: int, db: Session = Depends(get_db)):
+    one_month_ago = datetime.now() - timedelta(days=30)
     referee = db.query(Referee).filter(Referee.id == referee_id).first()
+    if referee:
+        referee.matches = [match for match in referee.matches if match.date >= one_month_ago]
     if not referee:
         raise HTTPException(status_code=404, detail="Referee not found")
     return referee.matches

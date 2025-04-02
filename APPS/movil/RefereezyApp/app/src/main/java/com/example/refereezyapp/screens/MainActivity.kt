@@ -6,6 +6,7 @@ import android.os.Handler
 import android.util.Log
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
+import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -134,10 +135,16 @@ class MainActivity : AppCompatActivity() {
 
         updateLoadingStatus("Starting app")
 
-        Handler().postDelayed({
-            val intent = Intent(this@MainActivity, MatchActivity::class.java)
+        // add button to redirect to match activity
+        val button = Button(this)
+        button.text = "Start"
+        button.setOnClickListener {
+            val intent = Intent(this, MatchActivity::class.java)
             startActivity(intent)
-        }, 3000)
+            finish()
+        }
+        statusTextContainer.addView(button)
+
     }
 
 
@@ -154,6 +161,5 @@ class MainActivity : AppCompatActivity() {
         val textView = android.widget.TextView(this@MainActivity)
         textView.text = status
         statusTextContainer.addView(textView)
-
     }
 }

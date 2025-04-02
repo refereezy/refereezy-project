@@ -10,6 +10,7 @@ import com.example.refereezyapp.data.models.Team
 import com.example.refereezyapp.utils.LocalDateTimeAdapter
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -31,19 +32,19 @@ interface RetrofitService {
 
     // test
     @GET("/")
-    suspend fun testConnection(): String
+    suspend fun testConnection(): Response<String>
 
     // to login
     @POST("/referee/login")
-    suspend fun login(@Body credentials: RefereeLogin): Referee
+    suspend fun login(@Body credentials: RefereeLogin): Response<Referee>
 
     // to load referee object again
     @GET("/referee/load/{id}/{password}")
-    suspend fun getReferee(@Path("id") id: Int, @Path("password") password: String): Referee
+    suspend fun getReferee(@Path("id") id: Int, @Path("password") password: String): Response<Referee>
 
     // to update password
     @PATCH("/referee/{id}/password")
-    suspend fun changePassword(@Path("id") id: Int, @Body update: RefereeUpdate): Referee
+    suspend fun changePassword(@Path("id") id: Int, @Body update: RefereeUpdate): Response<Referee>
 
     // to pair a clock
     @GET("/assignTo/{id}")
@@ -55,15 +56,15 @@ interface RetrofitService {
 
     // to get referee matches
     @GET("/referee/{id}/matches")
-    suspend fun getRefereeMatches(@Path("id") id: Int): List<Match>
+    suspend fun getRefereeMatches(@Path("id") id: Int): Response<List<Match>>
 
     // to get matches with their data
     @GET("/matches/populated/{id}")
-    suspend fun getMatch(@Path("id") id: Int): PopulatedMatch
+    suspend fun getMatch(@Path("id") id: Int): Response<PopulatedMatch>
 
     // load info for team
     @GET("/teams/{id}")
-    suspend fun getTeam(@Path("id") id: Int): Team
+    suspend fun getTeam(@Path("id") id: Int): Response<Team>
 
 }
 

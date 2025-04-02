@@ -65,6 +65,7 @@
             android:text="DNI"/>
 
         <LinearLayout
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -74,9 +75,11 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:textSize="15sp"
+                android:enabled="false"
                 android:text="Contraseña"/>
 
             <ImageButton
+                android:id="@+id/editPasswordBtn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_edit"
@@ -86,17 +89,20 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:gravity="center_vertical"
             android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/clockCodeField"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:enabled="false"
                 style="@style/AppTextField"
                 android:textSize="15sp"
                 android:text="Codigo reloj"/>
 
             <ImageButton
+                android:id="@+id/editClockBtn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_edit"

@@ -11,7 +11,7 @@ object ReportManager {
         return currentReport
     }
 
-    fun setCurrentReport(report: PopulatedReport) {
+    fun setCurrentReport(report: PopulatedReport?) {
         currentReport = report
     }
 
