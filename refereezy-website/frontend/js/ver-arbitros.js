@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         refereesContent.innerHTML = `
             <div class="no-referees-message">
                 <p>No hay árbitros registrados</p>
-                <a href="arbitros.html" class="add-referee-link">Agregar arbitro</a>
+                <a href="../pages/arbitros.html" class="add-referee-link">Agregar arbitro</a>
             </div>
         `;
     }

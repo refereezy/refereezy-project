@@ -61,6 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Manejador para ver más equipos
     viewTeamsBtn.addEventListener('click', () => {
-        window.location.href = 'ver-equipos.html';
+        window.location.href = '../pages/ver-equipos.html';
     });
 });
