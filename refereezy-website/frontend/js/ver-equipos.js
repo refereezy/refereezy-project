@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             teamsGrid.innerHTML = `
                 <div class="no-teams-message">
                     <p>No hay equipos registrados</p>
-                    <a href="equipos.html" class="add-team-link">Agregar equipo</a>
+                    <a href="../pages/equipos.html" class="add-team-link">Agregar equipo</a>
                 </div>
             `;
             return;

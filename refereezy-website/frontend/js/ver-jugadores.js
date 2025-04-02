@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playersContent.innerHTML = `
             <div class="no-players-message">
                 <p>No hay jugadores registrados</p>
-                <a href="jugadores.html" class="add-player-link">Agregar jugador</a>
+                <a href="../pages/jugadores.html" class="add-player-link">Agregar jugador</a>
             </div>
         `;
     }

@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         matchesContent.innerHTML = `
             <div class="no-matches-message">
                 <p>No hay partidos registrados</p>
-                <a href="partidos.html" class="add-match-link">Crear partido</a>
+                <a href="../pages/partidos.html" class="add-match-link">Crear partido</a>
             </div>
         `;
     }
