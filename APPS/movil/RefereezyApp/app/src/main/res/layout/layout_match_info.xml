@@ -11,9 +11,10 @@
 
         <!-- Circle 1 -->
         <ImageView
+            android:id="@+id/localLogo"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/circle_shape"
+            android:src="@drawable/circle_shape"
             android:layout_marginHorizontal="20dp" />
 
         <!-- Diagonal Bar -->
@@ -26,10 +27,11 @@
 
         <!-- Circle 2 -->
         <ImageView
+            android:id="@+id/visitorLogo"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginHorizontal="20dp"
-            android:background="@drawable/circle_shape" />
+            android:src="@drawable/circle_shape" />
 
 
 

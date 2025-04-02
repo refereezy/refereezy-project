@@ -14,6 +14,7 @@ import com.example.refereezyapp.data.models.PopulatedReport
 import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.models.RefereeLogin
 import com.example.refereezyapp.data.models.RefereeUpdate
+import com.example.refereezyapp.data.models.Team
 import com.example.refereezyapp.data.static.MatchManager
 import com.example.refereezyapp.data.static.RefereeManager
 import com.example.refereezyapp.data.static.ReportManager
@@ -53,7 +54,7 @@ class RefereeService : ViewModel() {
                 val response = async { RetrofitManager.instance.login(credentials) }.await()
                 res = response
             } catch (e: Exception) {
-                Log.e("Retrofit", "Error de conexión: ${e.message}")
+                Log.e("Retrofit (login)", "Error de conexión: ${e.message}")
             }
         }
 
@@ -69,7 +70,7 @@ class RefereeService : ViewModel() {
                 val response = async { RetrofitManager.instance.getReferee(id, password) }.await()
                 res = response
             } catch (e: Exception) {
-                Log.e("Retrofit", "Error de conexión: ${e.message}")
+                Log.e("Retrofit (getReferee)", "Error de conexión: ${e.message}")
             }
         }
 
@@ -84,7 +85,7 @@ class RefereeService : ViewModel() {
                 _referee.value = response
                 RefereeManager.setCurrentReferee(response)
             } catch (e: Exception) {
-                Log.e("Retrofit", "Error de conexión: ${e.message}")
+                Log.e("Retrofit (changePassword)", "Error de conexión: ${e.message}")
             }
         }
     }
@@ -98,7 +99,7 @@ class RefereeService : ViewModel() {
                 _referee.value = RefereeManager.getCurrentReferee()
 
             } catch (e: Exception) {
-                Log.e("Retrofit", "Error de conexión: ${e.message}")
+                Log.e("Retrofit (pairClock)", "Error de conexión: ${e.message}")
             }
         }
     }
@@ -110,7 +111,7 @@ class RefereeService : ViewModel() {
                 RefereeManager.getCurrentReferee()?.clockCode = null
                 _referee.value = RefereeManager.getCurrentReferee()
             } catch (e: Exception) {
-                Log.e("Retrofit", "Error de conexión: ${e.message}")
+                Log.e("Retrofit (revokeClock)", "Error de conexión: ${e.message}")
             }
         }
     }
@@ -134,21 +135,38 @@ class MatchService : ViewModel() {
                 }
                 _matches.value = response
             } catch (e: Exception) {
-                Log.e("Retrofit", "Error de conexión: ${e.message}")
+                Log.e("Retrofit (loadMatches)", "Error de conexión: ${e.message}")
             }
         }
     }
 
-    suspend fun populateMatch(id: Int): PopulatedMatch? {
-        try {
-            val response = RetrofitManager.instance.getMatch(id)
-            MatchManager.setCurrentMatch(response)
-            return response
-        } catch (e: Exception) {
-            Log.e("Retrofit", "Error de conexión: ${e.message}")
-            return null
+    fun populateMatch(id: Int): PopulatedMatch? {
+        var res: PopulatedMatch? = null
+        runBlocking {
+            try {
+                val response = RetrofitManager.instance.getMatch(id)
+                res = response
+            } catch (e: Exception) {
+                Log.e("Retrofit (populateMatch)", "Error de conexión: ${e.message}")
+
+            }
         }
 
+        return res
+    }
+
+    fun getTeam(id: Int): Team? {
+        var res: Team? = null
+        runBlocking {
+            try {
+                val response = async { RetrofitManager.instance.getTeam(id) }.await()
+                res = response
+            } catch (e: Exception) {
+                Log.e("Retrofit (getTeam)", "Error de conexión: ${e.message}")
+            }
+        }
+
+        return res
     }
 }
 

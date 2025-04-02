@@ -18,7 +18,7 @@ app.include_router(clock.router)
 #GET
 @app.get("/")
 def read_root():
-    return {"API REFEREEZY"}
+    return "API REFEREEZY"
 
 
 @app.exception_handler(IntegrityError)

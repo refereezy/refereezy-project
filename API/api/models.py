@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -41,8 +41,8 @@ class Player(Base):
     team_id = Column(Integer, ForeignKey("team.id"))
     client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
 
-    team = relationship("Team", back_populates="players")
-    client = relationship("Client", back_populates="players")
+    team = relationship("Team", foreign_keys=[team_id])
+    client = relationship("Client", foreign_keys=[client_id])
 
 class Referee(Base):
     __tablename__ = "referee"

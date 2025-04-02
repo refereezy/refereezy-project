@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from models import Referee
-from schemas import RefereeCreate, RefereeResponse, RefereeUpdate
+from schemas import RefereeCreate, RefereeResponse, RefereeUpdate, RefereeLogin
 from dependencies import get_db
 from typing import List
 
@@ -18,7 +18,7 @@ def get_referee(referee_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Referee not found")
     return referee
 
-@router.get("/{referee_id}/{password}", response_model=RefereeResponse)
+@router.get("/load/{referee_id}/{password}", response_model=RefereeResponse)
 def map_referee(referee_id: int, password: str, db: Session = Depends(get_db)):
     referee = db.query(Referee).filter(Referee.id == referee_id).first()
     
@@ -67,8 +67,8 @@ def get_referee_matches(referee_id: int, db: Session = Depends(get_db)):
     return referee.matches
 
 @router.post("/login", response_model=RefereeResponse)
-def login_referee(dni: str, password: str, db: Session = Depends(get_db)):
-    referee = db.query(Referee).filter(Referee.dni == dni, Referee.password == password).first()
+def login_referee(referee: RefereeLogin, db: Session = Depends(get_db)):
+    referee = db.query(Referee).filter(Referee.dni == referee.dni, Referee.password == referee.password).first()
     if not referee:
         raise HTTPException(status_code=401, detail="Invalid DNI or password")
     return referee

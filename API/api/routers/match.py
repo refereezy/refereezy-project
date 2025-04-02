@@ -23,10 +23,14 @@ def get_populated_match(id: int, db: Session = Depends(get_db)):
     visitor: Team = match.visitor_team
     
     # Loads the team objects
-    return {
-        "id": match.id,
-        "referee_id": match.referee_id,
-        "date": match.date,
+    res = {
+        "raw": {
+            "id": match.id,
+            "local_team_id": match.local_team_id,
+            "visitor_team_id": match.visitor_team_id,
+            "date": match.date,
+            "referee_id": match.referee_id
+        },
         "local_team": {
             **local.__dict__,
             "players": [
@@ -48,8 +52,11 @@ def get_populated_match(id: int, db: Session = Depends(get_db)):
                     
                 } for player in visitor.players
             ]
-        }
+        },
+        "referee": match.referee
     }
+    
+    return res
     
 @router.post("/", response_model=MatchResponse)
 def create_match(match: MatchCreate, db: Session = Depends(get_db)):

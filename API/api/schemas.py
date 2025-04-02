@@ -8,7 +8,7 @@ class TeamBase(BaseModel):
     name: str
     primary_color: str
     secondary_color: str
-    logo: str
+    logo_url: str
     client_id: int
 
 class TeamCreate(TeamBase):
@@ -61,6 +61,10 @@ class RefereeBase(BaseModel):
     dni: str
     client_id: int
     clock_code: Optional[str]
+    
+class RefereeLogin(BaseModel):
+    dni: str
+    password: str
 
 class RefereeCreate(RefereeBase):
     password: str

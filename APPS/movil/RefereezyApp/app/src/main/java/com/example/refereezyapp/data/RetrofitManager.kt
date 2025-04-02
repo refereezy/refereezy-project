@@ -6,6 +6,9 @@ import com.example.refereezyapp.data.models.PopulatedMatch
 import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.models.RefereeLogin
 import com.example.refereezyapp.data.models.RefereeUpdate
+import com.example.refereezyapp.data.models.Team
+import com.example.refereezyapp.utils.LocalDateTimeAdapter
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,6 +21,7 @@ import retrofit2.http.Path
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import java.time.LocalDateTime
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
@@ -34,7 +38,7 @@ interface RetrofitService {
     suspend fun login(@Body credentials: RefereeLogin): Referee
 
     // to load referee object again
-    @GET("/referee/{id}/{password}")
+    @GET("/referee/load/{id}/{password}")
     suspend fun getReferee(@Path("id") id: Int, @Path("password") password: String): Referee
 
     // to update password
@@ -57,6 +61,10 @@ interface RetrofitService {
     @GET("/matches/populated/{id}")
     suspend fun getMatch(@Path("id") id: Int): PopulatedMatch
 
+    // load info for team
+    @GET("/teams/{id}")
+    suspend fun getTeam(@Path("id") id: Int): Team
+
 }
 
 object RetrofitManager {
@@ -65,11 +73,15 @@ object RetrofitManager {
     //Desde aqui es posible colocar timeouts a las respuestas o asignar un Token si la app necesita uno
     private val client = getUnsafeOkHttpClient()
 
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+        .create()
+
     //El retrofitService se inicia a partir de la instancia en ViewModels
     val instance: RetrofitService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
             .create(RetrofitService::class.java)

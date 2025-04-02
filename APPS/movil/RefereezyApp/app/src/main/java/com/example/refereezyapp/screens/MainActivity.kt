@@ -2,7 +2,9 @@ package com.example.refereezyapp.screens
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
+import android.os.Handler
+import android.util.Log
+import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +22,9 @@ import com.example.refereezyapp.data.static.RefereeManager
 import com.example.refereezyapp.data.static.ReportManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private val refereeService: RefereeService by viewModels()
     private val connectionService: ConnectionService by viewModels()
 
-    private lateinit var statusText: TextView
+    private lateinit var statusTextContainer: LinearLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,18 +46,41 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        statusText = findViewById(R.id.splash_status_text)
+        statusTextContainer = findViewById(R.id.splash_status_container)
 
-        updateLoadingStatus("Loading local storage")
-
-        LocalStorageManager.initialize(this)
 
         updateLoadingStatus("Testing connection to API")
-        // prueba de conexion
-        if (!connectionService.testConnection()) {
-            goToLogin()
-            return
+
+        // No cargará los datos de la app si no hay conexión a la API
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            var attempts = 0
+            val maxAttempts = 7
+
+          while (!connectionService.testConnection()) {
+              attempts++
+              runOnUiThread { updateLoadingStatus("Connection to API failed ($attempts/$maxAttempts)") }
+
+              if (attempts >= maxAttempts) {
+                  runOnUiThread { updateLoadingStatus("Connection to API failed. Please try again later") }
+                  return@launch
+              }
+
+          }
+
+              runOnUiThread {
+                loadData()
+              }
+
         }
+
+    }
+
+    fun loadData() {
+
+        updateLoadingStatus("Loading local storage")
+        LocalStorageManager.initialize(this)
 
         updateLoadingStatus("Loading referee session")
 
@@ -61,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         val refereePass = LocalStorageManager.getRefereePass()
 
         if (refereeId == null || refereePass == null) {
+            updateLoadingStatus("No referee session found")
             goToLogin()
             return
         }
@@ -71,6 +100,7 @@ class MainActivity : AppCompatActivity() {
 
         // si no hay arbitro entonces redirigir a login
         if (referee == null) {
+            updateLoadingStatus("Couldnt load referee with id: $refereeId")
             goToLogin()
             return
         }
@@ -93,17 +123,23 @@ class MainActivity : AppCompatActivity() {
 
                 val populatedReport = PopulatedReport(report, populatedMatch)
 
+                updateLoadingStatus("Report found with id: ${report.id}")
+
                 MatchManager.setCurrentMatch(populatedMatch)
                 ReportManager.setCurrentReport(populatedReport)
+            } else {
+                updateLoadingStatus("No previous report found")
             }
         }
 
         updateLoadingStatus("Starting app")
 
-        val intent = Intent(this@MainActivity, MatchActivity::class.java)
-        startActivity(intent)
-
+        Handler().postDelayed({
+            val intent = Intent(this@MainActivity, MatchActivity::class.java)
+            startActivity(intent)
+        }, 3000)
     }
+
 
     fun goToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
@@ -112,6 +148,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateLoadingStatus(status: String) {
-        statusText.text = status
+        Log.d("MainActivity", status)
+        // Agrega un texto al contenedor de estados/logs
+
+        val textView = android.widget.TextView(this@MainActivity)
+        textView.text = status
+        statusTextContainer.addView(textView)
+
     }
 }

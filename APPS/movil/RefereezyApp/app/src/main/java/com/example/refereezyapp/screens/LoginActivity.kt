@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
         // Carga con Glide el logo de Refereezy
         Glide.with(this)
-            .load("URL_DEL_LOGO") // TODO: Definir una URL para el logo
+            .load("https://upload.wikimedia.org/wikipedia/commons/5/5a/FIFA_Referee.png") // TODO: Definir una URL para el logo
             .into(findViewById(R.id.logo))
 
         // campos de login
