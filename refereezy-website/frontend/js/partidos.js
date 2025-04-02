@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Manejador para ver partidos
     viewMatchesBtn.addEventListener('click', () => {
-        window.location.href = 'ver-partidos.html';
+        window.location.href = '../pages/ver-partidos.html';
     });
 
     // Cargar equipos al iniciar

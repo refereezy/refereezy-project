@@ -44,6 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Manejador para ver jugadores
     viewPlayersBtn.addEventListener('click', () => {
-        window.location.href = 'ver-jugadores.html';
+        window.location.href = '../pages/ver-jugadores.html';
     });
 });
