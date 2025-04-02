@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MatchActivity">
+    tools:context=".screens.MatchActivity">
 
     <FrameLayout
         android:id="@+id/topMenu"
@@ -54,20 +54,13 @@
 
 
         <LinearLayout
+            android:id="@+id/matchesList"
             android:orientation="vertical"
+            android:paddingHorizontal="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <TextView
-                style="@style/MatchDayTitle"
-                android:text="Hoy"/>
 
-            <include layout="@layout/layout_match_info"/>
-            <include layout="@layout/layout_match_info"/>
-            <TextView
-                style="@style/MatchDayTitle"
-                android:text="Hoy"/>
 
-            <include layout="@layout/layout_match_info"/>
         </LinearLayout>
 
 
