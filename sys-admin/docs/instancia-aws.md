@@ -45,3 +45,37 @@ sudo wg-quick up isard-vpn
 Per no tenir que habilitar la VPN cada vegada que entrem al sistema, afegim una tasca al systemd.
 ```bash
 sudo nano /etc/systemd/system/wireguard-autostart.service
+```
+
+Contingut de l'arxiu del servei:
+```s
+[Unit]
+Description=Arrancar VPN Isard
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/wg-quick up /etc/wireguard/isard-vpn.conf
+ExecStop=/usr/bin/wg-quick down /etc/wireguard/isard-vpn.conf
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+```bash
+sudo systemctl enable wireguard-autostart.service
+```
+
+## Network-manager
+
+```bash
+sudo apt -y install network-manager
+sudo apt -y install traceroute
+```
+
+## Encender API
+
+```bash
+# Nos dirigimos a la carpeta donde se encuentra el fichero docker-compose.yaml
+docker-compose up -d
+

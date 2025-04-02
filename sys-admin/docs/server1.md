@@ -15,11 +15,14 @@ sudo apt install -y postgresql postgresql-contrib libpq-dev
 psql --version
 
 # Ens connectem a la base de dades com a root.
-psql -U postgres
+sudo -u postgres psql 
 
 CREATE DATABASE refereezy;
 CREATE USER admin WITH PASSWORD '******';
 GRANT ALL PRIVILEGES ON DATABASE refereezy TO admin;
+
+# Ens connectem amb l'usuari administrador creat per gestionar la BBDD.
+psql -h localhost -U admin -d refereezy
 
 CREATE USER arbitre with password 'jais-arbitro';
 ```
@@ -30,3 +33,4 @@ CREATE USER arbitre with password 'jais-arbitro';
 sudo apt install apache2
 ```
 
+## 
