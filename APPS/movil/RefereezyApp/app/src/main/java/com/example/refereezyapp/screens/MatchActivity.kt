@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.refereezyapp.R
 import com.example.refereezyapp.data.MatchService
 import com.example.refereezyapp.data.models.Match
+import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.models.Team
 import java.time.format.DateTimeFormatter
 import com.example.refereezyapp.data.static.MatchManager
@@ -30,6 +31,7 @@ class MatchActivity : AppCompatActivity() {
 
     //private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private val matchService: MatchService by viewModels()
+    private lateinit var referee: Referee
 
     var matches: List<Match> = emptyList()
     lateinit var matchesList: LinearLayout
@@ -59,17 +61,8 @@ class MatchActivity : AppCompatActivity() {
 
 
 
-        val referee = RefereeManager.getCurrentReferee()!!
+        referee = RefereeManager.getCurrentReferee()!!
         matchService.loadMatches(referee.id)
-
-
-
-        // then each match in this week are loaded using the layout @layout/layout_match_info
-
-        // then the matches more than a week from now are shown
-
-
-
 
     }
 
@@ -100,11 +93,10 @@ class MatchActivity : AppCompatActivity() {
         // first the past matches are shown using a TextView with the style="@style/MatchDayTitle"
         val pastMatches = groupedMatches["Past"] ?: emptyList()
         if (pastMatches.isNotEmpty()) {
-            val sortedPastMatches = pastMatches.sortedBy { it.date }
 
             addMatchGroupTitle("Past Month")
 
-            sortedPastMatches.forEach { match ->
+            pastMatches.sortedBy { it.date }.forEach { match ->
                 val matchInfo = layoutInflater.inflate(R.layout.layout_match_info, matchesList, false)
 
                 inflateMatchInfo(match, matchInfo, true)
@@ -121,7 +113,7 @@ class MatchActivity : AppCompatActivity() {
             if (matches.isNotEmpty()) {
                 addMatchGroupTitle(date)
 
-                matches.forEach { match ->
+                matches.sortedBy { it.date }.forEach { match ->
                     val matchInfo = layoutInflater.inflate(R.layout.layout_match_info, matchesList, false)
 
                     inflateMatchInfo(match, matchInfo, false)
@@ -129,9 +121,22 @@ class MatchActivity : AppCompatActivity() {
                     matchesList.addView(matchInfo)
                 }
             }
-
         }
 
+        // for future weeks
+        val futureMatches = groupedMatches["Future"] ?: emptyList()
+        if (futureMatches.isNotEmpty()) {
+            addMatchGroupTitle("After 1 week")
+
+            futureMatches.sortedBy { it.date }.forEach {
+                val matchInfo = layoutInflater.inflate(R.layout.layout_match_info, matchesList, false)
+
+                inflateMatchInfo(it, matchInfo, true)
+
+                matchesList.addView(matchInfo)
+            }
+
+        }
 
 
     }
@@ -147,7 +152,9 @@ class MatchActivity : AppCompatActivity() {
         val matchHour = matchTime.format(DateTimeFormatter.ofPattern("HH:mm"))
 
         val timeField = matchInfo.findViewById<TextView>(R.id.matchStartingTime)
-        timeField.text = "$matchDay${if (specific) " $matchHour" else ""}"
+        timeField.text = "${if (specific) "$matchDay\n" else ""}$matchHour"
+
+        if (specific) timeField.textSize = 20f
 
         val localTeam = matchService.getTeam(match.local_team_id)!!
         val visitorTeam = matchService.getTeam(match.visitor_team_id)!!
@@ -169,6 +176,29 @@ class MatchActivity : AppCompatActivity() {
         matchesList.addView(matchesTitle)
     }
 
+    fun declareMatchButtons(match: Match, matchInfo: View) {
+
+        val clockBtn = matchInfo.findViewById<ImageButton>(R.id.clockBtn)
+        val whistleBtn = matchInfo.findViewById<ImageButton>(R.id.whistleBtn)
+
+        clockBtn.setOnClickListener {
+            if (referee.clock_code == null) {
+                val intent = Intent(this, PairingClockActivity::class.java)
+                startActivity(intent)
+                return@setOnClickListener
+            }
+
+            // TODO: initialize report, set current match, and show clock options while using clock
+        }
+
+        whistleBtn.setOnClickListener {
+
+        }
+
+
+    }
+
+
     fun styleDayTitle(title: TextView) {
         title.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
             marginStart = 50.toDp()
@@ -185,7 +215,6 @@ class MatchActivity : AppCompatActivity() {
             .skipMemoryCache(true)
             .into(imageView)
             .onLoadFailed(ResourcesCompat.getDrawable(resources, R.drawable.circle_shape, null))
-
     }
 
     fun Int.toDp(): Int = (this * resources.displayMetrics.density).toInt()

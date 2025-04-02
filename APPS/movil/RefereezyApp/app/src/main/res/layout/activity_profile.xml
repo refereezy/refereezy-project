@@ -33,7 +33,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:gravity="center"
-            android:text="Cuenta"/>
+            android:text="Account"/>
 
         <ImageButton
             android:id="@+id/matchBtn"
@@ -57,12 +57,12 @@
         <TextView
             android:id="@+id/userField"
             style="@style/AppTextField"
-            android:text="Nombre de usuario"/>
+            android:text="Full name"/>
 
         <TextView
             android:id="@+id/dniField"
             style="@style/AppTextField"
-            android:text="DNI"/>
+            android:text="Personal ID"/>
 
         <LinearLayout
             android:gravity="center_vertical"
@@ -74,17 +74,19 @@
                 style="@style/AppTextField"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:inputType="textPassword"
                 android:textSize="15sp"
                 android:enabled="false"
-                android:text="Contraseña"/>
+                android:hint="Password"
+                android:textColorHint="@color/black"/>
 
             <ImageButton
                 android:id="@+id/editPasswordBtn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_edit"
+                android:layout_marginHorizontal="10dp"
                 android:background="@color/transparent"
-                android:layout_marginHorizontal="10dp"/>
+                android:src="@drawable/ic_edit" />
         </LinearLayout>
 
         <LinearLayout
@@ -99,7 +101,7 @@
                 android:enabled="false"
                 style="@style/AppTextField"
                 android:textSize="15sp"
-                android:text="Codigo reloj"/>
+                android:text="Clock code"/>
 
             <ImageButton
                 android:id="@+id/editClockBtn"
@@ -119,7 +121,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="140dp"
-        android:text="Cerrar sesión"
+        android:text="Log out"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

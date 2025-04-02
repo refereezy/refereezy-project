@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -33,28 +34,74 @@ class ProfileActivity : AppCompatActivity() {
         val dniField = findViewById<TextView>(R.id.dniField)
         val passwordField = findViewById<EditText>(R.id.passwordField)
         val clockCodeField = findViewById<EditText>(R.id.clockCodeField)
+
         val logoutBtn = findViewById<Button>(R.id.logoutBtn)
+        val matchBtn = findViewById<ImageButton>(R.id.matchBtn)
+        val editPasswordBtn = findViewById<ImageButton>(R.id.editPasswordBtn)
+        val editClockBtn = findViewById<ImageButton>(R.id.editClockBtn)
 
         // loading data
-
         val referee = RefereeManager.getCurrentReferee()!!
 
         userField.text = referee.name
         dniField.text = referee.dni
-        passwordField.setText(referee.password)
         clockCodeField.setText(referee.clock_code)
 
 
+        // page interactions
         logoutBtn.setOnClickListener {
             refereeService.logout()
             finishAffinity()
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            openActivity(LoginActivity::class.java)
+        }
+
+        matchBtn.setOnClickListener {
+            openActivity(MatchActivity::class.java)
+        }
+
+        editPasswordBtn.setOnClickListener {
+            passwordField.isEnabled = !passwordField.isEnabled
+
+            if (passwordField.isEnabled) {
+                passwordField.requestFocus()
+                passwordField.error = "Can't be empty"
+            }
+            else {
+                passwordField.setText("")
+                passwordField.clearFocus()
+            }
+        }
+
+        passwordField.setOnEditorActionListener { _, _, _ ->
+
+            if (!isValidPassword(passwordField.text.toString())) {
+                passwordField.error = "At least 8 character"
+                passwordField.requestFocus()
+                return@setOnEditorActionListener false
+            }
+
+            refereeService.changePassword(referee, passwordField.text.toString())
+
+            passwordField.isEnabled = false
+            passwordField.setText("")
+            passwordField.clearFocus()
+
+            return@setOnEditorActionListener true
         }
 
 
 
 
 
+
+    }
+
+    fun isValidPassword(password: String): Boolean {
+        return password.isNotBlank() && password.length >= 8
+    }
+
+    fun openActivity(activity: Class<*>) {
+        val intent = Intent(this, activity)
+        startActivity(intent)
     }
 }

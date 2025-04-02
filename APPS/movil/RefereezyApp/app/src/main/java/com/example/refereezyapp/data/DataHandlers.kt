@@ -104,6 +104,7 @@ class RefereeService : ViewModel() {
                 val value = response.body()
                 _referee.value = value
                 RefereeManager.setCurrentReferee(value!!)
+                LocalStorageManager.saveRefereeReference(value.id.toString(), value.password)
             } catch (e: Exception) {
                 Log.e("Retrofit (changePassword)", "Error de conexión: ${e.message}")
             }
