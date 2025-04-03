@@ -1,6 +1,7 @@
 FROM python:3.10-slim
 
 # Exposa el port per HTTPS
+EXPOSE 443
 EXPOSE 80
 
 # Instala las dependencias del sistema necesarias para MariaDB
@@ -17,9 +18,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia tota l'aplicació FastAPI dins del contenidor
 COPY api /app/api
-COPY api/ssl /app/api/ssl
+#COPY api/ssl /app/api/ssl
 
-RUN chmod 600 /app/api/ssl/key.pem /app/api/ssl/cert.pem
+#RUN chmod 600 /app/api/ssl/key.pem /app/api/ssl/cert.pem
 
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
