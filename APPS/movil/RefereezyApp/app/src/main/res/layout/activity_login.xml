@@ -36,6 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="300dp"
         android:layout_height="50dp"
+        android:inputType="textPassword"
         android:layout_marginTop="20dp"
         android:hint="Password"/>
 

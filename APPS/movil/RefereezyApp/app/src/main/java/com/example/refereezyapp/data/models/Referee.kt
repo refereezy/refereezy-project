@@ -5,7 +5,7 @@ data class Referee (
     val name: String,
     val dni: String,
     var password: String,
-    var clockCode: String?
+    var clock_code: String?
 )
 
 data class RefereeLogin (

@@ -33,7 +33,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:gravity="center"
-            android:text="Partidos"/>
+            android:text="Matches"/>
 
         <ImageButton
             android:id="@+id/profileBtn"
