@@ -115,23 +115,20 @@ class MainActivity : AppCompatActivity() {
 
         updateLoadingStatus("Loading previous report")
         // buscar si hay un reporte pendiente
-        runBlocking {
-            val report = async { FirebaseManager.getReport(referee.id) }.await()
-            if (report != null) {
-                val populatedMatch = async { matchService.populateMatch(report.match_id!!) }.await()
+        val report = FirebaseManager.getReport(referee.id)
+        if (report != null) {
+            val populatedMatch = matchService.populateMatch(report.match_id!!)
 
-                if (populatedMatch == null) return@runBlocking
+            val populatedReport = PopulatedReport(report, populatedMatch!!)
 
-                val populatedReport = PopulatedReport(report, populatedMatch)
+            updateLoadingStatus("Report found with id: ${report.id}")
 
-                updateLoadingStatus("Report found with id: ${report.id}")
-
-                MatchManager.setCurrentMatch(populatedMatch)
-                ReportManager.setCurrentReport(populatedReport)
-            } else {
-                updateLoadingStatus("No previous report found")
-            }
+            MatchManager.setCurrentMatch(populatedMatch)
+            ReportManager.setCurrentReport(populatedReport)
+        } else {
+            updateLoadingStatus("No previous report found")
         }
+
 
         updateLoadingStatus("Starting app")
 

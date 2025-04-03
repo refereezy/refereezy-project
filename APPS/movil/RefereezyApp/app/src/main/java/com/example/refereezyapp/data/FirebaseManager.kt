@@ -5,7 +5,10 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.example.refereezyapp.data.models.MatchReport
 import com.example.refereezyapp.data.models.Incident
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
 object FirebaseManager {
@@ -16,27 +19,34 @@ object FirebaseManager {
     private val db by lazy { Firebase.firestore }
 
 
-    suspend fun getReport(refereeId: Int): MatchReport? {
+    fun getReport(refereeId: Int): MatchReport? {
 
         val reportQuery = db.collection(REPORT_COLLECTION)
             .whereEqualTo("referee_id", refereeId) // actas de arbitro
             .whereEqualTo("done", false) // solo actas sin acabar
             .limit(1) // to not saturate the result
-            .get().await()
 
-        if (reportQuery.isEmpty) { // no results
+        var result: QuerySnapshot? = null
+
+        runBlocking {
+            result = reportQuery.get().await()
+        }
+
+        if (result?.isEmpty == true) { // no results
             Log.e("Firebase", "Report not found")
             return null
         }
 
-        val reportRef = reportQuery.documents[0] // first
+        val reportRef = result!!.documents[0] // first
 
         // maps the data to Report object, and adds the firebase_id to it
         val matchReport = reportRef.toObject(MatchReport::class.java)!!.copy(id = reportRef.id)
 
         // get incidents
-        val incidents = getIncidents(reportRef)
-        matchReport.incidents = incidents // sets the incidents
+        runBlocking {
+            val incidents = async { getIncidents(reportRef) }.await()
+            matchReport.incidents = incidents // sets the incidents
+        }
 
         return matchReport
     }

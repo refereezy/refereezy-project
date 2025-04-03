@@ -2,7 +2,7 @@ package com.example.refereezyapp.screens
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -17,20 +17,27 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.refereezyapp.R
+import com.example.refereezyapp.data.FirebaseManager
 import com.example.refereezyapp.data.MatchService
+import com.example.refereezyapp.data.ReportService
 import com.example.refereezyapp.data.models.Match
+import com.example.refereezyapp.data.models.PopulatedReport
 import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.models.Team
 import java.time.format.DateTimeFormatter
 import com.example.refereezyapp.data.static.MatchManager
 import com.example.refereezyapp.data.static.RefereeManager
 import kotlin.collections.forEach
+import com.example.refereezyapp.data.static.ReportManager
+import com.example.refereezyapp.utils.ConfirmationDialog
+import com.example.refereezyapp.utils.PopUp
 import kotlin.collections.isNotEmpty
 
 class MatchActivity : AppCompatActivity() {
 
     //private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private val matchService: MatchService by viewModels()
+    private val reportService = ReportService
     private lateinit var referee: Referee
 
     var matches: List<Match> = emptyList()
@@ -56,9 +63,9 @@ class MatchActivity : AppCompatActivity() {
         }
 
         matchService.matches.observe(this) {
+            PopUp.show(this, "Matches found: ${it.size}", PopUp.Type.OK)
             drawMatches()
         }
-
 
 
         referee = RefereeManager.getCurrentReferee()!!
@@ -90,20 +97,6 @@ class MatchActivity : AppCompatActivity() {
         // re-loading data to the linear layout
         matchesList.removeAllViews()
 
-        // first the past matches are shown using a TextView with the style="@style/MatchDayTitle"
-        val pastMatches = groupedMatches["Past"] ?: emptyList()
-        if (pastMatches.isNotEmpty()) {
-
-            addMatchGroupTitle("Past Month")
-
-            pastMatches.sortedBy { it.date }.forEach { match ->
-                val matchInfo = layoutInflater.inflate(R.layout.layout_match_info, matchesList, false)
-
-                inflateMatchInfo(match, matchInfo, true)
-
-                matchesList.addView(matchInfo)
-            }
-        }
 
         // this week matches and matches with dates
         val specficDays = groupedMatches.filterKeys { it != "Past" && it != "Future" }
@@ -126,7 +119,7 @@ class MatchActivity : AppCompatActivity() {
         // for future weeks
         val futureMatches = groupedMatches["Future"] ?: emptyList()
         if (futureMatches.isNotEmpty()) {
-            addMatchGroupTitle("After 1 week")
+            addMatchGroupTitle("Next matches")
 
             futureMatches.sortedBy { it.date }.forEach {
                 val matchInfo = layoutInflater.inflate(R.layout.layout_match_info, matchesList, false)
@@ -140,8 +133,6 @@ class MatchActivity : AppCompatActivity() {
 
 
     }
-
-
 
 
 
@@ -165,6 +156,7 @@ class MatchActivity : AppCompatActivity() {
         loadTeamLogo(localTeam, localLogo)
         loadTeamLogo(visitorTeam, visitorLogo)
 
+        declareMatchButtons(match, matchInfo)
     }
 
     fun addMatchGroupTitle(title: String) {
@@ -178,8 +170,8 @@ class MatchActivity : AppCompatActivity() {
 
     fun declareMatchButtons(match: Match, matchInfo: View) {
 
-        val clockBtn = matchInfo.findViewById<ImageButton>(R.id.clockBtn)
-        val whistleBtn = matchInfo.findViewById<ImageButton>(R.id.whistleBtn)
+        val clockBtn = matchInfo.findViewById<View>(R.id.clockBtn)
+        val whistleBtn = matchInfo.findViewById<View>(R.id.whistleBtn)
 
         clockBtn.setOnClickListener {
             if (referee.clock_code == null) {
@@ -188,16 +180,64 @@ class MatchActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // TODO: initialize report, set current match, and show clock options while using clock
+            prepareReport(match)
+
         }
 
         whistleBtn.setOnClickListener {
-
+            prepareReport(match)
         }
 
 
     }
 
+    fun prepareReport(match: Match) {
+        // Check if there is a current report for the match locally
+        var report = ReportManager.getCurrentReport()
+
+        if (report == null || report.raw.done) {
+            val resultReport = FirebaseManager.getReport(referee.id)
+            // if there is a report ...
+            if (resultReport != null) {
+                // populates the match of the recent loaded report
+                val populatedMatch = matchService.populateMatch(resultReport.match_id!!)
+                report = PopulatedReport(resultReport, populatedMatch!!)
+            }
+            // no pending report was found
+            else {
+                val populatedMatch = matchService.populateMatch(match.id)
+                report = reportService.initReport(populatedMatch!!)
+            }
+        }
+
+        try {
+
+            if (report.raw.match_id != match.id) {
+                ConfirmationDialog.showReportDialog(
+                    this,
+                    "Another report already started",
+                    "You have to finish the current report before starting a new one",
+                    onConfirm = {
+                        val intent = Intent(this, ActionsActivity::class.java)
+                        startActivity(intent)
+                    },
+                    onCancel = {
+                        // do nothing
+                    }
+
+                )
+            }
+
+        }
+        catch (e: Exception) {
+            Log.e("MatchActivity", "Error preparing report: ${e.message}")
+            PopUp.show(this, "Error preparing report", PopUp.Type.ERROR)
+        }
+
+
+
+
+    }
 
     fun styleDayTitle(title: TextView) {
         title.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {

@@ -161,7 +161,6 @@ class MatchService : ViewModel() {
 
                 val matches = response.body()!!
                 MatchManager.clearMatches()
-                println("clear de matches ${MatchManager.getMatches().size}")
 
                 for (match in matches) {
                     MatchManager.addMatch(match)
@@ -219,9 +218,6 @@ object ReportService {
             match.raw.id, match.raw.referee_id)
 
         val populated = PopulatedReport(report, match)
-
-        MatchManager.setCurrentMatch(match)
-        ReportManager.setCurrentReport(populated)
 
         return populated
     }

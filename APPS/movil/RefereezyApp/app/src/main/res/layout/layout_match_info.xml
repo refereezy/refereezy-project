@@ -56,7 +56,6 @@
 
         <!-- Smartwatch Icon -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/clockBtn"
             app:layout_constraintTop_toBottomOf="@id/matchStartingTime"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="45dp"
@@ -65,6 +64,7 @@
             android:backgroundTint="@color/black">
 
             <ImageView
+                android:id="@+id/clockBtn"
                 android:padding="2dp"
                 android:background="#0D000000"
                 android:layout_width="wrap_content"

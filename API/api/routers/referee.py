@@ -65,7 +65,8 @@ def get_referee_matches(referee_id: int, db: Session = Depends(get_db)):
     one_month_ago = datetime.now() - timedelta(days=30)
     referee = db.query(Referee).filter(Referee.id == referee_id).first()
     if referee:
-        referee.matches = [match for match in referee.matches if match.date >= one_month_ago]
+        today = datetime.now().date()
+        referee.matches = [match for match in referee.matches if match.date.date() >= today]
     if not referee:
         raise HTTPException(status_code=404, detail="Referee not found")
     return referee.matches
