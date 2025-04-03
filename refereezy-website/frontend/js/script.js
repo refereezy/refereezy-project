@@ -11,17 +11,18 @@ document.addEventListener("DOMContentLoaded", () => {
     function showSection(sectionId) {
       sections.forEach((id) => {
         const section = document.getElementById(id)
+        console.log(`${id} ${sectionId}`)
         section.classList.toggle("hidden", id !== sectionId)
       })
     }
   
-    navLinks.forEach((link) => {
+    /* navLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
         e.preventDefault()
-        const sectionId = e.target.getAttribute("href").substring(1)
+        const sectionId = e.target.getAttribute("href")
         showSection(sectionId)
       })
-    })
+    }) */
   
     actionButtons.forEach((button) => {
       button.addEventListener("click", () => {

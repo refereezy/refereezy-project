@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
+    const API_URL = "http://refereezy.smcardona.tech:8000";
+
+    
+    
     // Referencias a elementos del DOM
     const refereeNameInput = document.querySelector('.referee-name-input');
     const matchSelect = document.getElementById('matchSelect');
