@@ -20,6 +20,10 @@ class ScoreFragment (
     private val visitorTeam: Team
 ) : Fragment() {
 
+    private lateinit var scoreView: TextView
+    private lateinit var localTeamLogo: ImageView
+    private lateinit var visitorTeamLogo: ImageView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +43,9 @@ class ScoreFragment (
         super.onViewCreated(view, savedInstanceState)
         // cargar datos
 
-        val scoreView = view.findViewById<TextView>(R.id.socreboardtxt)
-        val localTeamLogo = view.findViewById<ImageView>(R.id.localTeamLogo)
-        val visitorTeamLogo = view.findViewById<ImageView>(R.id.visitorTeamLogo)
+        scoreView = view.findViewById(R.id.socreboardtxt)
+        localTeamLogo = view.findViewById(R.id.localTeamLogo)
+        visitorTeamLogo = view.findViewById(R.id.visitorTeamLogo)
 
         scoreView.text = "$localScore - $visitorScore"
 
