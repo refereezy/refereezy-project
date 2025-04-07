@@ -14,14 +14,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.refereezyapp.R
 import com.example.refereezyapp.data.FirebaseManager
-import com.example.refereezyapp.data.MatchService
-import com.example.refereezyapp.data.ReportService
+import com.example.refereezyapp.data.handlers.MatchService
+import com.example.refereezyapp.data.handlers.MatchViewModel
+import com.example.refereezyapp.data.handlers.ReportService
 import com.example.refereezyapp.data.models.Match
-import com.example.refereezyapp.data.models.PopulatedReport
+import java.time.format.TextStyle
+import com.example.refereezyapp.data.models.PopulatedMatch
 import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.models.Team
 import java.time.format.DateTimeFormatter
@@ -31,17 +34,20 @@ import kotlin.collections.forEach
 import com.example.refereezyapp.data.static.ReportManager
 import com.example.refereezyapp.utils.ConfirmationDialog
 import com.example.refereezyapp.utils.PopUp
+import kotlinx.coroutines.runBlocking
 import kotlin.collections.isNotEmpty
 
 class MatchActivity : AppCompatActivity() {
 
     //private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private val matchService: MatchService by viewModels()
+    private val matchService: MatchViewModel by viewModels()
     private val reportService = ReportService
     private lateinit var referee: Referee
 
     var matches: List<Match> = emptyList()
-    lateinit var matchesList: LinearLayout
+    lateinit var weekMatches: LinearLayout
+    lateinit var laterMatches: LinearLayout
+    lateinit var laterMatchesTitle: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +60,9 @@ class MatchActivity : AppCompatActivity() {
         }
 
         // page interactions
-        matchesList = findViewById(R.id.matchesList)
+        weekMatches = findViewById(R.id.weekMatches)
+        laterMatches = findViewById(R.id.laterMatches)
+        laterMatchesTitle = findViewById(R.id.laterMatchesTitle)
 
         val profileBtn = findViewById<ImageButton>(R.id.profileBtn)
         profileBtn.setOnClickListener {
@@ -62,15 +70,25 @@ class MatchActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // when matches are loaded
         matchService.matches.observe(this) {
             PopUp.show(this, "Matches found: ${it.size}", PopUp.Type.OK)
             drawMatches()
         }
 
 
-        referee = RefereeManager.getCurrentReferee()!!
-        matchService.loadMatches(referee.id)
+        matchService.populatedMatch.observe(this) {
+            val matchInfo = layoutInflater.inflate(R.layout.layout_match_info, laterMatches, false)
+            inflateMatchInfo(it, matchInfo)
+        }
 
+
+        referee = RefereeManager.getCurrentReferee()!!
+    }
+
+    override fun onResume() {
+        super.onResume()
+        matchService.loadMatches(referee.id)
     }
 
 
@@ -78,85 +96,63 @@ class MatchActivity : AppCompatActivity() {
 
         matches = MatchManager.getMatches()
 
-        // Group the matches by date if past, this week, future
-        val groupedMatches: Map<String, List<Match>> = matches.groupBy { match ->
-            val matchDate = match.date.toLocalDate()
-            val today = java.time.LocalDate.now()
-            val oneWeekFromToday = today.plusWeeks(1)
 
-            when {
-                matchDate.isBefore(today) -> "Past"
-                matchDate.isAfter(oneWeekFromToday) -> "Future" //matches more than a week
-                else -> {
-                    val formatter = DateTimeFormatter.ofPattern("dd/MM")
-                    matchDate.format(formatter)
-                }
-            }
+        // limpiando la pantalla
+
+        laterMatches.removeAllViews()
+        laterMatchesTitle.visibility = View.GONE
+        weekMatches.removeAllViews()
+
+        matches.forEach {
+            // primero se debe cargar el partido por completo (para obtener las imagenes de los equipos)
+            matchService.populateMatch(it.id)
         }
 
-        // re-loading data to the linear layout
-        matchesList.removeAllViews()
-
-
-        // this week matches and matches with dates
-        val specficDays = groupedMatches.filterKeys { it != "Past" && it != "Future" }
-
-        specficDays.forEach { (date, matches) ->
-
-            if (matches.isNotEmpty()) {
-                addMatchGroupTitle(date)
-
-                matches.sortedBy { it.date }.forEach { match ->
-                    val matchInfo = layoutInflater.inflate(R.layout.layout_match_info, matchesList, false)
-
-                    inflateMatchInfo(match, matchInfo, false)
-
-                    matchesList.addView(matchInfo)
-                }
-            }
-        }
-
-        // for future weeks
-        val futureMatches = groupedMatches["Future"] ?: emptyList()
-        if (futureMatches.isNotEmpty()) {
-            addMatchGroupTitle("Next matches")
-
-            futureMatches.sortedBy { it.date }.forEach {
-                val matchInfo = layoutInflater.inflate(R.layout.layout_match_info, matchesList, false)
-
-                inflateMatchInfo(it, matchInfo, true)
-
-                matchesList.addView(matchInfo)
-            }
-
-        }
 
 
     }
 
 
 
-    fun inflateMatchInfo(match: Match, matchInfo: View, specific: Boolean) {
-        val matchDate = match.date.toLocalDate()
-        val matchTime = match.date.toLocalTime()
+    fun inflateMatchInfo(match: PopulatedMatch, matchInfo: View) {
+        val matchDate = match.raw.date.toLocalDate()
+        val matchTime = match.raw.date.toLocalTime()
         val matchDay = matchDate.format(DateTimeFormatter.ofPattern("dd/MM"))
         val matchHour = matchTime.format(DateTimeFormatter.ofPattern("HH:mm"))
+        val today = java.time.LocalDate.now()
+        val oneWeekFromToday = today.plusWeeks(1)
+        val specific = matchDate.isAfter(oneWeekFromToday)
 
         val timeField = matchInfo.findViewById<TextView>(R.id.matchStartingTime)
-        timeField.text = "${if (specific) "$matchDay\n" else ""}$matchHour"
-
-        if (specific) timeField.textSize = 20f
-
-        val localTeam = matchService.getTeam(match.local_team_id)!!
-        val visitorTeam = matchService.getTeam(match.visitor_team_id)!!
-
         val localLogo = matchInfo.findViewById<ImageView>(R.id.localLogo)
         val visitorLogo = matchInfo.findViewById<ImageView>(R.id.visitorLogo)
+
+        val localTeam = match.local_team
+        val visitorTeam = match.visitor_team
 
         loadTeamLogo(localTeam, localLogo)
         loadTeamLogo(visitorTeam, visitorLogo)
 
-        declareMatchButtons(match, matchInfo)
+        declareMatchButtons(match.raw, matchInfo)
+
+        if (specific) {
+            if(!laterMatchesTitle.isVisible) laterMatchesTitle.visibility = View.VISIBLE
+            timeField.text = "$matchDay\n$matchHour"
+            timeField.textSize = 20f
+
+            laterMatches.addView(matchInfo)
+        } else {
+            timeField.text = matchHour
+
+            val dayName = matchDate.dayOfWeek.getDisplayName(
+                TextStyle.FULL, java.util.Locale.getDefault())
+
+            val matchDayText = matchInfo.findViewById<TextView>(R.id.matchDayText)
+            matchDayText.text = "$dayName $matchDay"
+            matchDayText.visibility = View.VISIBLE
+
+            weekMatches.addView(matchInfo)
+        }
     }
 
     fun addMatchGroupTitle(title: String) {
@@ -165,7 +161,7 @@ class MatchActivity : AppCompatActivity() {
         matchesTitle.id = View.generateViewId()
         matchesTitle.text = title
         styleDayTitle(matchesTitle)
-        matchesList.addView(matchesTitle)
+        laterMatches.addView(matchesTitle)
     }
 
     fun declareMatchButtons(match: Match, matchInfo: View) {
@@ -196,23 +192,21 @@ class MatchActivity : AppCompatActivity() {
         var report = ReportManager.getCurrentReport()
 
         if (report == null || report.raw.done) {
-            val resultReport = FirebaseManager.getReport(referee.id)
-            // if there is a report ...
-            if (resultReport != null) {
-                // populates the match of the recent loaded report
-                val populatedMatch = matchService.populateMatch(resultReport.match_id!!)
-                report = PopulatedReport(resultReport, populatedMatch!!)
+            runBlocking {
+                report = FirebaseManager.getReport(referee.id)
             }
-            // no pending report was found
-            else {
-                val populatedMatch = matchService.populateMatch(match.id)
+        }
+
+        if (report == null || report.raw.done) {
+            runBlocking {
+                val populatedMatch = MatchService.getMatch(match.id)
                 report = reportService.initReport(populatedMatch!!)
             }
         }
 
         try {
 
-            if (report.raw.match_id != match.id) {
+            if (report!!.raw.match_id != match.id) {
                 ConfirmationDialog.showReportDialog(
                     this,
                     "Another report already started",
@@ -227,15 +221,16 @@ class MatchActivity : AppCompatActivity() {
 
                 )
             }
+            else {
+                val intent = Intent(this, ActionsActivity::class.java)
+                startActivity(intent)
+            }
 
         }
         catch (e: Exception) {
             Log.e("MatchActivity", "Error preparing report: ${e.message}")
             PopUp.show(this, "Error preparing report", PopUp.Type.ERROR)
         }
-
-
-
 
     }
 

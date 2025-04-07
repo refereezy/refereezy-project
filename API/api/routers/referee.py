@@ -71,7 +71,7 @@ def get_referee_matches(referee_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Referee not found")
     return referee.matches
 
-@router.post("/login", response_model=RefereeResponse)
+@router.post("/login", response_model=RefereeLoad)
 def login_referee(referee: RefereeLogin, db: Session = Depends(get_db)):
     referee = db.query(Referee).filter(Referee.dni == referee.dni, Referee.password == referee.password).first()
     if not referee:

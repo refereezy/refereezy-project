@@ -12,13 +12,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.refereezyapp.R
 import com.example.refereezyapp.data.LocalStorageManager
-import com.example.refereezyapp.data.RefereeService
+import com.example.refereezyapp.data.handlers.RefereeViewModel
 import com.example.refereezyapp.data.models.RefereeLogin
 import com.example.refereezyapp.data.static.RefereeManager
 
 class LoginActivity : AppCompatActivity() {
 
-    private val refereeService: RefereeService by viewModels()
+    private val refereeService: RefereeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +45,25 @@ class LoginActivity : AppCompatActivity() {
             login(emailField, passwordField)
         }
 
+        // resultado de login:
+        refereeService.referee.observe(this) { referee ->
+            println(referee)
+            if (referee == null) {
+                emailField.error = "Invalid email"
+                passwordField.error = "Invalid password"
+                return@observe
+            }
+
+            // guarda el referee
+            RefereeManager.setCurrentReferee(referee)
+            // guarda el referee en localStorage
+            LocalStorageManager.saveRefereeReference(referee.id.toString(), referee.password)
+            // redirige a la pantalla de matches
+            val intent = Intent(this, MatchActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
 
     }
 
@@ -53,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
         val password = passwordField.text.toString()
 
         // requiere los campos
-        if (email.isNullOrBlank() || password.isNullOrBlank()) {
+        if (email.isBlank() || password.isBlank()) {
             emailField.error = "Email is required"
             passwordField.error = "Password is required"
             return
@@ -61,23 +80,7 @@ class LoginActivity : AppCompatActivity() {
 
         // valida credenciales
         val credentials = RefereeLogin(email, password)
-        val referee = refereeService.login(credentials)
-
-        if (referee == null) {
-            emailField.error = "Invalid email"
-            passwordField.error = "Invalid password"
-            return
-        }
-        // guarda el referee
-        RefereeManager.setCurrentReferee(referee)
-
-        // guarda el referee en localStorage
-        LocalStorageManager.saveRefereeReference(referee.id.toString(), password)
-
-        // redirige a la pantalla de matches
-        val intent = Intent(this, MatchActivity::class.java)
-        startActivity(intent)
-        finish()
+        refereeService.login(credentials)
 
     }
 }
