@@ -29,6 +29,15 @@ data class PopulatedMatch (
         return player.team == visitor_team
     }
 
+    fun getTeamById(id: Int?): Team? {
+        if (id == local_team.id) {
+            return local_team
+        } else if (id == visitor_team.id) {
+            return visitor_team
+        }
+        return null
+    }
+
     fun getPlayerById(id: Int?): Player? {
         for (player in local_team.players.plus(visitor_team.players)) {
             if (player.id == id) {

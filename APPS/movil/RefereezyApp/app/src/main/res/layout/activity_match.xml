@@ -54,11 +54,31 @@
 
 
         <LinearLayout
-            android:id="@+id/matchesList"
             android:orientation="vertical"
             android:paddingHorizontal="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/weekMatches"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/laterMatchesTitle"
+                android:layout_width="match_parent"
+                style="@style/MatchDayTitle"
+                android:visibility="gone"
+                android:text="Future matches"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/laterMatches"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
 
 
         </LinearLayout>

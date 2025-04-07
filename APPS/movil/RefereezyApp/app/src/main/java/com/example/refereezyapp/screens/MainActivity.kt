@@ -2,36 +2,35 @@ package com.example.refereezyapp.screens
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import android.widget.Button
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.example.refereezyapp.R
-import com.example.refereezyapp.data.ConnectionService
 import com.example.refereezyapp.data.FirebaseManager
 import com.example.refereezyapp.data.LocalStorageManager
-import com.example.refereezyapp.data.MatchService
-import com.example.refereezyapp.data.RefereeService
+import com.example.refereezyapp.data.handlers.ConnectionViewModel
+import com.example.refereezyapp.data.handlers.MatchViewModel
+import com.example.refereezyapp.data.handlers.RefereeViewModel
 import com.example.refereezyapp.data.models.PopulatedReport
+import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.static.MatchManager
 import com.example.refereezyapp.data.static.RefereeManager
 import com.example.refereezyapp.data.static.ReportManager
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
-    private val matchService: MatchService by viewModels()
-    private val refereeService: RefereeService by viewModels()
-    private val connectionService: ConnectionService by viewModels()
+    private val matchViewModel: MatchViewModel by viewModels()
+    private val refereeViewModel: RefereeViewModel by viewModels()
+    private val apiConnection: ConnectionViewModel by viewModels()
 
     private lateinit var statusTextContainer: LinearLayout
 
@@ -46,35 +45,41 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-
+        // components
         statusTextContainer = findViewById(R.id.splash_status_container)
+        val loadingGif = findViewById<ImageView>(R.id.splash_logo)
+
+        Glide.with(this)
+            .load(R.raw.loading_football)
+            .into(loadingGif)
 
 
         updateLoadingStatus("Testing connection to API")
 
+        var attempts = 0
+        val maxAttempts = 7
+
         // No cargará los datos de la app si no hay conexión a la API
+        apiConnection.connectionResult.observe(this) { connected ->
 
-        CoroutineScope(Dispatchers.IO).launch {
+            if (!connected) {
+                attempts++
+                updateLoadingStatus("Connection to API failed ($attempts/$maxAttempts)")
 
-            var attempts = 0
-            val maxAttempts = 7
+                if (attempts >= maxAttempts) {
+                    updateLoadingStatus("Connection to API failed. Please try again later")
+                    return@observe
+                }
 
-          while (!connectionService.testConnection()) {
-              attempts++
-              runOnUiThread { updateLoadingStatus("Connection to API failed ($attempts/$maxAttempts)") }
+                apiConnection.testConnection()
+                return@observe
+            }
 
-              if (attempts >= maxAttempts) {
-                  runOnUiThread { updateLoadingStatus("Connection to API failed. Please try again later") }
-                  return@launch
-              }
-
-          }
-
-              runOnUiThread {
-                loadData()
-              }
-
+            updateLoadingStatus("Connection to API successful")
+            loadData()
         }
+
+        apiConnection.testConnection()
 
     }
 
@@ -84,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         LocalStorageManager.initialize(this)
 
         updateLoadingStatus("Loading referee session")
-
+    
         // cargar arbitro de localStorage si hay.
         val refereeId = LocalStorageManager.getRefereeId()
         val refereePass = LocalStorageManager.getRefereePass()
@@ -97,53 +102,55 @@ class MainActivity : AppCompatActivity() {
 
         updateLoadingStatus("Fetching referee data")
 
-        val referee = refereeService.getReferee(refereeId.toInt(), refereePass)
 
-        // si no hay arbitro entonces redirigir a login
-        if (referee == null) {
-            updateLoadingStatus("Couldnt load referee with id: $refereeId")
-            goToLogin()
-            return
+        refereeViewModel.getReferee(refereeId.toInt(), refereePass)
+
+        refereeViewModel.referee.observe(this) { referee ->
+            if (referee == null) {
+                updateLoadingStatus("Couldnt load referee with id: $refereeId")
+                goToLogin()
+                return@observe
+            }
+            RefereeManager.setCurrentReferee(referee)
+
+            updateLoadingStatus("Loading matches")
+            // si hay arbitro entonces cargar sus matches
+            matchViewModel.loadMatches(referee.id)
+
+            updateLoadingStatus("Checking for previous report")
+            loadReport(referee)
         }
 
-        RefereeManager.setCurrentReferee(referee)
 
-        updateLoadingStatus("Loading matches")
-        // si hay arbitro entonces cargar sus matches
-        matchService.loadMatches(referee.id)
+    }
 
-
+    fun loadReport(referee: Referee) {
         updateLoadingStatus("Loading previous report")
         // buscar si hay un reporte pendiente
-        runBlocking {
-            val report = async { FirebaseManager.getReport(referee.id) }.await()
+        FirebaseManager.getReport(referee.id) { report ->
             if (report != null) {
-                val populatedMatch = async { matchService.populateMatch(report.match_id!!) }.await()
+                updateLoadingStatus("Report found with id: ${report.raw.id}")
 
-                if (populatedMatch == null) return@runBlocking
+                ReportManager.setCurrentReport(report)
+                MatchManager.setCurrentMatch(report.match)
 
-                val populatedReport = PopulatedReport(report, populatedMatch)
-
-                updateLoadingStatus("Report found with id: ${report.id}")
-
-                MatchManager.setCurrentMatch(populatedMatch)
-                ReportManager.setCurrentReport(populatedReport)
             } else {
                 updateLoadingStatus("No previous report found")
             }
+
+            updateLoadingStatus("Starting app")
+
+            // add button to redirect to match activity
+            val button = Button(this)
+            button.text = "Start"
+            button.setOnClickListener {
+                val intent = Intent(this, MatchActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            statusTextContainer.addView(button)
         }
 
-        updateLoadingStatus("Starting app")
-
-        // add button to redirect to match activity
-        val button = Button(this)
-        button.text = "Start"
-        button.setOnClickListener {
-            val intent = Intent(this, MatchActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-        statusTextContainer.addView(button)
 
     }
 

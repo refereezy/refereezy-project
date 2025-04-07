@@ -10,7 +10,7 @@
         android:id="@+id/splash_logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/loading_football"
+        android:background="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias=".25"

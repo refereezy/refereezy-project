@@ -11,6 +11,12 @@ data class Incident(
     override fun toString(): String {
         return "Incident(id=$id, description='$description', minute=$minute, player_id=$player_id, type=$type)"
     }
+
+    fun populateWith(match: PopulatedMatch): PopulatedIncident {
+        val player = match.getPlayerById(player_id)
+        return PopulatedIncident(this, player)
+    }
+
 }
 
 class PopulatedIncident(

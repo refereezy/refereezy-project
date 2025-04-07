@@ -12,12 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.refereezyapp.R
-import com.example.refereezyapp.data.RefereeService
+import com.example.refereezyapp.data.handlers.RefereeService
+import com.example.refereezyapp.data.handlers.RefereeViewModel
 import com.example.refereezyapp.data.static.RefereeManager
+import com.example.refereezyapp.utils.PopUp
 
 class ProfileActivity : AppCompatActivity() {
 
-    private val refereeService: RefereeService by viewModels()
+    private val refereeViewModel: RefereeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +52,7 @@ class ProfileActivity : AppCompatActivity() {
 
         // page interactions
         logoutBtn.setOnClickListener {
-            refereeService.logout()
+            RefereeService.logout()
             finishAffinity()
             openActivity(LoginActivity::class.java)
         }
@@ -80,7 +82,7 @@ class ProfileActivity : AppCompatActivity() {
                 return@setOnEditorActionListener false
             }
 
-            refereeService.changePassword(referee, passwordField.text.toString())
+            refereeViewModel.changePassword(referee, passwordField.text.toString())
 
             passwordField.isEnabled = false
             passwordField.setText("")
@@ -89,10 +91,15 @@ class ProfileActivity : AppCompatActivity() {
             return@setOnEditorActionListener true
         }
 
+        // changes on referee
+        refereeViewModel.referee.observe(this) {
+            if (it != null) {
+                RefereeService.login(it)
+                return@observe
+            }
 
-
-
-
+            PopUp.show(this, "Something went wrong", PopUp.Type.ERROR)
+        }
 
     }
 

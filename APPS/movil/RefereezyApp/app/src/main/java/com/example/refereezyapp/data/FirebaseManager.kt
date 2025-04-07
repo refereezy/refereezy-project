@@ -1,35 +1,45 @@
 package com.example.refereezyapp.data
 
 import android.util.Log
+import com.example.refereezyapp.data.handlers.MatchService
 import com.google.firebase.firestore.DocumentSnapshot
 import com.example.refereezyapp.data.models.MatchReport
 import com.example.refereezyapp.data.models.Incident
+import com.example.refereezyapp.data.models.PopulatedReport
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 object FirebaseManager {
 
-    private const val REPORT_COLLECTION = "reports"
-    private const val INCIDENT_COLLECTION = "incidents"
+    private  val REPORT_COLLECTION = "reports"
+    private  val INCIDENT_COLLECTION = "incidents"
 
     private val db by lazy { Firebase.firestore }
 
 
-    suspend fun getReport(refereeId: Int): MatchReport? {
+    suspend fun getReport(refereeId: Int): PopulatedReport? {
 
         val reportQuery = db.collection(REPORT_COLLECTION)
             .whereEqualTo("referee_id", refereeId) // actas de arbitro
             .whereEqualTo("done", false) // solo actas sin acabar
             .limit(1) // to not saturate the result
-            .get().await()
 
-        if (reportQuery.isEmpty) { // no results
+        var result: QuerySnapshot? = null
+
+        result = reportQuery.get().await()
+
+        if (result.isEmpty == true) { // no results
             Log.e("Firebase", "Report not found")
             return null
         }
 
-        val reportRef = reportQuery.documents[0] // first
+        val reportRef = result.documents[0] // first
 
         // maps the data to Report object, and adds the firebase_id to it
         val matchReport = reportRef.toObject(MatchReport::class.java)!!.copy(id = reportRef.id)
@@ -38,7 +48,25 @@ object FirebaseManager {
         val incidents = getIncidents(reportRef)
         matchReport.incidents = incidents // sets the incidents
 
-        return matchReport
+        val populatedMatch = MatchService.getMatch(matchReport.match_id!!)
+
+        if (populatedMatch == null) {
+            Log.e("Firebase", "Match not found with id: ${matchReport.match_id} for report: ${matchReport.id}")
+            return null
+        }
+
+        val populatedInicents = incidents.map { incident ->incident.populateWith(populatedMatch) }.toMutableList()
+
+        val populated = PopulatedReport(matchReport, populatedMatch, populatedInicents)
+
+        return populated
+    }
+
+    fun getReport(refereeId: Int, callback: (PopulatedReport?) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val rep = getReport(refereeId)
+            withContext(Dispatchers.Main) { callback(rep) }
+        }
     }
 
     private suspend fun getIncidents(reportRef: DocumentSnapshot): List<Incident> {

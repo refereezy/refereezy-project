@@ -11,6 +11,8 @@ data class MatchReport (
     lateinit var incidents: List<Incident>
 
 
+
+
     override fun toString(): String {
         var str = """
             Match Report:
@@ -35,5 +37,4 @@ class PopulatedReport (
     val raw: MatchReport,
     val match: PopulatedMatch,
     val incidents: MutableList<PopulatedIncident> = mutableListOf()
-
 )

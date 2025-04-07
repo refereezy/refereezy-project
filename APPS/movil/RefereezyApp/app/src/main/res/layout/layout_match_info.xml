@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/rounded_background"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:layout_margin="10dp"
-    android:padding="15dp">
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <TextView
+        style="@style/MatchDayTitle"
+        android:id="@+id/matchDayText"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:padding="15dp">
 
         <!-- Circle 1 -->
         <ImageView
@@ -35,64 +47,66 @@
 
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginStart="15dp"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginStart="15dp"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content">
 
-        <!-- Time Text -->
-        <TextView
-            android:id="@+id/matchStartingTime"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/k2d_medium"
-            android:text="21:00"
-            android:textColor="#000000"
-            android:textSize="32sp" />
-
-        <!-- Smartwatch Icon -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/clockBtn"
-            app:layout_constraintTop_toBottomOf="@id/matchStartingTime"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            app:cardCornerRadius="8dp"
-            android:backgroundTint="@color/black">
-
-            <ImageView
-                android:padding="2dp"
-                android:background="#0D000000"
-                android:layout_width="wrap_content"
+            <!-- Time Text -->
+            <TextView
+                android:id="@+id/matchStartingTime"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="match_parent"
+                android:gravity="center"
                 android:layout_height="wrap_content"
-                android:src="@drawable/clock"/>
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/k2d_medium"
+                android:text="21:00"
+                android:textColor="#000000"
+                android:textSize="32sp" />
 
-        </androidx.cardview.widget.CardView>
+            <!-- Smartwatch Icon -->
+            <androidx.cardview.widget.CardView
+                app:layout_constraintTop_toBottomOf="@id/matchStartingTime"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:cardCornerRadius="8dp"
+                android:backgroundTint="@color/black">
 
-        <!-- Whistle Icon -->
-        <androidx.cardview.widget.CardView
-            app:layout_constraintTop_toBottomOf="@id/matchStartingTime"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            app:cardCornerRadius="8dp"
-            android:backgroundTint="@color/black">
+                <ImageView
+                    android:id="@+id/clockBtn"
+                    android:padding="2dp"
+                    android:background="#0D000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/clock"/>
 
-            <ImageView
-                android:id="@+id/whistleBtn"
-                android:padding="3dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/whistle_icon"/>
+            </androidx.cardview.widget.CardView>
 
-        </androidx.cardview.widget.CardView>
+            <!-- Whistle Icon -->
+            <androidx.cardview.widget.CardView
+                app:layout_constraintTop_toBottomOf="@id/matchStartingTime"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:cardCornerRadius="8dp"
+                android:backgroundTint="@color/black">
+
+                <ImageView
+                    android:id="@+id/whistleBtn"
+                    android:padding="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/whistle_icon"/>
+
+            </androidx.cardview.widget.CardView>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>
+</LinearLayout>
+
