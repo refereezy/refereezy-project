@@ -3,6 +3,8 @@
 
 ```bash
 sudo apt install git
+
+# Generem una clau pública i privada per poder-nos connectar per SSH.
 ssh-keygen 
 
 # Clonem el repositori del projecte amb SSH.

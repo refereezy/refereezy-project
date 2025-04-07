@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    const API_URL = "http://refereezy.smcardona.tech:8000";
-
-    
+    const API_URL = "http://refereezy.smcardona.tech:8080";
     
     // Referencias a elementos del DOM
     const refereeNameInput = document.querySelector('.referee-name-input');
@@ -10,9 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const addRefereeBtn = document.querySelector('.add-referee-btn');
 
     // Función para cargar partidos disponibles
-    function loadAvailableMatches() {
-        const matches = JSON.parse(localStorage.getItem('matches')) || [];
-        const teams = JSON.parse(localStorage.getItem('teams')) || [];
+    async function loadAvailableMatches() {
+        let res = await fetch(API_URL+'/matches');
+        const matches = await res.json();
+
+        res = await fetch(API_URL+'/teams');
+        const teams = await res.json();
         
         // Limpiar select
         matchSelect.innerHTML = '<option value="">Seleccione un partido</option>';
