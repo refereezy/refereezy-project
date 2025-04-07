@@ -1,4 +1,4 @@
-package com.example.refereezyapp.screens
+package com.example.refereezyapp.screens.user
 
 import android.content.Intent
 import android.os.Bundle

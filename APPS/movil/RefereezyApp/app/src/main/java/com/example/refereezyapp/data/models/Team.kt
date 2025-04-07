@@ -24,3 +24,7 @@ data class Team (
         return str
     }
 }
+
+enum class TeamType {
+    LOCAL, VISITOR
+}

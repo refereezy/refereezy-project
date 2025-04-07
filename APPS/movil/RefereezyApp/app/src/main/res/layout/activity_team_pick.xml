@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.TeamPickActivity">
+    tools:context=".screens.report.TeamPickActivity">
 
     <TextView
         android:id="@+id/timer"
@@ -58,6 +58,7 @@
     </LinearLayout>
 
     <ImageButton
+        android:id="@+id/flipBtn"
         android:layout_margin="15dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

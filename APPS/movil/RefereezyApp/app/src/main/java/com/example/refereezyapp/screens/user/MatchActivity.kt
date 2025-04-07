@@ -1,13 +1,13 @@
-package com.example.refereezyapp.screens
+package com.example.refereezyapp.screens.user
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.view.View
-import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -23,19 +23,20 @@ import com.example.refereezyapp.data.handlers.MatchService
 import com.example.refereezyapp.data.handlers.MatchViewModel
 import com.example.refereezyapp.data.handlers.ReportService
 import com.example.refereezyapp.data.models.Match
-import java.time.format.TextStyle
 import com.example.refereezyapp.data.models.PopulatedMatch
 import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.models.Team
-import java.time.format.DateTimeFormatter
 import com.example.refereezyapp.data.static.MatchManager
 import com.example.refereezyapp.data.static.RefereeManager
-import kotlin.collections.forEach
 import com.example.refereezyapp.data.static.ReportManager
+import com.example.refereezyapp.screens.report.ActionActivity
 import com.example.refereezyapp.utils.ConfirmationDialog
 import com.example.refereezyapp.utils.PopUp
 import kotlinx.coroutines.runBlocking
-import kotlin.collections.isNotEmpty
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.Locale
 
 class MatchActivity : AppCompatActivity() {
 
@@ -72,7 +73,7 @@ class MatchActivity : AppCompatActivity() {
 
         // when matches are loaded
         matchService.matches.observe(this) {
-            PopUp.show(this, "Matches found: ${it.size}", PopUp.Type.OK)
+            PopUp.Companion.show(this, "Matches found: ${it.size}", PopUp.Type.OK)
             drawMatches()
         }
 
@@ -119,7 +120,7 @@ class MatchActivity : AppCompatActivity() {
         val matchTime = match.raw.date.toLocalTime()
         val matchDay = matchDate.format(DateTimeFormatter.ofPattern("dd/MM"))
         val matchHour = matchTime.format(DateTimeFormatter.ofPattern("HH:mm"))
-        val today = java.time.LocalDate.now()
+        val today = LocalDate.now()
         val oneWeekFromToday = today.plusWeeks(1)
         val specific = matchDate.isAfter(oneWeekFromToday)
 
@@ -145,7 +146,7 @@ class MatchActivity : AppCompatActivity() {
             timeField.text = matchHour
 
             val dayName = matchDate.dayOfWeek.getDisplayName(
-                TextStyle.FULL, java.util.Locale.getDefault())
+                TextStyle.FULL, Locale.getDefault())
 
             val matchDayText = matchInfo.findViewById<TextView>(R.id.matchDayText)
             matchDayText.text = "$dayName $matchDay"
@@ -207,12 +208,12 @@ class MatchActivity : AppCompatActivity() {
         try {
 
             if (report!!.raw.match_id != match.id) {
-                ConfirmationDialog.showReportDialog(
+                ConfirmationDialog.Companion.showReportDialog(
                     this,
                     "Another report already started",
                     "You have to finish the current report before starting a new one",
                     onConfirm = {
-                        val intent = Intent(this, ActionsActivity::class.java)
+                        val intent = Intent(this, ActionActivity::class.java)
                         startActivity(intent)
                     },
                     onCancel = {
@@ -222,14 +223,14 @@ class MatchActivity : AppCompatActivity() {
                 )
             }
             else {
-                val intent = Intent(this, ActionsActivity::class.java)
+                val intent = Intent(this, ActionActivity::class.java)
                 startActivity(intent)
             }
 
         }
         catch (e: Exception) {
             Log.e("MatchActivity", "Error preparing report: ${e.message}")
-            PopUp.show(this, "Error preparing report", PopUp.Type.ERROR)
+            PopUp.Companion.show(this, "Error preparing report", PopUp.Type.ERROR)
         }
 
     }

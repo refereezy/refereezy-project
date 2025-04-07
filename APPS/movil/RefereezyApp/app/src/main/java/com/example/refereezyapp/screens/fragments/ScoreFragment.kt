@@ -55,14 +55,6 @@ class ScoreFragment (
 
     }
 
-    companion object {
-
-        @JvmStatic
-        fun newInstance() {
-
-        }
-    }
-
     fun loadTeamLogo(team: Team, imageView: ImageView) {
         Glide.with(this)
             .load(team.logo_url)

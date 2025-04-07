@@ -1,4 +1,4 @@
-package com.example.refereezyapp.screens
+package com.example.refereezyapp.screens.user
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,8 @@ import com.example.refereezyapp.R
 import com.example.refereezyapp.data.handlers.RefereeService
 import com.example.refereezyapp.data.handlers.RefereeViewModel
 import com.example.refereezyapp.data.static.RefereeManager
+import com.example.refereezyapp.screens.user.LoginActivity
+import com.example.refereezyapp.screens.user.MatchActivity
 import com.example.refereezyapp.utils.PopUp
 
 class ProfileActivity : AppCompatActivity() {
@@ -98,7 +100,7 @@ class ProfileActivity : AppCompatActivity() {
                 return@observe
             }
 
-            PopUp.show(this, "Something went wrong", PopUp.Type.ERROR)
+            PopUp.Companion.show(this, "Something went wrong", PopUp.Type.ERROR)
         }
 
     }

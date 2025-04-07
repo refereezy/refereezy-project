@@ -17,40 +17,40 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".screens.LoginActivity"
+            android:name=".screens.user.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.ActionListActivity"
+            android:name=".screens.report.IncidentListActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".screens.IncidenceActivity"
+            android:name=".screens.report.IncidentActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".screens.PlayerPickActivity"
+            android:name=".screens.report.PlayerPickActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".screens.CardPickActivity"
+            android:name=".screens.report.CardPickActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".screens.TeamPickActivity"
+            android:name=".screens.report.TeamPickActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".screens.ActionsActivity"
+            android:name=".screens.report.ActionActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".screens.PairingClockActivity"
+            android:name=".screens.user.PairingClockActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.ProfileActivity"
+            android:name=".screens.user.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.MatchActivity"
+            android:name=".screens.user.MatchActivity"
             android:exported="false" />
         <activity
             android:name=".screens.MainActivity"
