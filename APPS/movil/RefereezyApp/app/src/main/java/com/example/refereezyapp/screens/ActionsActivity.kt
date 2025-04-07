@@ -1,5 +1,6 @@
 package com.example.refereezyapp.screens
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -40,26 +41,23 @@ class ActionsActivity : AppCompatActivity() {
         // components
         val scoreboard = ScoreFragment(localPoints, visitorPoints, localTeam, visitorTeam)
         val timer = findViewById<TextView>(R.id.timer)
-        val scoreboardView = findViewById<FragmentContainerView>(R.id.scoreboard)
         val flipBtn = findViewById<ImageButton>(R.id.flipBtn)
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.scoreboard, scoreboard)
             .commit()
 
-        val localTeamLogo = scoreboard.view?.findViewById<ImageView>(R.id.localTeamLogo)
-        val visitorTeamLogo = scoreboard.view?.findViewById<ImageView>(R.id.visitorTeamLogo)
 
         // drawing data
         timer.text = "${report.raw.timer[0]}:${report.raw.timer[1]}"
 
 
-
-        scoreboard.loadTeamLogo(localTeam, localTeamLogo!!)
-        scoreboard.loadTeamLogo(visitorTeam, visitorTeamLogo!!)
-
         flipBtn.setOnClickListener {
-            // turn the phone to the other side
+            requestedOrientation = if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+            } else {
+                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            }
 
         }
 
