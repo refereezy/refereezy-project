@@ -25,7 +25,20 @@ GRANT ALL PRIVILEGES ON DATABASE refereezy TO admin;
 psql -h localhost -U admin -d refereezy
 
 CREATE USER arbitre with password 'jais-arbitro';
+
 ```
+
+Perquè la API pugui accedir a la BBDD hem d'obrir les direccions d'escolta configurant:
+```bash
+sudo nano /etc/postgresl/14/main/postgresql.conf
+```
+I modifiquem la següent linia:
+```bash
+[...]
+listen_addresses= '*'
+[...]
+```
+
 
 ## Servei WEB
 
@@ -33,4 +46,16 @@ CREATE USER arbitre with password 'jais-arbitro';
 sudo apt install apache2
 ```
 
-## 
+## GIT
+
+```bash
+sudo apt install git
+
+# Generem una clau pública i privada per poder connectar-nos al repositori per SSH. 
+ssh-keyen
+
+# Clonem el repositori del projecte amb SSH.
+# Afegim la clau pública al registre de claus del repositori.
+git clone git@github.com:refereezy/refereezy-project.git
+# Ens identifiquem.
+```

@@ -23,8 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Función para obtener detalles de los equipos
-    function getTeamDetails(localTeamId, visitorTeamId) {
-        const teams = JSON.parse(localStorage.getItem('teams')) || [];
+    async function getTeamDetails(localTeamId, visitorTeamId) {
+        res = await fetch(API_URL+'/teams');
+        const teams = await res.json();
         const localTeam = teams.find(team => Number(team.id) === Number(localTeamId));
         const visitorTeam = teams.find(team => Number(team.id) === Number(visitorTeamId));
         
@@ -112,9 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Función para cargar y mostrar los partidos
-    function loadMatches() {
-        const matches = JSON.parse(localStorage.getItem('matches')) || [];
-        
+    async function loadMatches() {
+        let res = await fetch(API_URL+'/matches');
+        const matches = await res.json();
+
         if (matches.length === 0) {
             showNoMatchesMessage();
         } else {
