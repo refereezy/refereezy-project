@@ -1,11 +1,23 @@
 from fastapi import FastAPI,HTTPException
 from routers import team, player, referee, match_group, match, client, clock
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import IntegrityError, DataError
 from starlette.requests import Request
 import traceback
 
 app = FastAPI(title="Football API", version="1.0")
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 
 app.include_router(team.router)
@@ -15,7 +27,7 @@ app.include_router(match_group.router)
 app.include_router(match.router)
 app.include_router(client.router)
 app.include_router(clock.router)
-#GET
+
 @app.get("/")
 def read_root():
     return "API REFEREEZY"
