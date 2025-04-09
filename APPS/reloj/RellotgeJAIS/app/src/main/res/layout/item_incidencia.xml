@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="189dp"
@@ -28,18 +29,40 @@
 
         <!-- Número de jugador en círculo -->
 
-            <TextView
-                android:id="@+id/inccidenciplayerNum"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="6dp"
-                android:fontFamily="@font/inter_bold"
-                android:text="2"
-                android:textColor="@color/white"
-                android:textSize="18dp"
-                android:background="@drawable/red_player"
-                android:gravity="center"
-                />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            >
+            <net.orandja.shadowlayout.ShadowLayout
+                android:id="@+id/shadow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:shadow_color="#C2185B"
+                app:shadow_with_content="true"
+                app:shadow_radius="5"
+                app:shadow_with_color="false"
+                app:shadow_cast_only_background="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/player_circle"
+                android:backgroundTint="@color/black"
+                android:backgroundTintMode="src_over"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/dorsal"
+                    style="@style/SpecialButton"
+                    android:layout_margin="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    />
+
+            </net.orandja.shadowlayout.ShadowLayout>
+
+        </LinearLayout>
 
 
         <!-- Imagen de la incidencia (balón, tarjeta amarilla, etc.) -->
@@ -63,5 +86,6 @@
             />
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

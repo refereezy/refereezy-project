@@ -1,0 +1,13 @@
+package com.example.rellotgejais.models
+
+data class Player (
+    val id: Int,
+    val name: String,
+    val dorsal: Int
+) {
+    lateinit var team: Team
+
+    override fun toString(): String {
+        return "Player -> $id: $name ($dorsal)"
+    }
+}

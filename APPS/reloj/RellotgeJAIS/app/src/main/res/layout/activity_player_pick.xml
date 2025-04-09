@@ -5,25 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".localPlayers">
+    tools:context=".screens.PlayerPickActivity">
 
     <!-- Reloj / Tiempo -->
-    <TextView
+    <fragment
         android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="84:00"
-        android:textSize="26sp"
-        android:textColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:paddingTop="7dp"/>
+        android:layout_marginTop="10dp"
+        tools:layout="@layout/fragment_timer"
+        android:name="com.example.rellotgejais.screens.TimerFragment"/>
 
     <!-- Marcador -->
     <fragment
         android:id="@+id/scoreboard"
-        android:name="com.example.rellotgejais.scoreboard"
+        android:name="com.example.rellotgejais.screens.Scoreboard"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/timer"
