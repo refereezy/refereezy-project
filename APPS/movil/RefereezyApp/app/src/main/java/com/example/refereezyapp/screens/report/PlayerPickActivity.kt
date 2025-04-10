@@ -1,21 +1,19 @@
 package com.example.refereezyapp.screens.report
 
-import android.content.pm.ActivityInfo
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.GridLayout
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.gridlayout.widget.GridLayout
 import com.example.refereezyapp.R
 import com.example.refereezyapp.data.models.IncidentType
 import com.example.refereezyapp.data.models.TeamType
 import com.example.refereezyapp.data.static.ReportManager
-import com.example.refereezyapp.utils.PopUp
+import net.orandja.shadowlayout.ShadowLayout
 
 class PlayerPickActivity : _BaseReportActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,10 +38,15 @@ class PlayerPickActivity : _BaseReportActivity() {
         val grid = findViewById<GridLayout>(R.id.playerGrid)
 
         for (player in team.players) {
-            val inflater = LayoutInflater.from(this).inflate(R.layout.layout_player_pick, grid)
+            val inflater = LayoutInflater.from(this).inflate(R.layout.layout_player_pick, grid, false)
             val dorsal = inflater.findViewById<TextView>(R.id.dorsal)
+            val shadow = inflater.findViewById<ShadowLayout>(R.id.shadow)
+
+            val color = if (player.is_goalkeeper) team.secondary_color else team.primary_color
+            shadow.shadow_color = Color.parseColor(color) 
+            dorsal.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
             dorsal.text = player.dorsal.toString()
-            dorsal.setTextAppearance(R.style.SpecialButton)
+
 
             grid.addView(inflater)
         }

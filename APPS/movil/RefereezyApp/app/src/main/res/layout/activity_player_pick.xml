@@ -24,22 +24,23 @@
 
     <ScrollView
 
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/scoreboard"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:paddingTop="10dp">
 
         <androidx.gridlayout.widget.GridLayout
+            android:paddingTop="20dp"
             android:id="@+id/playerGrid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             app:columnCount="6">
 
-            <!-- Botones -->
-
-            <include layout="@layout/layout_player_pick" />
 
         </androidx.gridlayout.widget.GridLayout>
     </ScrollView>

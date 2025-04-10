@@ -11,7 +11,7 @@
         android:id="@+id/shadow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:shadow_color="#C2185B"
+        app:shadow_color="@color/white"
         app:shadow_with_content="true"
         app:shadow_radius="5"
         app:shadow_with_color="false"
@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/dorsal"
-            style="@style/SpecialButton"
+            style="@style/NormalButton"
             android:layout_margin="0dp"
             android:text="1"
             />

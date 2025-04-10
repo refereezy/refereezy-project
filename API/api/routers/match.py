@@ -18,6 +18,22 @@ def get_matches_by_client(client_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="No matches found for the given client ID")
     return matches
 
+@router.get("/client/{id}/with_teams")
+def get_client_matches_populated(client_id: int, db: Session = Depends(get_db)):
+    matches = db.query(Match).filter(Match.client_id == client_id).all()
+    
+    if not matches:
+        raise HTTPException(status_code=404, detail="No matches found for the given client ID")
+    
+    return [
+        {
+            **match.__dict__,
+            "local_team": match.local_team,
+            "visitor_team": match.visitor_team
+        } for match in matches
+    ]
+    
+
 @router.get("/populated/{id}")
 def get_populated_match(id: int, db: Session = Depends(get_db)):
     match = db.query(Match).filter(Match.id == id).first()
