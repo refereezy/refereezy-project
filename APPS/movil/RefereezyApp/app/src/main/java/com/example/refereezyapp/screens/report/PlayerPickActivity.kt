@@ -43,7 +43,9 @@ class PlayerPickActivity : _BaseReportActivity() {
             val shadow = inflater.findViewById<ShadowLayout>(R.id.shadow)
 
             val color = if (player.is_goalkeeper) team.secondary_color else team.primary_color
-            shadow.shadow_color = Color.parseColor(color) 
+            println("player: $player, color: $color")
+
+            shadow.shadow_color = Color.parseColor(color)
             dorsal.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
             dorsal.text = player.dorsal.toString()
 
