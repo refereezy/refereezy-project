@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -40,6 +40,7 @@ class Player(Base):
     dni = Column(String, unique=True, nullable=False)
     team_id = Column(Integer, ForeignKey("team.id"))
     client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
+    is_goalkeeper = Column(Boolean, nullable=False)
 
     team = relationship("Team", foreign_keys=[team_id])
     client = relationship("Client", foreign_keys=[client_id])

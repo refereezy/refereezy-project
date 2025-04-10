@@ -11,6 +11,13 @@ router = APIRouter(prefix="/players", tags=["Players"])
 def get_players(db: Session = Depends(get_db)):
     return db.query(Player).all()
 
+@router.get("/client/{client_id}", response_model=List[PlayerResponse])
+def get_players_by_client_id(client_id: int, db: Session = Depends(get_db)):
+    players = db.query(Player).filter(Player.client_id == client_id).all()
+    if not players:
+        raise HTTPException(status_code=404, detail="No players found for the given client_id")
+    return players
+
 @router.get("/{player_id}", response_model=PlayerResponse)
 def get_player(player_id: int, db: Session = Depends(get_db)):
     player = db.query(Player).filter(Player.id == player_id).first()

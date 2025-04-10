@@ -27,6 +27,7 @@ class PlayerBase(BaseModel):
     dni: str
     team_id: int
     client_id: int
+    is_goalkeeper: bool
 
 class PlayerCreate(PlayerBase):
     pass

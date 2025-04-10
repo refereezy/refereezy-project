@@ -19,6 +19,13 @@ def get_referee(referee_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Referee not found")
     return referee
 
+@router.get("/client/{client_id}", response_model=List[RefereeResponse])
+def get_referees_by_client(client_id: int, db: Session = Depends(get_db)):
+    referees = db.query(Referee).filter(Referee.client_id == client_id).all()
+    if not referees:
+        raise HTTPException(status_code=404, detail="No referees found for the given client ID")
+    return referees
+
 @router.get("/load/{referee_id}/{password}", response_model=RefereeLoad)
 def map_referee(referee_id: int, password: str, db: Session = Depends(get_db)):
     referee = db.query(Referee).filter(Referee.id == referee_id).first()

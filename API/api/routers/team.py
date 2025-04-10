@@ -20,6 +20,13 @@ def get_team(team_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Team not found")
     return team
 
+@router.get("/client/{client_id}", response_model=List[TeamResponse])
+def get_teams_by_client(client_id: int, db: Session = Depends(get_db)):
+    teams = db.query(Team).filter(Team.client_id == client_id).all()
+    if not teams:
+        raise HTTPException(status_code=404, detail="No teams found for the given client")
+    return teams
+
 # Post Team
 @router.post("/", response_model=TeamResponse)
 def create_team(team: TeamCreate, db: Session = Depends(get_db)):

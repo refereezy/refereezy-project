@@ -60,20 +60,20 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     fun moveTo(activity: Class<*>, stack: Boolean = false) {
         val intent = Intent(this, activity)
-        if (stack) { intent.putExtras(intent.extras?: Bundle()) }
+        if (stack) { intent.putExtras(this.intent.extras?: Bundle()) }
         startActivity(intent)
     }
 
     fun moveTo(activity: Class<*>, type: IncidentType, stack: Boolean = false) {
         val intent = Intent(this, activity)
-        if (stack) { intent.putExtras(intent.extras?: Bundle()) }
+        if (stack) { intent.putExtras(this.intent.extras?: Bundle()) }
         intent.putExtra("type", type)
         startActivity(intent)
     }
 
     fun moveTo(activity: Class<*>, team: TeamType) {
         val intent = Intent(this, activity)
-        intent.putExtras(intent.extras?: Bundle()) // siempre stackea
+        intent.putExtras(this.intent.extras?: Bundle()) // siempre stackea
         intent.putExtra("team", team)
         startActivity(intent)
     }

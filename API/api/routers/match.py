@@ -11,6 +11,13 @@ router = APIRouter(prefix="/matches", tags=["Matches"])
 def get_matches(db: Session = Depends(get_db)):
     return db.query(Match).all()
 
+@router.get("/client/{client_id}", response_model=List[MatchResponse])
+def get_matches_by_client(client_id: int, db: Session = Depends(get_db)):
+    matches = db.query(Match).filter(Match.client_id == client_id).all()
+    if not matches:
+        raise HTTPException(status_code=404, detail="No matches found for the given client ID")
+    return matches
+
 @router.get("/populated/{id}")
 def get_populated_match(id: int, db: Session = Depends(get_db)):
     match = db.query(Match).filter(Match.id == id).first()
@@ -37,7 +44,8 @@ def get_populated_match(id: int, db: Session = Depends(get_db)):
                 {
                     "id": player.id,
                     "name": player.name,
-                    "dorsal": player.dorsal_number
+                    "dorsal": player.dorsal_number,
+                    "is_goalkeeper": player.is_goalkeeper
                     
                 } for player in local.players
             ]
