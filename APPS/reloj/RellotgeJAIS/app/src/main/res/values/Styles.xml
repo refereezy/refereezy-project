@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MatchDayTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">50dp</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:textSize">28sp</item>
+        <item name="fontFamily">@font/k2d_medium</item>
+        <item name="android:text">{DAY}</item>
+    </style>
+
+    <style name="AppTextField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:background">@drawable/rounded_background</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginVertical">10dp</item>
+    </style>
+
+    <style name="NormalButton">
+        <item name="android:layout_width">90dp</item>
+        <item name="android:layout_height">90dp</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:background">@drawable/player_circle</item>
+        <item name="android:backgroundTint">#4F83DE</item> <!-- Azul -->
+        <item name="android:backgroundTintMode">multiply</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">32sp</item>
+        <item name="fontFamily">@font/jockeyone_regular</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="SpecialButton" parent="NormalButton">
+        <item name="android:backgroundTint">#C2185B</item> <!-- Rosa -->
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="TimerTextStyle">
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_marginTop">-10dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">@font/k2d_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">64sp</item>
+        <item name="android:text">84:00</item>
+    </style>
+
+
+</resources>

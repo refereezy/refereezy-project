@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Capa inferior: fondo base con stroke -->
+    <item>
+        <shape android:shape="oval">
+            <!-- Fondo base: negro semitransparente -->
+            <solid android:color="#96000000" />
+            <corners android:radius="1000dp" />
+            <size android:width="50dp" android:height="50dp" />
+            <stroke android:width="3dp" android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Capa superior: capa para simular el tint -->
+    <item>
+        <shape android:shape="oval">
+            <!-- Aquí defines el color de tint con alfa para que se mezcle;
+                 por ejemplo, si el color de tint deseado es blanco, usas blanco semitransparente -->
+            <solid android:color="#7AFFFFFF" />  <!-- 50% transparencia -->
+            <corners android:radius="1000dp" />
+            <size android:width="50dp" android:height="50dp" />
+        </shape>
+    </item>
+</layer-list>

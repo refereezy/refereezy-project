@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".MainActivity">
+    tools:context=".screens.MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_vertical"
@@ -85,25 +85,24 @@
         app:layout_constraintStart_toEndOf="@id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@id/guideline_horizontal" />
 
-    <Chronometer
+
+    <fragment
         android:id="@+id/chronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@null"
-        android:fontFamily="@font/inter"
-        android:textColor="@android:color/white"
-        android:textSize="26sp"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal50"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal50"
+        android:name="com.example.rellotgejais.screens.TimerFragment"
+        tools:layout="@layout/fragment_timer"/>
 
-
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
+        android:id="@+id/scoreboard_fragment"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
+        android:name="com.example.rellotgejais.screens.Scoreboard"
         tools:layout="@layout/fragment_scoreboard"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"

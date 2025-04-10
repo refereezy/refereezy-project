@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".IncidenciasActivity">
+    tools:context=".screens.ActionListActivity">
 
     <!-- Reloj / Tiempo -->
     <TextView
@@ -25,7 +25,7 @@
     <!-- Marcador -->
     <fragment
         android:id="@+id/scoreboard"
-        android:name="com.example.rellotgejais.scoreboard"
+        android:name="com.example.rellotgejais.screens.Scoreboard"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:padding="8dp"
@@ -37,10 +37,11 @@
     <!-- Lista de incidencias optimizada para Wear OS -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="184dp"
+        android:layout_width="wrap_content"
         android:layout_height="71dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:paddingLeft="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/scoreboard"
         app:layout_constraintVertical_bias="0.0"
