@@ -78,21 +78,6 @@ class MatchViewModel : ViewModel() {
 }
 
 object MatchService {
-    fun getTeam(id: Int): Team? {
-        var res: Team? = null
-        runBlocking {
-            try {
-                val response = async { RetrofitManager.instance.getTeam(id) }.await()
-                if (response.isSuccessful) {
-                    res = response.body()!!
-                }
-            } catch (e: Exception) {
-                Log.e("Retrofit (getTeam)", "Error de conexión: ${e.message}")
-            }
-        }
-
-        return res
-    }
 
     suspend fun getMatch(id: Int): PopulatedMatch? {
         try {

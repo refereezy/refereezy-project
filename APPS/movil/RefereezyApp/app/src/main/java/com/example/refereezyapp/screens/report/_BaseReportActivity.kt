@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.refereezyapp.MyApp
+import com.example.refereezyapp.data.handlers.TimerViewModel
 import com.example.refereezyapp.data.models.IncidentType
 import com.example.refereezyapp.data.models.PopulatedIncident
 import com.example.refereezyapp.data.models.PopulatedReport
@@ -17,14 +19,19 @@ import kotlin.collections.forEach
 
 open class _BaseReportActivity : AppCompatActivity() {
 
+    // data
     protected lateinit var report: PopulatedReport
     protected var localPoints: Int = 0
     protected var visitorPoints: Int = 0
     protected lateinit var localTeam: Team
     protected lateinit var visitorTeam: Team
 
+    // fragments
     protected lateinit var scoreboard: ScoreFragment
 
+    // timer
+    protected lateinit var timerViewModel: TimerViewModel
+    protected var timerRunning: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,13 +39,19 @@ open class _BaseReportActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         report = ReportManager.getCurrentReport()!!
+        timerViewModel = (application as MyApp).timerViewModel
+        timerRunning = timerViewModel.isRunning
 
         localTeam = report.match.local_team
         visitorTeam = report.match.visitor_team
-        localPoints = countTeamGoals(localTeam.id, report.incidents)
-        visitorPoints = countTeamGoals(visitorTeam.id, report.incidents)
 
-        scoreboard = ScoreFragment(localPoints, visitorPoints, localTeam, visitorTeam)
+        reloadTeamGoals()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        reloadTeamGoals()
 
     }
 
@@ -76,6 +89,12 @@ open class _BaseReportActivity : AppCompatActivity() {
         intent.putExtras(this.intent.extras?: Bundle()) // siempre stackea
         intent.putExtra("team", team)
         startActivity(intent)
+    }
+
+    private fun reloadTeamGoals() {
+        localPoints = countTeamGoals(localTeam.id, report.incidents)
+        visitorPoints = countTeamGoals(visitorTeam.id, report.incidents)
+        scoreboard = ScoreFragment(localPoints, visitorPoints, localTeam, visitorTeam)
     }
 
 

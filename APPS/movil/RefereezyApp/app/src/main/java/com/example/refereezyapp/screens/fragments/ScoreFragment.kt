@@ -25,7 +25,6 @@ class ScoreFragment (
     private lateinit var visitorTeamLogo: ImageView
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Mas cosas
@@ -47,12 +46,16 @@ class ScoreFragment (
         localTeamLogo = view.findViewById(R.id.localTeamLogo)
         visitorTeamLogo = view.findViewById(R.id.visitorTeamLogo)
 
-        scoreView.text = "$localScore - $visitorScore"
+        updateScore(localScore, visitorScore)
 
         // load with glide the images
         loadTeamLogo(localTeam, localTeamLogo)
         loadTeamLogo(visitorTeam, visitorTeamLogo)
 
+    }
+
+    fun updateScore(localScore: Int, visitorScore: Int) {
+        scoreView.text = "$localScore - $visitorScore"
     }
 
     fun loadTeamLogo(team: Team, imageView: ImageView) {

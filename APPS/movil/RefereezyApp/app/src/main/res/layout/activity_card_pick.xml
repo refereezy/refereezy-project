@@ -7,11 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".screens.report.CardPickActivity">
 
-    <TextView
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/timer"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_timer"
         android:layout_width="match_parent"
+        android:name="com.example.refereezyapp.screens.fragments.TimerFragment"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/TimerTextStyle"/>
+        />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/scoreboard"

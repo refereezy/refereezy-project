@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.refereezyapp.R
 
-class IncidentActivity : AppCompatActivity() {
+class IncidentActivity : _BaseReportActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -19,14 +19,23 @@ class IncidentActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        //! this class extends BaseReportActivity, which initializes the basic values
+
+
+
+
     }
 
-    //! this class extends BaseReportActivity, which initializes the basic values
 
+    override fun onResume() {
+        super.onResume()
 
-    fun flipScreen(view: View) {
-        requestedOrientation = if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-            ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
-        else ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        // re dibuja la puntuacion incluso cuando se cambia de activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.scoreboard, scoreboard)
+            .commit()
     }
+
+
 }

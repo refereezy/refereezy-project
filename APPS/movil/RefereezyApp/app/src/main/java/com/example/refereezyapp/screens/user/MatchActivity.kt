@@ -17,11 +17,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.refereezyapp.MyApp
 import com.example.refereezyapp.R
 import com.example.refereezyapp.data.FirebaseManager
 import com.example.refereezyapp.data.handlers.MatchService
 import com.example.refereezyapp.data.handlers.MatchViewModel
 import com.example.refereezyapp.data.handlers.ReportService
+import com.example.refereezyapp.data.handlers.TimerViewModel
 import com.example.refereezyapp.data.models.Match
 import com.example.refereezyapp.data.models.PopulatedMatch
 import com.example.refereezyapp.data.models.Referee
@@ -42,6 +44,7 @@ class MatchActivity : AppCompatActivity() {
 
     //private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private val matchService: MatchViewModel by viewModels()
+    private lateinit var timerViewModel: TimerViewModel
     private val reportService = ReportService
     private lateinit var referee: Referee
 
@@ -59,6 +62,9 @@ class MatchActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
+        timerViewModel = (application as MyApp).timerViewModel
 
         // page interactions
         weekMatches = findViewById(R.id.weekMatches)
@@ -110,7 +116,6 @@ class MatchActivity : AppCompatActivity() {
         }
 
 
-
     }
 
 
@@ -156,33 +161,23 @@ class MatchActivity : AppCompatActivity() {
         }
     }
 
-    fun addMatchGroupTitle(title: String) {
-        // Making the section title
-        val matchesTitle = TextView(this)
-        matchesTitle.id = View.generateViewId()
-        matchesTitle.text = title
-        styleDayTitle(matchesTitle)
-        laterMatches.addView(matchesTitle)
-    }
-
     fun declareMatchButtons(match: Match, matchInfo: View) {
 
-        val clockBtn = matchInfo.findViewById<View>(R.id.clockBtn)
         val whistleBtn = matchInfo.findViewById<View>(R.id.whistleBtn)
+        val clockBtn = matchInfo.findViewById<View>(R.id.clockBtn)
+
+        whistleBtn.setOnClickListener {
+            prepareReport(match)
+        }
 
         clockBtn.setOnClickListener {
             if (referee.clock_code == null) {
                 val intent = Intent(this, PairingClockActivity::class.java)
                 startActivity(intent)
-                return@setOnClickListener
             }
-
-            prepareReport(match)
-
-        }
-
-        whistleBtn.setOnClickListener {
-            prepareReport(match)
+            else {
+                prepareReport(match)
+            }
         }
 
 
@@ -213,8 +208,7 @@ class MatchActivity : AppCompatActivity() {
                     "Another report already started",
                     "You have to finish the current report before starting a new one",
                     onConfirm = {
-                        val intent = Intent(this, ActionActivity::class.java)
-                        startActivity(intent)
+                        goToReport()
                     },
                     onCancel = {
                         // do nothing
@@ -223,8 +217,7 @@ class MatchActivity : AppCompatActivity() {
                 )
             }
             else {
-                val intent = Intent(this, ActionActivity::class.java)
-                startActivity(intent)
+                goToReport()
             }
 
         }
@@ -235,13 +228,11 @@ class MatchActivity : AppCompatActivity() {
 
     }
 
-    fun styleDayTitle(title: TextView) {
-        title.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
-            marginStart = 50.toDp()
-            topMargin = 30.toDp()
-        }
-        title.textSize = 28f
-        title.typeface = ResourcesCompat.getFont(this, R.font.k2d_medium)
+    fun goToReport() {
+        val report = ReportManager.getCurrentReport()!!
+        timerViewModel.initTimer(report.raw.timer[0], report.raw.timer[1])
+        val intent = Intent(this, ActionActivity::class.java)
+        startActivity(intent)
     }
 
     fun loadTeamLogo(team: Team, imageView: ImageView) {
@@ -253,6 +244,5 @@ class MatchActivity : AppCompatActivity() {
             .onLoadFailed(ResourcesCompat.getDrawable(resources, R.drawable.circle_shape, null))
     }
 
-    fun Int.toDp(): Int = (this * resources.displayMetrics.density).toInt()
 
 }
