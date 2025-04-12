@@ -21,6 +21,7 @@ object ReportService {
     }
 
     suspend fun updateReportTimer(report: PopulatedReport, newTimer: List<Int>): Boolean {
+        Log.d("ReportService", "Updating timer: $newTimer")
         var res = FirebaseManager.updateReportTimer(report.raw.id, newTimer)
         if (!res) {
             Log.e("ReportService", "Error updating timer")
@@ -36,10 +37,11 @@ object ReportService {
         return updateReportTimer(report, newTimer)
     }
 
-    fun updateReportDone(reportId: String, done: Boolean = true): Boolean  {
+    fun endReport(report: PopulatedReport, done: Boolean = true): Boolean  {
         var res = false
         runBlocking {
-            res = async { FirebaseManager.updateReportDone(reportId, done) }.await()
+            res = async { FirebaseManager.updateReportDone(report.raw.id, done) }.await()
+            report.raw.done = true
         }
         return res
     }

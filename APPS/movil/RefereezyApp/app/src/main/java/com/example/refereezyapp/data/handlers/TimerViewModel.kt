@@ -28,7 +28,7 @@ class TimerViewModel: ViewModel() {
     fun initTimer(minutes: Int = 0, seconds: Int = 0) {
         // Calcula el tiempo total en segundos
         val totalSeconds = minutes * 60 + seconds
-        println("INIT: totalSeconds: $totalSeconds")
+        println("Timer Init: totalSeconds: $totalSeconds")
 
         // Establece ese tiempo como el tiempo transcurrido
         _elapsedTime.value = totalSeconds
@@ -61,7 +61,6 @@ class TimerViewModel: ViewModel() {
             override fun onTick(millisUntilFinished: Long) {
                 val report = ReportManager.getCurrentReport()!!
                 viewModelScope.launch {
-                    Log.d("TimerViewModel", "Storing timer: ${_elapsedTime.value}")
                     ReportService.updateReportTimer(report, _elapsedTime.value!!)
                 }
             }
@@ -72,6 +71,9 @@ class TimerViewModel: ViewModel() {
         isRunning=true
     }
 
+    fun getElapsedMinutes(): Int {
+        return _elapsedTime.value!! / 60
+    }
 
     fun stop() {
         //Detiene el cronómetro sin borrar el tiempo.
@@ -84,7 +86,6 @@ class TimerViewModel: ViewModel() {
         //Detiene el cronómetro y pone el tiempo en 0.
         stop()
         _elapsedTime.value = 0
-        isRunning = false
         isStarted = false
     }
     override fun onCleared() {

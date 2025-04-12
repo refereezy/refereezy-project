@@ -30,8 +30,7 @@ open class _BaseReportActivity : AppCompatActivity() {
     protected lateinit var scoreboard: ScoreFragment
 
     // timer
-    protected lateinit var timerViewModel: TimerViewModel
-    protected var timerRunning: Boolean = false
+    protected lateinit var timer: TimerViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,8 +38,7 @@ open class _BaseReportActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         report = ReportManager.getCurrentReport()!!
-        timerViewModel = (application as MyApp).timerViewModel
-        timerRunning = timerViewModel.isRunning
+        timer = (application as MyApp).timerViewModel
 
         localTeam = report.match.local_team
         visitorTeam = report.match.visitor_team

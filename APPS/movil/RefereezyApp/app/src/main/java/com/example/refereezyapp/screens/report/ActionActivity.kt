@@ -3,16 +3,15 @@ package com.example.refereezyapp.screens.report
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.viewModels
-import com.example.refereezyapp.MyApp
+import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import com.example.refereezyapp.R
-import com.example.refereezyapp.data.handlers.TimerViewModel
+import com.example.refereezyapp.data.handlers.ReportService
 import com.example.refereezyapp.data.models.IncidentType
+import com.example.refereezyapp.data.static.ReportManager
 import com.example.refereezyapp.utils.ConfirmationDialog
 import com.example.refereezyapp.utils.PopUp
 
@@ -22,7 +21,7 @@ class ActionActivity : _BaseReportActivity() {
     private lateinit var cardsBtn: ImageButton
     private lateinit var pauseBtn: ImageButton
     private lateinit var goalBtn: ImageButton
-    private lateinit var warningBtn: ImageButton
+    private lateinit var incidentButton: ImageButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +41,7 @@ class ActionActivity : _BaseReportActivity() {
         cardsBtn = findViewById<ImageButton>(R.id.cardsBtn)
         pauseBtn = findViewById<ImageButton>(R.id.pauseBtn)
         goalBtn = findViewById<ImageButton>(R.id.goalBtn)
-        warningBtn = findViewById<ImageButton>(R.id.warningBtn)
+        incidentButton = findViewById<ImageButton>(R.id.warningBtn)
 
 
 
@@ -50,12 +49,18 @@ class ActionActivity : _BaseReportActivity() {
 
 
 
-        // behaviour
+        // behaviours
         flipBtn.setOnClickListener(this::flipScreen)
         cardsBtn.setOnClickListener { moveTo(CardPickActivity::class.java) }
         goalBtn.setOnClickListener { moveTo(TeamPickActivity::class.java, IncidentType.GOAL) }
-        warningBtn.setOnClickListener { moveTo(IncidentActivity::class.java) }
+
+        // incidentBtn behaviours
+        incidentButton.setOnClickListener { moveTo(IncidentActivity::class.java) }
+        incidentButton.setOnLongClickListener { moveTo(IncidentListActivity::class.java); true }
+
+        // pauseBtn behaviours
         pauseBtn.setOnClickListener(this::toggleTimerState)
+        pauseBtn.setOnLongClickListener {this::tryCloseReport; true}
 
         // Disable back button
         val callback = object : OnBackPressedCallback(true) {
@@ -92,15 +97,31 @@ class ActionActivity : _BaseReportActivity() {
     }
 
     fun toggleTimerState (v: View) {
-        if (timerRunning) {
+        if (timer.isRunning) {
             pauseBtn.setImageResource(android.R.drawable.ic_media_play)
-            timerViewModel.stop()
-
+            timer.stop()
         } else {
             pauseBtn.setImageResource(android.R.drawable.ic_media_pause)
-            timerViewModel.play()
+            timer.play()
         }
-        timerRunning = !timerRunning
+    }
+
+    fun tryCloseReport (v: View) {
+        // alertar que intenta acabar el partido
+        ConfirmationDialog.showReportDialog(
+            this,
+            "End match",
+            "Are you sure you want to end the match?",
+            onConfirm = this::endMatchReport,
+            onCancel = {}
+        )
+    }
+
+    fun endMatchReport() {
+        ReportService.endReport(report)
+        // todo: tal vez mostrar en la pantalla de matches la URL a la pagina donde se puede ver la info de las incidencias?
+        // todo: filtrar de alguna manera las matches para no mostrar las que ya han acabado
+        ReportManager.setCurrentReport(null)
     }
 
 

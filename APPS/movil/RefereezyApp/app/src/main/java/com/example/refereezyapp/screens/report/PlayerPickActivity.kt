@@ -59,7 +59,7 @@ class PlayerPickActivity : _BaseReportActivity() {
                 val incident = Incident(
                     // todo: handle descriptions with microphone
                     description = type.toString(),
-                    minute = timerViewModel.elapsedTime.value!!.toInt() / 60,
+                    minute = timer.elapsedTime.value!!.toInt() / 60,
                     player_id = player.id,
                     type = type!!
                 )
