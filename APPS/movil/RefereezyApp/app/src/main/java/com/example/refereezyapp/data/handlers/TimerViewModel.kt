@@ -1,19 +1,26 @@
 package com.example.refereezyapp.data.handlers
 
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.refereezyapp.data.static.ReportManager
+import kotlinx.coroutines.launch
 
 class TimerViewModel: ViewModel() {
     // guarda el tiempo que ha pasado (en segundos).
-    private val elapsedTime = MutableLiveData<Int>(0)
+    private val _elapsedTime = MutableLiveData<Int>(0)
+    val elapsedTime: LiveData<Int> = _elapsedTime
 
-    //es la versión pública para que otros fragmentos puedan "observar" los cambios sin modificarlo directamente.
-    val liveElapsedTime: LiveData<Int> = elapsedTime
-
-    //timer: el temporizador real, startTime: cuándo empezó y isRunning: si ya está corriendo o no.
+    // timer para conteo y otro timer para guardado
     private var timer: CountDownTimer? = null
+    private var storingTimer: CountDownTimer? = null
+
+    private val TIMER_UPDATE_INTERVAL: Long = 1_000
+    private val TIMER_STORE_INTERVAL: Long = 30_000
+
     private var startTime: Long = 0
     var isRunning = false
     var isStarted = false
@@ -24,13 +31,13 @@ class TimerViewModel: ViewModel() {
         println("INIT: totalSeconds: $totalSeconds")
 
         // Establece ese tiempo como el tiempo transcurrido
-        elapsedTime.value = totalSeconds
+        _elapsedTime.value = totalSeconds
     }
 
     fun initStartingPoint() {
         if (isStarted || isRunning) return
 
-        startTime = System.currentTimeMillis() - (elapsedTime.value?: 0) * 1000
+        startTime = System.currentTimeMillis() - (_elapsedTime.value?: 0) * 1000
         isStarted = true // do not remove 💀
     }
 
@@ -39,12 +46,24 @@ class TimerViewModel: ViewModel() {
         if (isRunning) return
 
         //Aquí empieza el temporizador. Cada segundo (1000ms), actualiza elapsedTime.
-        timer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
+        timer = object : CountDownTimer(Long.MAX_VALUE, TIMER_UPDATE_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
                 //Calcula el startTime para poder reanudar desde donde se quedó si estaba pausado.
                 val seconds = (System.currentTimeMillis() - startTime) / 1000
-                elapsedTime.postValue(seconds.toInt())
+                _elapsedTime.postValue(seconds.toInt())
 
+            }
+
+            override fun onFinish() {}
+        }.start()
+
+        storingTimer = object : CountDownTimer(Long.MAX_VALUE, TIMER_STORE_INTERVAL) {
+            override fun onTick(millisUntilFinished: Long) {
+                val report = ReportManager.getCurrentReport()!!
+                viewModelScope.launch {
+                    Log.d("TimerViewModel", "Storing timer: ${_elapsedTime.value}")
+                    ReportService.updateReportTimer(report, _elapsedTime.value!!)
+                }
             }
 
             override fun onFinish() {}
@@ -52,16 +71,19 @@ class TimerViewModel: ViewModel() {
 
         isRunning=true
     }
+
+
     fun stop() {
         //Detiene el cronómetro sin borrar el tiempo.
         timer?.cancel()
+        storingTimer?.cancel()
         isRunning = false
     }
 
     fun resetTimer() {
         //Detiene el cronómetro y pone el tiempo en 0.
         stop()
-        elapsedTime.value = 0
+        _elapsedTime.value = 0
         isRunning = false
         isStarted = false
     }
@@ -69,6 +91,7 @@ class TimerViewModel: ViewModel() {
         //Se llama automáticamente si el ViewModel se destruye. Aquí se limpia la memoria.
         super.onCleared()
         timer?.cancel()
+        storingTimer?.cancel()
     }
 
 }

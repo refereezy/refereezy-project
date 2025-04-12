@@ -15,7 +15,6 @@ import com.example.refereezyapp.data.models.Incident
 import com.example.refereezyapp.data.models.IncidentType
 import com.example.refereezyapp.data.models.TeamType
 import com.example.refereezyapp.data.static.ReportManager
-import com.example.refereezyapp.screens.fragments.ScoreFragment
 import net.orandja.shadowlayout.ShadowLayout
 
 class PlayerPickActivity : _BaseReportActivity() {
@@ -60,7 +59,7 @@ class PlayerPickActivity : _BaseReportActivity() {
                 val incident = Incident(
                     // todo: handle descriptions with microphone
                     description = type.toString(),
-                    minute = timerViewModel.liveElapsedTime.value!!.toInt() / 60,
+                    minute = timerViewModel.elapsedTime.value!!.toInt() / 60,
                     player_id = player.id,
                     type = type!!
                 )

@@ -6,7 +6,7 @@ data class MatchReport (
     val match_id: Int? = null,
     val referee_id: Int = 0,
     val done: Boolean = false,
-    val timer: List<Int> = listOf(0,0)
+    val timer: MutableList<Int> = mutableListOf(0,0)
 ) {
     lateinit var incidents: List<Incident>
 
