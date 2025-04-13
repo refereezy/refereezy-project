@@ -79,16 +79,17 @@ object FirebaseManager {
         }
     }
 
-    fun initReport(matchId: Int, refereeId: Int): MatchReport {
+    suspend fun initReport(matchId: Int, refereeId: Int): MatchReport {
         val db = Firebase.firestore
 
         val reportRef = db.collection(REPORT_COLLECTION).document()
+
         val report = MatchReport(
             id = reportRef.id,
             match_id = matchId,
             referee_id = refereeId)
 
-        reportRef.set(report)
+        reportRef.set(report).await()
 
         return report
     }
@@ -141,8 +142,6 @@ object FirebaseManager {
 
     }
 
-
-
     suspend fun removeIncident(reportId: String, incidentId: String): Boolean {
         val reportRef = db.collection(REPORT_COLLECTION).document(reportId)
 
@@ -160,6 +159,22 @@ object FirebaseManager {
 
         return true
 
+    }
+
+    suspend fun getDoneMatches(refereeId: Int): List<Long> {
+        val reportQuery = db.collection(REPORT_COLLECTION)
+            .whereEqualTo("referee_id", refereeId)
+            .whereEqualTo("done", true)
+
+        val result = reportQuery.get().await()
+
+        val ids = mutableListOf<Long>()
+
+        result.documents.forEach {
+            ids.add(it.get("match_id") as Long)
+        }
+
+        return ids
     }
 
 }

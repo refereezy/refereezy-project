@@ -1,12 +1,11 @@
 package com.example.refereezyapp.data.handlers
 
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.refereezyapp.data.static.ReportManager
+import com.example.refereezyapp.data.managers.ReportManager
 import kotlinx.coroutines.launch
 
 class TimerViewModel: ViewModel() {

@@ -14,7 +14,7 @@ import com.example.refereezyapp.R
 import com.example.refereezyapp.data.LocalStorageManager
 import com.example.refereezyapp.data.handlers.RefereeViewModel
 import com.example.refereezyapp.data.models.RefereeLogin
-import com.example.refereezyapp.data.static.RefereeManager
+import com.example.refereezyapp.data.managers.RefereeManager
 
 class LoginActivity : AppCompatActivity() {
 

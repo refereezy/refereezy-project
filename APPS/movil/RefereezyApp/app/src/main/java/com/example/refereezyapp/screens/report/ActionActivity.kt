@@ -7,11 +7,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import com.example.refereezyapp.R
 import com.example.refereezyapp.data.handlers.ReportService
+import com.example.refereezyapp.data.managers.MatchManager
 import com.example.refereezyapp.data.models.IncidentType
-import com.example.refereezyapp.data.static.ReportManager
+import com.example.refereezyapp.data.managers.ReportManager
+import com.example.refereezyapp.screens.user.MatchActivity
 import com.example.refereezyapp.utils.ConfirmationDialog
 import com.example.refereezyapp.utils.PopUp
 
@@ -60,7 +61,7 @@ class ActionActivity : _BaseReportActivity() {
 
         // pauseBtn behaviours
         pauseBtn.setOnClickListener(this::toggleTimerState)
-        pauseBtn.setOnLongClickListener {this::tryCloseReport; true}
+        pauseBtn.setOnLongClickListener { tryCloseReport(); true}
 
         // Disable back button
         val callback = object : OnBackPressedCallback(true) {
@@ -94,6 +95,10 @@ class ActionActivity : _BaseReportActivity() {
                 onCancel = {}
             )
         }
+        else {
+            moveTo(MatchActivity::class.java)
+        }
+
     }
 
     fun toggleTimerState (v: View) {
@@ -106,7 +111,7 @@ class ActionActivity : _BaseReportActivity() {
         }
     }
 
-    fun tryCloseReport (v: View) {
+    fun tryCloseReport () {
         // alertar que intenta acabar el partido
         ConfirmationDialog.showReportDialog(
             this,
@@ -117,12 +122,6 @@ class ActionActivity : _BaseReportActivity() {
         )
     }
 
-    fun endMatchReport() {
-        ReportService.endReport(report)
-        // todo: tal vez mostrar en la pantalla de matches la URL a la pagina donde se puede ver la info de las incidencias?
-        // todo: filtrar de alguna manera las matches para no mostrar las que ya han acabado
-        ReportManager.setCurrentReport(null)
-    }
 
 
 }

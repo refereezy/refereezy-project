@@ -8,7 +8,7 @@ data class MatchReport (
     var done: Boolean = false,
     val timer: MutableList<Int> = mutableListOf(0,0)
 ) {
-    lateinit var incidents: List<Incident>
+    var incidents: List<Incident> = emptyList()
 
 
 

@@ -28,12 +28,13 @@ import com.example.refereezyapp.data.models.Match
 import com.example.refereezyapp.data.models.PopulatedMatch
 import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.models.Team
-import com.example.refereezyapp.data.static.MatchManager
-import com.example.refereezyapp.data.static.RefereeManager
-import com.example.refereezyapp.data.static.ReportManager
+import com.example.refereezyapp.data.managers.MatchManager
+import com.example.refereezyapp.data.managers.RefereeManager
+import com.example.refereezyapp.data.managers.ReportManager
 import com.example.refereezyapp.screens.report.ActionActivity
 import com.example.refereezyapp.utils.ConfirmationDialog
 import com.example.refereezyapp.utils.PopUp
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -196,9 +197,10 @@ class MatchActivity : AppCompatActivity() {
         if (report == null || report.raw.done) {
             runBlocking {
                 val populatedMatch = MatchService.getMatch(match.id)
-                report = reportService.initReport(populatedMatch!!)
+                report = async { reportService.initReport(populatedMatch!!) }.await()
             }
         }
+
 
         try {
 
@@ -208,6 +210,7 @@ class MatchActivity : AppCompatActivity() {
                     "Another report already started",
                     "You have to finish the current report before starting a new one",
                     onConfirm = {
+                        ReportManager.setCurrentReport(report)
                         goToReport()
                     },
                     onCancel = {
@@ -217,12 +220,14 @@ class MatchActivity : AppCompatActivity() {
                 )
             }
             else {
+                ReportManager.setCurrentReport(report)
                 goToReport()
             }
 
         }
         catch (e: Exception) {
-            Log.e("MatchActivity", "Error preparing report: ${e.message}")
+            Log.e("MatchActivity", "Error preparing report: $e")
+            e.printStackTrace()
             PopUp.Companion.show(this, "Error preparing report", PopUp.Type.ERROR)
         }
 

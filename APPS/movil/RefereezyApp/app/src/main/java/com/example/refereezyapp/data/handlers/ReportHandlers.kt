@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 
 object ReportService {
 
-    fun initReport(match: PopulatedMatch): PopulatedReport {
+    suspend fun initReport(match: PopulatedMatch): PopulatedReport {
         val report = FirebaseManager.initReport(
             match.raw.id, match.raw.referee_id)
 

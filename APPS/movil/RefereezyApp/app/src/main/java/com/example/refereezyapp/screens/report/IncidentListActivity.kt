@@ -7,7 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.refereezyapp.R
+import com.example.refereezyapp.utils.recyclers.IncidentAdapter
 
 class IncidentListActivity : _BaseReportActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +25,9 @@ class IncidentListActivity : _BaseReportActivity() {
 
         //! this class extends BaseReportActivity, which initializes the basic values
 
-
+        val incidentRecycler = findViewById<RecyclerView>(R.id.incidentRecycler)
+        incidentRecycler.layoutManager = LinearLayoutManager(this)
+        incidentRecycler.adapter = IncidentAdapter(report.incidents.sortedBy { it.raw.minute }, report)
 
 
     }

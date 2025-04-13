@@ -7,14 +7,17 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.refereezyapp.MyApp
+import com.example.refereezyapp.data.handlers.ReportService
 import com.example.refereezyapp.data.handlers.TimerViewModel
+import com.example.refereezyapp.data.managers.MatchManager
 import com.example.refereezyapp.data.models.IncidentType
 import com.example.refereezyapp.data.models.PopulatedIncident
 import com.example.refereezyapp.data.models.PopulatedReport
 import com.example.refereezyapp.data.models.Team
 import com.example.refereezyapp.data.models.TeamType
-import com.example.refereezyapp.data.static.ReportManager
+import com.example.refereezyapp.data.managers.ReportManager
 import com.example.refereezyapp.screens.fragments.ScoreFragment
+import com.example.refereezyapp.screens.user.MatchActivity
 import kotlin.collections.forEach
 
 open class _BaseReportActivity : AppCompatActivity() {
@@ -93,6 +96,14 @@ open class _BaseReportActivity : AppCompatActivity() {
         localPoints = countTeamGoals(localTeam.id, report.incidents)
         visitorPoints = countTeamGoals(visitorTeam.id, report.incidents)
         scoreboard = ScoreFragment(localPoints, visitorPoints, localTeam, visitorTeam)
+    }
+
+    fun endMatchReport() {
+        ReportService.endReport(report)
+        ReportManager.clearReport()
+        MatchManager.removeMatch(report.match.raw.id) // esto no hace mucho efecto pues la MatchActivity vuelve a cargarlas
+        MatchManager.clearCurrentMatch()
+        moveTo(MatchActivity::class.java)
     }
 
 

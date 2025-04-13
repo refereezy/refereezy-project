@@ -11,9 +11,9 @@ import com.example.refereezyapp.data.models.Clock
 import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.models.RefereeLogin
 import com.example.refereezyapp.data.models.RefereeUpdate
-import com.example.refereezyapp.data.static.MatchManager
-import com.example.refereezyapp.data.static.RefereeManager
-import com.example.refereezyapp.data.static.ReportManager
+import com.example.refereezyapp.data.managers.MatchManager
+import com.example.refereezyapp.data.managers.RefereeManager
+import com.example.refereezyapp.data.managers.ReportManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

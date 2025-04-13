@@ -14,8 +14,9 @@ import com.example.refereezyapp.data.handlers.ReportService
 import com.example.refereezyapp.data.models.Incident
 import com.example.refereezyapp.data.models.IncidentType
 import com.example.refereezyapp.data.models.TeamType
-import com.example.refereezyapp.data.static.ReportManager
 import net.orandja.shadowlayout.ShadowLayout
+import androidx.core.graphics.toColorInt
+
 
 class PlayerPickActivity : _BaseReportActivity() {
 
@@ -33,13 +34,11 @@ class PlayerPickActivity : _BaseReportActivity() {
 
         // this class extends BaseReportActivity, which initializes the basic values
 
-        report = ReportManager.getCurrentReport()!!
-
         // getting previous data
         val type = intent.getSerializableExtra("type") as? IncidentType
         val teamSelection = intent.getSerializableExtra("team") as? TeamType
         val team = if (teamSelection == TeamType.LOCAL) localTeam else visitorTeam
-        //val description = intent.getStringExtra("description")
+        val description = intent.getStringExtra("description")
 
         // components
         val grid = findViewById<GridLayout>(R.id.playerGrid)
@@ -51,17 +50,15 @@ class PlayerPickActivity : _BaseReportActivity() {
 
             val color = if (player.is_goalkeeper) team.secondary_color else team.primary_color
 
-            shadow.shadow_color = Color.parseColor("#ffffff")
-            dorsal.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+            dorsal.backgroundTintList = ColorStateList.valueOf(color.toColorInt())
             dorsal.text = player.dorsal.toString()
 
             dorsal.setOnClickListener {
                 val incident = Incident(
-                    // todo: handle descriptions with microphone
-                    description = type.toString(),
+                    type = type!!,
+                    description = description?: type.name,
                     minute = timer.elapsedTime.value!!.toInt() / 60,
-                    player_id = player.id,
-                    type = type!!
+                    player_id = player.id
                 )
 
                 // this automatically modifies the report and saves into database

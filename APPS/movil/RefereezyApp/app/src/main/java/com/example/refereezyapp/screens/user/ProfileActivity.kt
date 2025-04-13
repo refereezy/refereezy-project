@@ -14,9 +14,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.refereezyapp.R
 import com.example.refereezyapp.data.handlers.RefereeService
 import com.example.refereezyapp.data.handlers.RefereeViewModel
-import com.example.refereezyapp.data.static.RefereeManager
-import com.example.refereezyapp.screens.user.LoginActivity
-import com.example.refereezyapp.screens.user.MatchActivity
+import com.example.refereezyapp.data.managers.RefereeManager
 import com.example.refereezyapp.utils.PopUp
 
 class ProfileActivity : AppCompatActivity() {
