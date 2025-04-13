@@ -15,3 +15,4 @@ class MyApp : Application(), ViewModelStoreOwner {
     override val viewModelStore: ViewModelStore
         get() = appViewModelStore
 }
+

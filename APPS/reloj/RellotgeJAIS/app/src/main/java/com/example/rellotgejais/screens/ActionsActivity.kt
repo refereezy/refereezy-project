@@ -4,17 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
 import com.example.rellotgejais.models.TimerViewModel
 
 class ActionsActivity : AppCompatActivity() {
-    var estdoCrono: Boolean = false
+    var timerState: Boolean = false
     private lateinit var timer: TimerViewModel
 
 
@@ -30,7 +27,7 @@ class ActionsActivity : AppCompatActivity() {
         val btnIncidencias = findViewById<ImageButton>(R.id.inccidencias)
         val btnGol = findViewById<ImageButton>(R.id.gol)
         buttonPlayPause.setOnClickListener { v: View? ->
-            if (estdoCrono) {
+            if (timerState) {
                 buttonPlayPause.setImageResource(android.R.drawable.ic_media_play)
                 timer.stopTimer()
 
@@ -38,7 +35,7 @@ class ActionsActivity : AppCompatActivity() {
                 buttonPlayPause.setImageResource(android.R.drawable.ic_media_pause)
                 timer.startTimer()
             }
-            estdoCrono = !estdoCrono
+            timerState = !timerState
         }
 
 
