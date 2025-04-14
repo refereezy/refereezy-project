@@ -2,6 +2,7 @@ package com.example.refereezyapp.screens.report
 
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -15,6 +16,7 @@ import com.example.refereezyapp.utils.PopUp
 class MicrophoneActivity : _BaseReportActivity() {
 
     private var description: String? = null
+    private var miceStatse: Boolean = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +41,26 @@ class MicrophoneActivity : _BaseReportActivity() {
         // val micBtn = findViewById<ImageButton>(R.id.micBtn)
         val continueBtn = findViewById<ImageButton>(R.id.continueBtn)
         val flipBtn = findViewById<ImageButton>(R.id.flipBtn)
+        val micTextBoard = findViewById<TextView>(R.id.micTextBoard)
+        val micbtn = findViewById<ImageButton>(R.id.micBtn)
 
         // behaviour
 
         // logica para manejar microfono
         // todo: el microfono debe setear la propiedad description
+
+        micbtn.setOnClickListener {view ->
+            if (miceStatse) {
+                micbtn.setImageResource(R.drawable.micred)
+                miceStatse = false
+                //micTextBoard.text = "Pulsa para Grabar."
+            }else{
+                micbtn.setImageResource(R.drawable.mic)
+                miceStatse = true
+               // micTextBoard.text = "Grabando..."
+            }
+
+        }
 
         continueBtn.setOnClickListener {
             if (description.isNullOrBlank() && !requiresPlayer) {
