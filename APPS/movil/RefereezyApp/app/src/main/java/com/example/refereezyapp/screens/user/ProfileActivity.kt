@@ -47,10 +47,10 @@ class ProfileActivity : AppCompatActivity() {
 
         userField.text = referee.name
         dniField.text = referee.dni
-        clockCodeField.setText(referee.clock_code)
+        clockCodeField.setText(referee.clock_code?: "None")
 
 
-        // page interactions
+        // behaviour
         logoutBtn.setOnClickListener {
             RefereeService.logout()
             finishAffinity()
@@ -89,6 +89,11 @@ class ProfileActivity : AppCompatActivity() {
             passwordField.clearFocus()
 
             return@setOnEditorActionListener true
+        }
+
+        editClockBtn.setOnClickListener {
+            refereeViewModel.revokeClock(referee.id)
+            openActivity(PairingClockActivity::class.java)
         }
 
         // changes on referee

@@ -226,8 +226,7 @@ class MatchActivity : AppCompatActivity() {
 
         }
         catch (e: Exception) {
-            Log.e("MatchActivity", "Error preparing report: $e")
-            e.printStackTrace()
+            Log.e("MatchActivity", "Error preparing report", e)
             PopUp.Companion.show(this, "Error preparing report", PopUp.Type.ERROR)
         }
 

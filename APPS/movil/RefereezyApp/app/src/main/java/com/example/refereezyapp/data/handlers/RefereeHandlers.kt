@@ -78,7 +78,7 @@ class RefereeViewModel : ViewModel() {
                 referee.clock_code = clockCode
                 _referee.value = referee
             } catch (e: Exception) {
-                Log.e("Retrofit (pairClock)", "Error de conexión: ${e.message}")
+                Log.e("Retrofit (pairClock)", "Error de conexión", e)
             }
         }
     }
