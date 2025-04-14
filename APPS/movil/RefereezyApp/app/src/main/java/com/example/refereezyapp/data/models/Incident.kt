@@ -30,7 +30,7 @@ class PopulatedIncident(
 
 
 enum class IncidentType {
-    GOAL, YELLOW_CARD, RED_CARD, LESION, FIGHT, OTHER;
+    GOAL, YELLOW_CARD, RED_CARD, LESION, FIGHT, SUSPEND, OTHER;
 
     fun fromString(value: String): IncidentType {
         return when (value) {
@@ -39,6 +39,7 @@ enum class IncidentType {
             "RED_CARD" -> RED_CARD
             "LESION" -> LESION
             "FIGHT" -> FIGHT
+            "SUSPEND" -> SUSPEND
             "OTHER" -> OTHER
             else -> throw Exception("Invalid incident type: $value")
         }

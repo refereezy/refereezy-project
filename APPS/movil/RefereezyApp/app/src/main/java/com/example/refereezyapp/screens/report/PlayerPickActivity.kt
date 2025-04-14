@@ -42,11 +42,11 @@ class PlayerPickActivity : _BaseReportActivity() {
 
         // components
         val grid = findViewById<GridLayout>(R.id.playerGrid)
+        val flipBtn = findViewById<ShadowLayout>(R.id.flipBtn)
 
         for (player in team.players) {
             val inflater = LayoutInflater.from(this).inflate(R.layout.layout_player_pick, grid, false)
             val dorsal = inflater.findViewById<TextView>(R.id.dorsal)
-            val shadow = inflater.findViewById<ShadowLayout>(R.id.shadow)
 
             val color = if (player.is_goalkeeper) team.secondary_color else team.primary_color
 
@@ -57,7 +57,7 @@ class PlayerPickActivity : _BaseReportActivity() {
                 val incident = Incident(
                     type = type!!,
                     description = description?: type.name,
-                    minute = timer.elapsedTime.value!!.toInt() / 60,
+                    minute = timer.getElapsedMinutes(),
                     player_id = player.id
                 )
 
@@ -70,6 +70,8 @@ class PlayerPickActivity : _BaseReportActivity() {
 
             grid.addView(inflater)
         }
+
+        flipBtn.setOnClickListener(this::flipScreen)
 
     }
 

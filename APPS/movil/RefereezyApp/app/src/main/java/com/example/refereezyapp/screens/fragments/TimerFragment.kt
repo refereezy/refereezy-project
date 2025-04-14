@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.refereezyapp.MyApp
 import com.example.refereezyapp.R
 import com.example.refereezyapp.data.handlers.TimerViewModel
+import com.example.refereezyapp.utils.ConfirmationDialog
 
 class TimerFragment : Fragment() {
 
@@ -34,13 +35,33 @@ class TimerFragment : Fragment() {
 
         textViewTimer.setOnClickListener {
             if (!timerViewModel.isRunning) {
-                timerViewModel.resetTimer()
+                if (timerViewModel.getElapsedMinutes() < 45) {
+                    confirmTimeTruncation("00:00") {
+                        timerViewModel.resetTimer()
+                    }
+                } else {
+                    confirmTimeTruncation("45:00") {
+                        timerViewModel.setCustomTime(45, 0)
+                    }
+                }
             }
         }
 
         return view
     }
 
+
+    fun confirmTimeTruncation(newTime: String, onConfirm: () -> Unit) {
+
+        ConfirmationDialog.showReportDialog (
+            requireContext(),
+            "Truncate time?",
+            "Are you sure you want to truncate the time to $newTime?",
+            onConfirm,
+            onCancel = {}
+        )
+
+    }
 
 
 }

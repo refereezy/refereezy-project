@@ -17,7 +17,7 @@ import com.example.refereezyapp.data.models.PopulatedReport
 import androidx.core.graphics.toColorInt
 
 class IncidentAdapter(
-    private val incidents: List<PopulatedIncident>,
+    private val incidents: MutableList<PopulatedIncident>,
     private val report: PopulatedReport
 ): RecyclerView.Adapter<IncidentAdapter.IncidentViewHolder>() {
 
@@ -59,13 +59,15 @@ class IncidentAdapter(
             RED_CARD -> R.drawable.t_roja
             LESION -> R.drawable.ic_lesion
             FIGHT -> R.drawable.ic_fight
-            OTHER -> R.drawable.ic_suspend
+            SUSPEND -> R.drawable.ic_suspend
+            OTHER -> R.drawable.ic_warning // not implemented correctly yet
         })
 
         holder.deleteBtn.setOnClickListener {
 
             ReportService.removeIncident(report, incident.raw)
             notifyItemRemoved(holder.adapterPosition)
+            incidents.removeAt(position)
             notifyItemRangeChanged(position, incidents.size)
 
         }

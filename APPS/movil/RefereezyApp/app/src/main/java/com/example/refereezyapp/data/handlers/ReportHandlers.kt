@@ -63,6 +63,7 @@ object ReportService {
 
             report.incidents.add(populated)
             res = populated
+            println("Incident added: $incident")
 
         }
 

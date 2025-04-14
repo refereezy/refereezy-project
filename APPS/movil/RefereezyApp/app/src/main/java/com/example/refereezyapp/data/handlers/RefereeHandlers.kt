@@ -54,8 +54,8 @@ object RefereeService {
 }
 
 class RefereeViewModel : ViewModel() {
-    private val _referee = MutableLiveData<Referee?>()
-    val referee: LiveData<Referee?> get() = _referee
+    private val _referee = MutableLiveData<Referee>()
+    val referee: LiveData<Referee> get() = _referee
 
     fun changePassword(referee: Referee, newPassword: String) {
         viewModelScope.launch {

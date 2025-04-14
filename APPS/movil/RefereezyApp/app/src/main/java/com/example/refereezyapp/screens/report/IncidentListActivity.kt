@@ -3,6 +3,7 @@ package com.example.refereezyapp.screens.report
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -25,10 +26,20 @@ class IncidentListActivity : _BaseReportActivity() {
 
         //! this class extends BaseReportActivity, which initializes the basic values
 
+        // components
         val incidentRecycler = findViewById<RecyclerView>(R.id.incidentRecycler)
-        incidentRecycler.layoutManager = LinearLayoutManager(this)
-        incidentRecycler.adapter = IncidentAdapter(report.incidents.sortedBy { it.raw.minute }, report)
+        val flipBtn = findViewById<ImageButton>(R.id.flipBtn)
 
+        // drawing data
+        incidentRecycler.layoutManager = LinearLayoutManager(this)
+        incidentRecycler.adapter = IncidentAdapter(report.incidents
+            .sortedBy { it.raw.minute }
+            .toMutableList(), report)
+
+
+
+        // behaviours
+        flipBtn.setOnClickListener(this::flipScreen)
 
     }
 

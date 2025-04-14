@@ -72,12 +72,22 @@ open class _BaseReportActivity : AppCompatActivity() {
         return goals
     }
 
+    // normal move to, stacks if needed
     fun moveTo(activity: Class<*>, stack: Boolean = false) {
         val intent = Intent(this, activity)
         if (stack) { intent.putExtras(this.intent.extras?: Bundle()) }
         startActivity(intent)
     }
 
+    // move to with description, always stacks
+    fun moveTo(activity: Class<*>, description: String?) {
+        val intent = Intent(this, activity)
+        intent.putExtras(this.intent.extras?: Bundle()) // siempre stackea
+        intent.putExtra("description", description)
+        startActivity(intent)
+    }
+
+    // move to with type, stacks if needed
     fun moveTo(activity: Class<*>, type: IncidentType, stack: Boolean = false) {
         val intent = Intent(this, activity)
         if (stack) { intent.putExtras(this.intent.extras?: Bundle()) }
@@ -85,6 +95,7 @@ open class _BaseReportActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    // move to with team, stacks if needed
     fun moveTo(activity: Class<*>, team: TeamType) {
         val intent = Intent(this, activity)
         intent.putExtras(this.intent.extras?: Bundle()) // siempre stackea
@@ -92,13 +103,16 @@ open class _BaseReportActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    // recount goals and sets the fragment again
     private fun reloadTeamGoals() {
         localPoints = countTeamGoals(localTeam.id, report.incidents)
         visitorPoints = countTeamGoals(visitorTeam.id, report.incidents)
         scoreboard = ScoreFragment(localPoints, visitorPoints, localTeam, visitorTeam)
     }
 
+    // ends the report and moves to MatchActivity
     fun endMatchReport() {
+        timer.stop()
         ReportService.endReport(report)
         ReportManager.clearReport()
         MatchManager.removeMatch(report.match.raw.id) // esto no hace mucho efecto pues la MatchActivity vuelve a cargarlas

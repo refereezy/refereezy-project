@@ -39,8 +39,8 @@ class CardPickActivity : _BaseReportActivity() {
 
         // behaviour
         flipBtn.setOnClickListener(this::flipScreen)
-        yellowCardBtn.setOnClickListener { moveTo(TeamPickActivity::class.java, IncidentType.YELLOW_CARD) }
-        redCardBtn.setOnClickListener { moveTo(TeamPickActivity::class.java, IncidentType.RED_CARD) }
+        yellowCardBtn.setOnClickListener { moveTo(MicrophoneActivity::class.java, IncidentType.YELLOW_CARD) }
+        redCardBtn.setOnClickListener { moveTo(MicrophoneActivity::class.java, IncidentType.RED_CARD) }
 
 
     }

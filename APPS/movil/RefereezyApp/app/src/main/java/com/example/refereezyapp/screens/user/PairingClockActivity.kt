@@ -33,101 +33,80 @@ import java.util.concurrent.Executors
 class PairingClockActivity : AppCompatActivity() {
 
     private lateinit var cameraExecutor: ExecutorService
-    private var isScanning = true
     private lateinit var previewView: PreviewView
-    private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private lateinit var cameraProvider: ProcessCameraProvider
-    private var currentDialog: AlertDialog? = null
+
+    private val CAMERA_PERMISSION_REQUEST_CODE = 100
 
     private val refereeViewModel: RefereeViewModel by viewModels()
+
+    private var isCheckingCode = false // ✅ Para evitar spam de validaciones
+    private var currentDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_pairing_clock)
+
+        previewView = findViewById(R.id.cameraPreview)
+        cameraExecutor = Executors.newSingleThreadExecutor()
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-
-        previewView = findViewById(R.id.cameraPreview)
-        cameraExecutor = Executors.newSingleThreadExecutor()
-        val returnBtn = findViewById<Button>(R.id.cancelBtn)
-
-        returnBtn.setOnClickListener {
-            onBackPressed()
-            finish()
-        }
-
         checkCameraPermission()
     }
 
-
     private fun checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED
         ) {
-            requestCameraPermission()
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_REQUEST_CODE
+            )
         } else {
-            startCamera()
+            initializeCamera()
         }
     }
 
-    private fun requestCameraPermission() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.CAMERA),
-            CAMERA_PERMISSION_REQUEST_CODE
-        )
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            CAMERA_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startCamera()
-                } else {
-                    PopUp.show(this, "Camera permission is required to scan QR codes", PopUp.Type.ERROR)
-                    finish()
-                }
-            }
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE &&
+            grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED
+        ) {
+            initializeCamera()
+        } else {
+            PopUp.show(this, "Camera permission is required to scan QR codes", PopUp.Type.ERROR)
+            finish()
         }
     }
 
     @OptIn(ExperimentalGetImage::class)
-    private fun startCamera() {
+    private fun initializeCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-
         cameraProviderFuture.addListener({
             cameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(previewView.surfaceProvider)
+            val preview = Preview.Builder().build().apply {
+                setSurfaceProvider(previewView.surfaceProvider)
             }
 
             val analyzer = ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor) { imageProxy ->
+                .apply {
+                    setAnalyzer(cameraExecutor) { imageProxy ->
                         val mediaImage = imageProxy.image
                         val rotation = imageProxy.imageInfo.rotationDegrees
-                        try {
-                            if (mediaImage != null && isScanning) {
-                                val image = InputImage.fromMediaImage(mediaImage, rotation)
-                                processImage(image, imageProxy)
-                            }
-                        } catch (e: Exception) {
-                            Log.e("Camera", "Error processing image", e)
-                        } finally {
+
+                        if (mediaImage != null && !isCheckingCode) {
+                            val image = InputImage.fromMediaImage(mediaImage, rotation)
+                            processBarcode(image, imageProxy)
+                        } else {
                             imageProxy.close()
                         }
                     }
@@ -135,52 +114,61 @@ class PairingClockActivity : AppCompatActivity() {
 
             try {
                 cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
-                    this,
-                    CameraSelector.DEFAULT_BACK_CAMERA,
-                    preview,
-                    analyzer
-                )
+                cameraProvider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, analyzer)
             } catch (e: Exception) {
-                Log.e("Camera", "Error setting camera", e)
+                Log.e("Camera", "Failed to bind camera use cases", e)
             }
+
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun processImage(image: InputImage, imageProxy: ImageProxy) {
+    private fun processBarcode(image: InputImage, imageProxy: ImageProxy) {
+        if (isCheckingCode) {
+            imageProxy.close()
+            return
+        }
+
         val scanner = BarcodeScanning.getClient()
         scanner.process(image)
             .addOnSuccessListener { barcodes ->
-                for (barcode in barcodes) {
-                    barcode.rawValue?.let { qrValue ->
-                        if (isValidClockCode(qrValue) && isScanning) {
-                            isScanning = false
-                            runOnUiThread {
-                                pairClock(qrValue)
-                            }
-                        }
-                    }
+                barcodes.firstOrNull { it.rawValue != null && isValidClockCode(it.rawValue!!) }?.rawValue?.let { qrValue ->
+                    checkClockCode(qrValue)
                 }
             }
             .addOnFailureListener { e ->
-                Log.e("QRScanner", "Error en escaneo", e)
+                Log.e("QRScanner", "Error scanning barcode", e)
             }
             .addOnCompleteListener {
                 imageProxy.close()
             }
     }
 
-    private fun isValidClockCode(qrValue: String): Boolean {
-        val pattern = Regex("\\w{50}")
-        return pattern.matches(qrValue)
+    private fun isValidClockCode(code: String): Boolean {
+        return Regex("\\w{50}").matches(code)
     }
 
-    private fun pairClock(code: String) {
+    private fun checkClockCode(code: String) {
+        isCheckingCode = true
 
-        PopUp.show(this, "Code: ${code.substring(5)}...", PopUp.Type.OK)
-        // todo: comprobar que el codigo exista en la db
-        refereeViewModel.pairClock(referee = RefereeManager.getCurrentReferee()!!, code)
-        finish()
+        val referee = RefereeManager.getCurrentReferee() ?: run {
+            PopUp.show(this, "No referee session found", PopUp.Type.ERROR)
+            isCheckingCode = false
+            return
+        }
+
+        refereeViewModel.pairClock(referee, code)
+
+        refereeViewModel.referee.observe(this) { referee ->
+            isCheckingCode = false
+
+            if (referee.clock_code != null) {
+                PopUp.show(this, "Clock paired correctly", PopUp.Type.OK)
+                finish()
+            } else {
+                PopUp.show(this, "Invalid clock QR, not registered", PopUp.Type.ERROR)
+                // La cámara sigue activa, no hacemos `finish()`
+            }
+        }
     }
 
     override fun onDestroy() {

@@ -87,6 +87,12 @@ class TimerViewModel: ViewModel() {
         _elapsedTime.value = 0
         isStarted = false
     }
+
+    fun setCustomTime(minutes: Int, seconds: Int) {
+        stop()
+        _elapsedTime.value = minutes * 60 + seconds
+    }
+
     override fun onCleared() {
         //Se llama automáticamente si el ViewModel se destruye. Aquí se limpia la memoria.
         super.onCleared()
