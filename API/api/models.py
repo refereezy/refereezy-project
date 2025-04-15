@@ -10,6 +10,7 @@ class Client(Base):
     plan = Column(String)
     plan_expiration = Column(Date)
     email = Column(String, unique=True)
+    password = Column(String)
     phone = Column(String)
 
     teams = relationship("Team", back_populates="client", cascade="all, delete")
