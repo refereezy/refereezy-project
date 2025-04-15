@@ -13,7 +13,7 @@ router = APIRouter(tags=["Pairing"])
 def gen_code(db: Session = Depends(get_db)):
   attemps = 0
   while True:
-    code = ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=50))
+    code = ''.join(random.choices(string.ascii_letters + string.digits, k=50))
     
     clock = Clock()
     clock.code = code
