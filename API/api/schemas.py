@@ -4,7 +4,7 @@ from typing import Optional
 
 #  Model para Team
 class TeamBase(BaseModel):
-    id : int
+    # He quitado el id: int
     name: str
     primary_color: str
     secondary_color: str
@@ -15,13 +15,13 @@ class TeamCreate(TeamBase):
     pass
 
 class TeamResponse(TeamBase):
-    id: int
+    # id: int
     class Config:
         orm_mode = True
 
 #  Model para Player
 class PlayerBase(BaseModel):
-    id: int
+    # id: int
     name: str
     dorsal_number: int
     dni: str
@@ -39,7 +39,7 @@ class PlayerResponse(PlayerBase):
 
 #  Model para Match
 class MatchBase(BaseModel):
-    id: int
+    # id: int
     date: datetime
     matchgroup_id: int
     client_id: int
@@ -57,7 +57,7 @@ class MatchResponse(MatchBase):
 
 #  Model para Referee
 class RefereeBase(BaseModel):
-    id: int
+    # id: int
     name: str
     dni: str
     client_id: int
@@ -85,7 +85,7 @@ class RefereeResponse(RefereeBase):
 
 #  Model para MatchGroup
 class MatchGroupBase(BaseModel):
-    id: int
+    # id: int
     name: str
     visibilty: str
     code: str
@@ -101,10 +101,12 @@ class MatchGroupResponse(MatchGroupBase):
 
 #  Model para Client
 class ClientBase(BaseModel):
+    # id: int
     name: str
     plan: str
     plan_expiration: datetime
     email: str
+    password: str # no estaba
     phone: str
 
 class ClientCreate(ClientBase):
