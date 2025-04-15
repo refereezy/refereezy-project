@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Árbitros - RefereeZY</title>
+    <title>Gestión de Árbitros - RefereeZY</title>
     <link rel="stylesheet" href="../style/arbitros.css">
-    <link rel="stylesheet" href="../style/ver-arbitros.css">
 </head>
 <body>
     <div class="min-h-screen">
@@ -32,37 +31,32 @@
             </div>
         </nav>
 
-        <!-- Main Content -->
+        <!-- Gestión de Árbitros Section -->
         <main class="referees-section">
             <div class="container">
                 <div class="referees-card">
-                    <!-- Título con diseño angular -->
                     <div class="title-container">
                         <div class="title-background"></div>
-                        <h1>Lista de Arbitros</h1>
+                        <h1>Gestion de Arbitros</h1>
                     </div>
 
-                    <!-- Contenido dinámico -->
-                    <div class="referees-content"></div>
+                    <div class="form-container">
+                        <div class="input-group">
+                            <input type="text" placeholder="Nombre del Arbitro" class="referee-name-input" id="refereeName">
+                            <select class="match-select" id="matchSelect">
+                                <option value="">Seleccione un partido</option>
+                            </select>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="add-referee-btn">Agregar arbitro</button>
+                            <a href="ver-arbitros.html" class="view-referees-btn">Ver mas Arbitros</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
-
-        <!-- Modal para asignar partido -->
-        <div id="assignMatchModal" class="modal">
-            <div class="modal-content">
-                <h2>Asignar Partido</h2>
-                <p>Asignando partido para: <span id="selectedRefereeName"></span></p>
-                <select id="availableMatches" class="match-select">
-                    <option value="">Seleccione un partido</option>
-                </select>
-                <div class="modal-buttons">
-                    <button id="assignMatchBtn" class="primary-button">Asignar</button>
-                    <button id="closeModalBtn" class="secondary-button">Cancelar</button>
-                </div>
-            </div>
-        </div>
     </div>
-    <script src="../js/ver-arbitros.js"></script>
+    <script src="../js/arbitros.js"></script>
 </body>
 </html>

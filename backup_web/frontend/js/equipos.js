@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const logoUploadBtn = document.querySelector('.logo-upload-btn');
-    const removeLogoBtn = document.querySelector('.remove-logo-btn');
     const logoPreview = document.querySelector('.logo-preview');
     const addTeamBtn = document.querySelector('.add-team-btn');
     const viewTeamsBtn = document.querySelector('.view-teams-btn');
@@ -27,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="${currentLogo}" alt="Logo preview" 
                              style="max-width: 100%; max-height: 100%; object-fit: contain;">
                     `;
-                    removeLogoBtn.style.display = 'block'; // Mostrar el botón de quitar logo
                 };
                 reader.readAsDataURL(file);
             }
@@ -36,40 +34,25 @@ document.addEventListener('DOMContentLoaded', () => {
         input.click();
     });
 
-    removeLogoBtn.addEventListener('click', () => {
-        currentLogo = null;
-        logoPreview.innerHTML = '<span>Vista previa del logo</span>';
-        removeLogoBtn.style.display = 'none'; // Ocultar el botón de quitar logo
-    });
-
     addTeamBtn.addEventListener('click', async () => {
         const teamName = teamNameInput.value.trim();
         const primaryColor = primaryColorInput.value.trim();
         const secondaryColor = secondaryColorInput.value.trim();
-        const clientIdRaw = clientIdInput.value.trim();
-        const clientId = parseInt(clientIdRaw, 10);
+        const clientId = clientIdInput.value.trim();
 
-        if (!teamName || !primaryColor || !secondaryColor || !clientIdRaw) {
+        if (!teamName || !primaryColor || !secondaryColor || !clientId) {
             alert('Por favor completa todos los campos');
             return;
         }
 
-        if (isNaN(clientId) || clientId <= 0) {
-            alert('El ID del cliente debe ser un número válido mayor a 0');
-            return;
-        }
-
         const newTeam = {
-            // Aquí se debería de quitar el id
-            id: 0,
+            id: 0, // o puedes omitirlo si el backend lo genera
             name: teamName,
             primary_color: primaryColor,
             secondary_color: secondaryColor,
-            client_id: clientId,
-            logo_url: currentLogo || ""
+            logo_url: currentLogo || "", // puede estar vacío si no se subió uno
+            client_id: Number(clientId)
         };
-
-        console.log("Enviando equipo:", newTeam);
 
         try {
             const res = await fetch(`${API_URL}/teams`, {
@@ -82,11 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!res.ok) {
                 const errorText = await res.text();
-                console.error("Respuesta del servidor:", errorText);
                 throw new Error(errorText || 'Error al guardar el equipo');
             }
 
-            alert('✅ ¡Equipo agregado exitosamente!');
+            alert('Equipo agregado exitosamente!');
 
             // Limpiar formulario
             teamNameInput.value = '';
@@ -95,10 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
             clientIdInput.value = '';
             logoPreview.innerHTML = '<span>Vista previa del logo</span>';
             currentLogo = null;
-            removeLogoBtn.style.display = 'none'; // Ocultar el botón de quitar logo
         } catch (err) {
-            console.error("Error al guardar el equipo:", err);
-            alert('❌ Error al guardar el equipo: ' + err.message);
+            console.error(err);
+            alert('Error al guardar el equipo: ' + err.message);
         }
     });
 

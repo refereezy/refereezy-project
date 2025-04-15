@@ -1,0 +1,43 @@
+
+<!-- Home interna tras el login -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel de Control - Refereezy</title>
+  <link rel="stylesheet" href="frontend/style/dashboard.css" />
+</head>
+<body>
+  <nav class="dashboard-nav">
+    <div class="nav-logo">Refereezy ⚽</div>
+    <ul class="nav-links">
+      <li><a href="frontend/pages/equipos.html">Equipos</a></li>
+      <li><a href="frontend/pages/jugadores.html">Jugadores</a></li>
+      <li><a href="frontend/pages/arbitros.html">Árbitros</a></li>
+      <li><a href="frontend/pages/partidos.html">Partidos</a></li>
+      <li><a href="frontend/pages/planes.html">Planes</a></li>
+      <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+    </ul>
+  </nav>
+
+  <main class="dashboard-main">
+    <h1>👋 Bienvenido a tu Panel de Control</h1>
+    <p>Selecciona una sección en el menú para empezar.</p>
+  </main>
+
+  <script>
+    // Proteger el dashboard: requiere login
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "./login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "./index.html";
+    }
+  </script>
+</body>
+</html>

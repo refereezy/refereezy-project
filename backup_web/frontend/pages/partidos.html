@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Equipos - Refereezy</title>
-    <link rel="stylesheet" href="../style/equipos.css">
+    <title>Gestión de Partidos - RefereeZY</title>
+    <link rel="stylesheet" href="../style/partidos.css">
 </head>
 <body>
     <div class="min-h-screen">
@@ -14,8 +14,9 @@
                 <div class="nav-content">
                     <!-- Logo -->
                     <div class="logo-container">
-                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="Refereezy Digital Sport" class="logo">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="RefereeZY Logo" class="logo">
                     </div>
+                    
                     <!-- Navigation Links -->
                     <div class="nav-links">
                         <a href="../../index.html" class="nav-item">Inicio<span class="separator"></span></a>
@@ -24,50 +25,48 @@
                         <a href="arbitros.html" class="nav-item">Arbitros<span class="separator"></span></a>
                         <a href="partidos.html" class="nav-item">Partidos<span class="separator"></span></a>
                         <a href="planes.html" class="nav-item">Planes</a>
-                        <button class="login-button">Iniciar sesión</button>
+                        <button class="login-button">Iniciar sesion</button>
                     </div>
                 </div>
             </div>
         </nav>
 
-        <!-- Gestión de Equipos Section -->
-        <main class="teams-section">
+        <!-- Gestión de Partidos Section -->
+        <main class="matches-section">
             <div class="container">
-                <div class="teams-card">
+                <div class="matches-card">
                     <!-- Título con diseño angular -->
                     <div class="title-container">
                         <div class="title-background"></div>
-                        <h1>Gestión de Equipos</h1>
+                        <h1>Gestion de Partidos</h1>
                     </div>
 
                     <!-- Formulario -->
                     <div class="form-container">
                         <div class="input-group">
-                            <input type="text" placeholder="Nombre del equipo" class="team-name-input">
-                            <input type="color" placeholder="Color primario (ej. #FF0000)" class="primary-color-input">
-                            <input type="color" placeholder="Color secundario (ej. #0000FF)" class="secondary-color-input">
-                            <input type="number" placeholder="ID del cliente" class="client-id-input">
+                            <select class="team-select" id="localTeam">
+                                <option value="">Seleccione equipo local</option>
+                            </select>
+                            
+                            <select class="team-select" id="visitorTeam">
+                                <option value="">Seleccione equipo visitante</option>
+                            </select>
                         </div>
 
-                        <div class="logo-section">
-                            <div class="logo-input-container">
-                                <button class="logo-upload-btn">Añadir logo del equipo</button>
-                                <button class="remove-logo-btn">Quitar logo</button>
-                            </div>
-                            <div class="logo-preview">
-                                <span>Vista previa del logo</span>
-                            </div>
+                        <div class="datetime-group">
+                            <input type="date" class="date-input" id="matchDate">
+                            <input type="time" class="time-input" id="matchTime">
                         </div>
 
                         <div class="action-buttons">
-                            <button class="add-team-btn">Agregar equipo</button>
-                            <button class="view-teams-btn">Ver más Equipos</button>
+                            <button class="create-match-btn">Crear Partido</button>
+                            <button class="view-matches-btn">Ver Partidos</button>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    <script src="../js/equipos.js"></script>
+    <script src="../js/partidos.js"></script>
 </body>
 </html>

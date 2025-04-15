@@ -1,5 +1,5 @@
 from fastapi import FastAPI,HTTPException
-from routers import team, player, referee, match_group, match, client, clock
+from routers import team, player, referee, match_group, match, client, clock, auth
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import IntegrityError, DataError
@@ -27,6 +27,7 @@ app.include_router(match_group.router)
 app.include_router(match.router)
 app.include_router(client.router)
 app.include_router(clock.router)
+app.include_router(auth.router)
 
 @app.get("/")
 def read_root():

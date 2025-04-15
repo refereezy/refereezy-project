@@ -119,3 +119,9 @@ class ClientResponse(ClientBase):
         
 class ClockSchema(BaseModel):
     code: str
+
+
+# Class for Login
+class ClientLogin(BaseModel):
+    email: str
+    password: str
