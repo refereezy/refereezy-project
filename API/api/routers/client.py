@@ -17,9 +17,11 @@ def get_clients(db: Session = Depends(get_db)):
 def create_client(client: ClientCreate, db: Session = Depends(get_db)):
     hashed_pwd = hash_password(client.password)
     new_client = Client(**client.dict())
+    new_client.password = hashed_pwd
     db.add(new_client)
     db.commit()
     db.refresh(new_client)
+    new_client.password == '***'
     return new_client
 
 @router.get("/{client_id}", response_model=ClientResponse)
