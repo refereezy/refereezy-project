@@ -1,18 +1,29 @@
 package com.example.refereezyapp.screens.report
 
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.activity.OnBackPressedCallback
 import com.example.refereezyapp.R
+import com.example.refereezyapp.data.handlers.ReportService
+import com.example.refereezyapp.data.managers.MatchManager
 import com.example.refereezyapp.data.models.IncidentType
+import com.example.refereezyapp.data.managers.ReportManager
+import com.example.refereezyapp.screens.user.MatchActivity
 import com.example.refereezyapp.utils.ConfirmationDialog
 import com.example.refereezyapp.utils.PopUp
 
 class ActionActivity : _BaseReportActivity() {
+
+    private lateinit var flipBtn: ImageButton
+    private lateinit var cardsBtn: ImageButton
+    private lateinit var pauseBtn: ImageButton
+    private lateinit var goalBtn: ImageButton
+    private lateinit var incidentButton: ImageButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,35 +38,30 @@ class ActionActivity : _BaseReportActivity() {
         //! this class extends BaseReportActivity, which initializes the basic values
 
         // components
-        val timer = findViewById<TextView>(R.id.timer)
-        val flipBtn = findViewById<ImageButton>(R.id.flipBtn)
-        val cardsBtn = findViewById<ImageButton>(R.id.cardsBtn)
-        val pauseBtn = findViewById<ImageButton>(R.id.pauseBtn)
-        val goalBtn = findViewById<ImageButton>(R.id.goalBtn)
-        val warningBtn = findViewById<ImageButton>(R.id.warningBtn)
-
+        flipBtn = findViewById<ImageButton>(R.id.flipBtn)
+        cardsBtn = findViewById<ImageButton>(R.id.cardsBtn)
+        pauseBtn = findViewById<ImageButton>(R.id.pauseBtn)
+        goalBtn = findViewById<ImageButton>(R.id.goalBtn)
+        incidentButton = findViewById<ImageButton>(R.id.warningBtn)
 
 
 
         // drawing data
-        // todo: modify the way to access and count time
-        timer.text = "${report.raw.timer[0]}:${report.raw.timer[1]}"
-
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.scoreboard, scoreboard)
-            .commit()
 
 
-        // behaviour
+
+        // behaviours
         flipBtn.setOnClickListener(this::flipScreen)
         cardsBtn.setOnClickListener { moveTo(CardPickActivity::class.java) }
         goalBtn.setOnClickListener { moveTo(TeamPickActivity::class.java, IncidentType.GOAL) }
-        warningBtn.setOnClickListener { moveTo(IncidentActivity::class.java) }
-        pauseBtn.setOnClickListener{
-            // todo: pause the timer, and the loop to update the database
-            PopUp.show(this, "Timer paused/resumed", PopUp.Type.INFO)
 
-        }
+        // incidentBtn behaviours
+        incidentButton.setOnClickListener { moveTo(IncidentActivity::class.java) }
+        incidentButton.setOnLongClickListener { moveTo(IncidentListActivity::class.java); true }
+
+        // pauseBtn behaviours
+        pauseBtn.setOnClickListener(this::toggleTimerState)
+        pauseBtn.setOnLongClickListener { tryCloseReport(); true}
 
         // Disable back button
         val callback = object : OnBackPressedCallback(true) {
@@ -65,6 +71,15 @@ class ActionActivity : _BaseReportActivity() {
         }
         onBackPressedDispatcher.addCallback(this, callback)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // re dibuja la puntuacion incluso cuando se cambia de activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.scoreboard, scoreboard)
+            .commit()
     }
 
     fun onBackPress() {
@@ -78,14 +93,34 @@ class ActionActivity : _BaseReportActivity() {
                     PopUp.show(this, "Back to the match", PopUp.Type.INFO)
                 },
                 onCancel = {}
-                )
-            }
+            )
+        }
+        else {
+            moveTo(MatchActivity::class.java)
         }
 
+    }
 
+    fun toggleTimerState (v: View) {
+        if (timer.isRunning) {
+            pauseBtn.setImageResource(android.R.drawable.ic_media_play)
+            timer.stop()
+        } else {
+            pauseBtn.setImageResource(android.R.drawable.ic_media_pause)
+            timer.play()
+        }
+    }
 
-
-
+    fun tryCloseReport () {
+        // alertar que intenta acabar el partido
+        ConfirmationDialog.showReportDialog(
+            this,
+            "End match",
+            "Are you sure you want to end the match?",
+            onConfirm = this::endMatchReport,
+            onCancel = {}
+        )
+    }
 
 
 

@@ -25,7 +25,7 @@ class TimerFragment : Fragment() {
 
         textViewTimer = view.findViewById(R.id.textViewTimer)
 
-        timerViewModel.elapsedTime.observe(viewLifecycleOwner) { seconds ->
+        timerViewModel.liveElapsedTime.observe(viewLifecycleOwner) { seconds ->
             val minutes = seconds / 60
             val secs = seconds % 60
             textViewTimer.text = String.format("%02d:%02d", minutes, secs)

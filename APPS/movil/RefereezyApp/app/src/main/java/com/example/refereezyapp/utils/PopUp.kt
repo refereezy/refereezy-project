@@ -16,8 +16,8 @@ class PopUp {
             val icon = view.findViewById<ImageView>(R.id.popup_icon)
             val text = view.findViewById<TextView>(R.id.popup_text)
 
-            val displayMessage = if (message.length > 20)
-                message.substring(0, 20) + "..." else message
+            val displayMessage = if (message.length > 100)
+                message.substring(0, 100) + "..." else message
 
             when (type) {
                 Type.OK -> {

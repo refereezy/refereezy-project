@@ -10,12 +10,18 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.gridlayout.widget.GridLayout
 import com.example.refereezyapp.R
+import com.example.refereezyapp.data.handlers.ReportService
+import com.example.refereezyapp.data.models.Incident
 import com.example.refereezyapp.data.models.IncidentType
 import com.example.refereezyapp.data.models.TeamType
-import com.example.refereezyapp.data.static.ReportManager
 import net.orandja.shadowlayout.ShadowLayout
+import androidx.core.graphics.toColorInt
+
 
 class PlayerPickActivity : _BaseReportActivity() {
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -26,49 +32,59 @@ class PlayerPickActivity : _BaseReportActivity() {
             insets
         }
 
-        report = ReportManager.getCurrentReport()!!
+        // this class extends BaseReportActivity, which initializes the basic values
 
         // getting previous data
         val type = intent.getSerializableExtra("type") as? IncidentType
         val teamSelection = intent.getSerializableExtra("team") as? TeamType
         val team = if (teamSelection == TeamType.LOCAL) localTeam else visitorTeam
+        val description = intent.getStringExtra("description")
 
         // components
-        val timer = findViewById<TextView>(R.id.timer)
         val grid = findViewById<GridLayout>(R.id.playerGrid)
+        val flipBtn = findViewById<ShadowLayout>(R.id.flipBtn)
 
         for (player in team.players) {
             val inflater = LayoutInflater.from(this).inflate(R.layout.layout_player_pick, grid, false)
             val dorsal = inflater.findViewById<TextView>(R.id.dorsal)
-            val shadow = inflater.findViewById<ShadowLayout>(R.id.shadow)
 
             val color = if (player.is_goalkeeper) team.secondary_color else team.primary_color
-            shadow.shadow_color = Color.parseColor(color) 
-            dorsal.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+
+            dorsal.backgroundTintList = ColorStateList.valueOf(color.toColorInt())
             dorsal.text = player.dorsal.toString()
+
+            dorsal.setOnClickListener {
+                val incident = Incident(
+                    type = type!!,
+                    description = description?: type.name,
+                    minute = timer.getElapsedMinutes(),
+                    player_id = player.id
+                )
+
+                // this automatically modifies the report and saves into database
+                ReportService.addIncident(report, incident)
+                moveTo(ActionActivity::class.java)
+                finish()
+            }
 
 
             grid.addView(inflater)
         }
 
-
-        // drawing data
-        // todo: modify the way to access and count time
-        timer.text = "${report.raw.timer[0]}:${report.raw.timer[1]}"
-
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.scoreboard, scoreboard)
-            .commit()
-
-
-
+        flipBtn.setOnClickListener(this::flipScreen)
 
     }
 
 
-    //! this class extends BaseReportActivity, which initializes the basic values
 
+    override fun onResume() {
+        super.onResume()
 
+        // re dibuja la puntuacion incluso cuando se cambia de activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.scoreboard, scoreboard)
+            .commit()
+    }
 
 
 

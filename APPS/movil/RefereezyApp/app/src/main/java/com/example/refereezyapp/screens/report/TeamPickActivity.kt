@@ -34,18 +34,15 @@ class TeamPickActivity : _BaseReportActivity() {
         // getting previous data
         val type = intent.getSerializableExtra("type") as? IncidentType
 
-        PopUp.show(this, "Picking bcz of $type", PopUp.Type.INFO)
+        PopUp.show(this, "$type for ...", PopUp.Type.INFO)
 
         // components
-        val timer = findViewById<TextView>(R.id.timer)
         val localBtn = findViewById<ImageButton>(R.id.localBtn)
         val visitorBtn = findViewById<ImageButton>(R.id.visitorBtn)
         val flipBtn = findViewById<ImageButton>(R.id.flipBtn)
 
 
         // drawing data
-        // todo: modify the way to access and count time
-        timer.text = "${report.raw.timer[0]}:${report.raw.timer[1]}"
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.scoreboard, scoreboard)
@@ -69,6 +66,15 @@ class TeamPickActivity : _BaseReportActivity() {
             .skipMemoryCache(true)
             .into(imageView)
             .onLoadFailed(ResourcesCompat.getDrawable(resources, R.drawable.circle_shape, null))
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // re dibuja la puntuacion incluso cuando se cambia de activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.scoreboard, scoreboard)
+            .commit()
     }
 
 

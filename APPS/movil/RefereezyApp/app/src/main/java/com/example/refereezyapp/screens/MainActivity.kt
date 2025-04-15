@@ -18,15 +18,12 @@ import com.example.refereezyapp.data.LocalStorageManager
 import com.example.refereezyapp.data.handlers.ConnectionViewModel
 import com.example.refereezyapp.data.handlers.MatchViewModel
 import com.example.refereezyapp.data.handlers.RefereeViewModel
-import com.example.refereezyapp.data.models.PopulatedReport
 import com.example.refereezyapp.data.models.Referee
-import com.example.refereezyapp.data.static.MatchManager
-import com.example.refereezyapp.data.static.RefereeManager
-import com.example.refereezyapp.data.static.ReportManager
+import com.example.refereezyapp.data.managers.MatchManager
+import com.example.refereezyapp.data.managers.RefereeManager
+import com.example.refereezyapp.data.managers.ReportManager
 import com.example.refereezyapp.screens.user.LoginActivity
 import com.example.refereezyapp.screens.user.MatchActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 

@@ -5,10 +5,10 @@ data class MatchReport (
     val id: String = "",
     val match_id: Int? = null,
     val referee_id: Int = 0,
-    val done: Boolean = false,
-    val timer: List<Int> = listOf(0,0)
+    var done: Boolean = false,
+    val timer: MutableList<Int> = mutableListOf(0,0)
 ) {
-    lateinit var incidents: List<Incident>
+    var incidents: List<Incident> = emptyList()
 
 
 

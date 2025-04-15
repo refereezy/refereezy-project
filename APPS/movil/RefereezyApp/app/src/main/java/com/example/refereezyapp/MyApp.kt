@@ -1,9 +1,10 @@
-package com.example.rellotgejais
+package com.example.refereezyapp
+
 
 import android.app.Application
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
-import com.example.rellotgejais.models.TimerViewModel
+import com.example.refereezyapp.data.handlers.TimerViewModel
 
 class MyApp : Application(), ViewModelStoreOwner {
 
@@ -15,4 +16,3 @@ class MyApp : Application(), ViewModelStoreOwner {
     override val viewModelStore: ViewModelStore
         get() = appViewModelStore
 }
-

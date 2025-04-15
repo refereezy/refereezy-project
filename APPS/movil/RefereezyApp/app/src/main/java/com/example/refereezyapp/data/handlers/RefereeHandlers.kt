@@ -11,9 +11,9 @@ import com.example.refereezyapp.data.models.Clock
 import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.models.RefereeLogin
 import com.example.refereezyapp.data.models.RefereeUpdate
-import com.example.refereezyapp.data.static.MatchManager
-import com.example.refereezyapp.data.static.RefereeManager
-import com.example.refereezyapp.data.static.ReportManager
+import com.example.refereezyapp.data.managers.MatchManager
+import com.example.refereezyapp.data.managers.RefereeManager
+import com.example.refereezyapp.data.managers.ReportManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -54,8 +54,8 @@ object RefereeService {
 }
 
 class RefereeViewModel : ViewModel() {
-    private val _referee = MutableLiveData<Referee?>()
-    val referee: LiveData<Referee?> get() = _referee
+    private val _referee = MutableLiveData<Referee>()
+    val referee: LiveData<Referee> get() = _referee
 
     fun changePassword(referee: Referee, newPassword: String) {
         viewModelScope.launch {
@@ -78,7 +78,7 @@ class RefereeViewModel : ViewModel() {
                 referee.clock_code = clockCode
                 _referee.value = referee
             } catch (e: Exception) {
-                Log.e("Retrofit (pairClock)", "Error de conexión: ${e.message}")
+                Log.e("Retrofit (pairClock)", "Error de conexión", e)
             }
         }
     }

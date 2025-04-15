@@ -6,14 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.refereezyapp.data.FirebaseManager
 import com.example.refereezyapp.data.RetrofitManager
 import com.example.refereezyapp.data.models.Match
 import com.example.refereezyapp.data.models.PopulatedMatch
-import com.example.refereezyapp.data.models.Team
-import com.example.refereezyapp.data.static.MatchManager
-import kotlinx.coroutines.async
+import com.example.refereezyapp.data.managers.MatchManager
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 
 @SuppressLint("StaticFieldLeak")
@@ -29,12 +27,15 @@ class MatchViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = RetrofitManager.instance.getRefereeMatches(id)
+                val doneMatches = FirebaseManager.getDoneMatches(id)
+
                 if (!response.isSuccessful) {
                     Log.e("Retrofit (loadMatches)", "Error de conexión: ${response.errorBody()}")
                     return@launch
                 }
 
-                val matches = response.body()!!
+                val matches = response.body()!!.filter { !doneMatches.contains(it.id.toLong()) }
+
                 MatchManager.clearMatches()
 
                 for (match in matches) {
@@ -42,7 +43,6 @@ class MatchViewModel : ViewModel() {
                 }
 
                 _matches.value = matches
-
 
             } catch (e: Exception) {
                 Log.e("Retrofit (loadMatches)", "Error de conexión: ${e.message}")
@@ -78,21 +78,6 @@ class MatchViewModel : ViewModel() {
 }
 
 object MatchService {
-    fun getTeam(id: Int): Team? {
-        var res: Team? = null
-        runBlocking {
-            try {
-                val response = async { RetrofitManager.instance.getTeam(id) }.await()
-                if (response.isSuccessful) {
-                    res = response.body()!!
-                }
-            } catch (e: Exception) {
-                Log.e("Retrofit (getTeam)", "Error de conexión: ${e.message}")
-            }
-        }
-
-        return res
-    }
 
     suspend fun getMatch(id: Int): PopulatedMatch? {
         try {

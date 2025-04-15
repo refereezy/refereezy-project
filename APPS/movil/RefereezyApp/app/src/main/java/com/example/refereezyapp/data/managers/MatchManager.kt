@@ -1,4 +1,4 @@
-package com.example.refereezyapp.data.static
+package com.example.refereezyapp.data.managers
 
 import com.example.refereezyapp.data.models.Match
 import com.example.refereezyapp.data.models.PopulatedMatch
@@ -38,6 +38,5 @@ object MatchManager {
     fun getMatchById(matchId: Int): Match? {
         return matches.find { it.id == matchId }
     }
-
 
 }

@@ -10,108 +10,56 @@
     tools:context=".screens.user.PairingClockActivity">
 
 
-
-    <net.orandja.shadowlayout.ShadowLayout
-        android:id="@+id/watchSampleFrame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        android:id="@+id/cameraFrame"
+        android:layout_width="300dp"
+        android:layout_height="450dp"
         android:layout_marginTop="50dp"
         android:background="@drawable/watch_os_frame"
+        android:backgroundTint="#6B303D50"
+        android:backgroundTintMode="multiply"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        app:shadow_radius="16"
-        app:shadow_downscale="1"
-        app:shadow_color="#D3D3D3"
-        app:shadow_with_content="true"
-        app:shadow_with_color="false"
-        app:shadow_cast_only_background="true">
+        <androidx.camera.view.PreviewView
+            android:id="@+id/cameraPreview"
+            android:background="@color/transparent"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
 
-        <RelativeLayout
-            android:layout_width="208dp"
-            android:layout_height="248dp"
-            android:gravity="center"
-            android:padding="20dp">
+        </androidx.camera.view.PreviewView>
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ABC124D"
-                android:textSize="24sp"
-                android:textColor="@android:color/white"
-                android:layout_centerHorizontal="true"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/ic_clock_pairing"
+            android:layout_height="match_parent"/>
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/textView"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:indeterminate="true"/>
+    </FrameLayout>
 
-            <Button
-                android:id="@+id/checkBtn"
-                android:layout_width="120dp"
-                android:layout_height="50dp"
-                android:layout_below="@id/progressBar"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:text="CHECK"
-                android:textColor="@android:color/black"
-                android:background="@drawable/button_bg"/>
-        </RelativeLayout>
-    </net.orandja.shadowlayout.ShadowLayout>
 
     <TextView
         android:id="@+id/pairingHelp"
-        app:layout_constraintTop_toBottomOf="@id/watchSampleFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:gravity="center"
-        android:layout_marginTop="40dp"
-        android:text="Escribe el código que te aparece en el reloj"/>
-
-
-    <EditText
-        android:id="@+id/clockCodeField"
-        style="@style/AppTextField"
-        app:layout_constraintTop_toBottomOf="@id/pairingHelp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginVertical="40dp"
-        android:layout_width="312dp"
-        android:textSize="16sp"
-        android:hint="Código de reloj..."
-        android:textColorHint="#808080" />
-
-    <Button
-        android:id="@+id/submitBtn"
-        app:layout_constraintTop_toBottomOf="@id/clockCodeField"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="Confirmar"
-        android:textColor="@android:color/black"
-        android:background="@drawable/button_bg"/>
+        android:text="Scan your clock QR"
+        app:layout_constraintTop_toBottomOf="@id/cameraFrame"
+        tools:layout_editor_absoluteX="16dp" />
 
     <Button
         android:id="@+id/cancelBtn"
-        app:layout_constraintTop_toBottomOf="@id/submitBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="volver"
+        android:background="@drawable/button_bg"
+        android:text="Return"
         android:textColor="@android:color/black"
-        android:background="@drawable/button_bg"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pairingHelp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
