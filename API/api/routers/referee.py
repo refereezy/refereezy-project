@@ -69,7 +69,6 @@ def delete_referee(referee_id: int, db: Session = Depends(get_db)):
 
 @router.get("/{referee_id}/matches")
 def get_referee_matches(referee_id: int, db: Session = Depends(get_db)):
-    one_month_ago = datetime.now() - timedelta(days=30)
     referee = db.query(Referee).filter(Referee.id == referee_id).first()
     if referee:
         today = datetime.now().date()

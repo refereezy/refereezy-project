@@ -18,6 +18,8 @@ def get_matches_by_client(client_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="No matches found for the given client ID")
     return matches
 
+
+
 @router.get("/client/{id}/with_teams")
 def get_client_matches_populated(client_id: int, db: Session = Depends(get_db)):
     matches = db.query(Match).filter(Match.client_id == client_id).all()
@@ -32,7 +34,6 @@ def get_client_matches_populated(client_id: int, db: Session = Depends(get_db)):
             "visitor_team": match.visitor_team
         } for match in matches
     ]
-    
 
 @router.get("/populated/{id}")
 def get_populated_match(id: int, db: Session = Depends(get_db)):
@@ -52,7 +53,8 @@ def get_populated_match(id: int, db: Session = Depends(get_db)):
             "local_team_id": match.local_team_id,
             "visitor_team_id": match.visitor_team_id,
             "date": match.date,
-            "referee_id": match.referee_id
+            "referee_id": match.referee_id,
+            "client_id": match.client_id
         },
         "local_team": {
             **local.__dict__,
@@ -79,6 +81,41 @@ def get_populated_match(id: int, db: Session = Depends(get_db)):
             ]
         },
         "referee": match.referee
+    }
+    
+    return res
+
+@router.get("/short/{id}")
+def get_short_match(id: int, db: Session = Depends(get_db)):
+    """Get a match with minimal information (for listings)"""
+    match = db.query(Match).filter(Match.id == id).first()
+    
+    if match is None:
+        raise HTTPException(status_code=404, detail="Match not found")
+
+    local: Team = match.local_team
+    visitor: Team = match.visitor_team
+    
+    # Return only basic information needed for listing
+    res = {
+        "raw": {
+            "id": match.id,
+            "local_team_id": match.local_team_id,
+            "visitor_team_id": match.visitor_team_id,
+            "date": match.date,
+            "referee_id": match.referee_id,
+            "client_id": match.client_id
+        },
+        "local_team": {
+            "id": local.id,
+            "name": local.name,
+            "logo_url": local.logo_url
+        },
+        "visitor_team": {
+            "id": visitor.id,
+            "name": visitor.name,
+            "logo_url": visitor.logo_url
+        }
     }
     
     return res

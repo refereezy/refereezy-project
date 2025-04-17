@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { createServer } from 'http'
-import { router } from './services/router'
+import apiRouter from './services/router'
 import 'dotenv/config'
 import io from './services/socket'
 import path from 'path'
@@ -16,7 +16,7 @@ app.use(cors({ origin: '*' }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')))
-app.use('/api', router)
+app.use(apiRouter)
 
 
 io.attach(server);

@@ -3,18 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Refereezy - Clock Code Manager</title>
+  <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+  <header class="main-header">
+    <div class="container">
+      <h1><i class="fas fa-whistle"></i> Refereezy</h1>
+      <nav>
+        <ul>
+          <li class="active"><a href="index.html">Clock Code Manager</a></li>
+          <li><a href="testing.html">Testing</a></li>
+          <li><a href="reports.html">Match Reports</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-  <h1>Public match reports</h1>
-  <div id="match-reports">
+  <main class="container">
+    <section class="section welcome-section">
+      <h2>Welcome to Refereezy</h2>
+      <div class="welcome-content">
+        <div class="intro-text">
+          <p>Refereezy is a comprehensive platform designed for sports referees to manage match reports and timing efficiently.</p>
+          <p>Our system allows referees to connect their mobile devices with timing clocks using unique codes, ensuring synchronized and accurate match timing.</p>
+        </div>
+        <div class="app-features">
+          <h3>Main Features:</h3>
+          <ul class="features-list">
+            <li>
+              <i class="fas fa-clock"></i>
+              <div>
+                <h4>Clock Code Management</h4>
+                <p>Pair referee accounts with match clocks using unique codes for seamless timing synchronization.</p>
+              </div>
+            </li>
+            <li>
+              <i class="fas fa-clipboard-list"></i>
+              <div>
+                <h4>Match Reports</h4>
+                <p>Create, view, and manage comprehensive match reports including incidents, scores, and player information.</p>
+              </div>
+            </li>
+            <li>
+              <i class="fas fa-sync"></i>
+              <div>
+                <h4>Real-time Updates</h4>
+                <p>All match data is updated in real-time across connected devices using WebSocket technology.</p>
+              </div>
+            </li>
+            <li>
+              <i class="fas fa-tools"></i>
+              <div>
+                <h4>Testing Tools</h4>
+                <p>Access diagnostic tools to verify clock pairing functionality and WebSocket connections.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
     
-  </div>
+    <section class="section getting-started">
+      <h2>Getting Started</h2>
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Register Your Clock Code</h3>
+            <p>Use the <a href="testing.html">Testing</a> page to register a unique clock code for your match.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Validate Connection</h3>
+            <p>Pair your referee ID with the registered clock code to establish a connection.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Manage Reports</h3>
+            <p>View and manage all match reports on the <a href="reports.html">Match Reports</a> page.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <div class="container">
+      <p>&copy; 2025 Refereezy - The Ultimate Referee Management Platform</p>
+    </div>
+  </footer>
 
   <!-- Do not remove, this is needed -->
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-  <script src="socket.js"></script>
-  <script src="index.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="scripts/socket.js"></script>
+  <script src="scripts/index.js"></script>
 </body>
 </html>

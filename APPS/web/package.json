@@ -18,12 +18,15 @@
   },
   "dependencies": {
     "@firebase/app-types": "^0.9.3",
+    "@types/axios": "^0.9.36",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
     "@types/socket.io": "^3.0.1",
+    "axios": "^1.8.4",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "firebase": "^11.6.0",
+    "public-web-server": "file:",
     "socket.io": "^4.8.1"
   }
 }
