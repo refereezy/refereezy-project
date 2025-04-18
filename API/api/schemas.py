@@ -64,6 +64,7 @@ class RefereeBase(BaseModel):
     clock_code: Optional[str]
     
 class RefereeLoad(RefereeBase):
+    id: int
     password: str
     
 class RefereeLogin(BaseModel):
