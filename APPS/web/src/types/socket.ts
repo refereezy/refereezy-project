@@ -1,3 +1,5 @@
+import { PlayerIncident } from "./firebase";
+
 export type RefereePairing = {
   clockCode: string
   refereeId: string
@@ -9,8 +11,8 @@ export interface Incident {
   reportId: string;
   description: string;
   minute: number;
-  player_id: number;
   type: string;
+  player?: PlayerIncident;
 }
 
 export interface ReportUpdate {

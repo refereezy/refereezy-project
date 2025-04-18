@@ -1,8 +1,8 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { Report, ShortMatch, Referee } from '../types/firebase';
+import { Report, ShortMatch, Referee, Incident, Match } from '../types/firebase';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDocs, collection, CollectionReference, getDoc, Firestore } from 'firebase/firestore';
+import { getFirestore, doc, getDocs, collection, CollectionReference, getDoc, Firestore, setDoc } from 'firebase/firestore';
 
 // Load environment variables
 dotenv.config({ path: process.cwd() + '/.env' });
@@ -54,14 +54,28 @@ try {
   throw error;
 }
 
-// Fetch all reports in short form (for listings)
-export async function getReportsShortFromFirebase(): Promise<Report[]> {
+// SIMPLIFIED FUNCTION 1: Fetch all reports with minimal data (for listings)
+export async function getAllReportsShort(): Promise<Report[]> {
   try {
+    // Get basic report data from Firebase
     const reportsSnapshot = await getDocs(reportsRef);
     let reports = reportsSnapshot.docs.map(doc => ({
       ...doc.data(),
-      id: doc.id
+      id: doc.id,
+      incidents: [] // Initialize empty incidents array
     })) as Report[];
+
+    // Fetch incidents for each report from subcollections
+    for (const report of reports) {
+      const incidentsRef = collection(db, REPORTS_COLLECTION, report.id, 'incidents');
+      const incidentsSnapshot = await getDocs(incidentsRef);
+      
+      // Map subcollection documents to incidents array
+      report.incidents = incidentsSnapshot.docs.map(doc => ({
+        id: parseInt(doc.id),
+        ...doc.data()
+      })) as Incident[];
+    }
 
     // Enrich reports with minimal data from FastAPI backend
     reports = await populateReportsShort(reports);
@@ -73,28 +87,10 @@ export async function getReportsShortFromFirebase(): Promise<Report[]> {
   }
 }
 
-// Fetch all reports from Firebase
-export async function getReportsFromFirebase(): Promise<Report[]> {
+// SIMPLIFIED FUNCTION 2: Fetch a single report with full details (for detail view)
+export async function getReportDetailById(reportId: string): Promise<Report | null> {
   try {
-    const reportsSnapshot = await getDocs(reportsRef);
-    let reports = reportsSnapshot.docs.map(doc => ({
-      ...doc.data(),
-      id: doc.id
-    })) as Report[];
-
-    // Enrich reports with data from FastAPI backend
-    reports = await populateReports(reports);
-    
-    return reports;
-  } catch (error) {
-    console.error('Error fetching reports from Firebase:', error);
-    throw error;
-  }
-}
-
-// Fetch a specific report by ID from Firebase
-export async function getReportById(reportId: string): Promise<Report | null> {
-  try {
+    // Get basic report data from Firebase
     const reportRef = doc(db, REPORTS_COLLECTION, reportId);
     const reportDoc = await getDoc(reportRef);
     
@@ -107,37 +103,44 @@ export async function getReportById(reportId: string): Promise<Report | null> {
       ...reportDoc.data()
     } as Report;
     
-    // Enrich the report with minimal data from FastAPI backend
-    const enrichedReport = await populateSingleReportShort(report);
+    // Fetch incidents from subcollection
+    const incidentsRef = collection(db, REPORTS_COLLECTION, reportId, 'incidents');
+    const incidentsSnapshot = await getDocs(incidentsRef);
     
-    return enrichedReport;
-  } catch (error) {
-    console.error(`Error fetching report ${reportId} from Firebase:`, error);
-    throw error;
-  }
-}
-
-// Fetch a specific report by ID with full details
-export async function getReportWithDetailsById(reportId: string): Promise<Report | null> {
-  try {
-    const reportRef = doc(db, REPORTS_COLLECTION, reportId);
-    const reportDoc = await getDoc(reportRef);
+    // Map subcollection documents to incidents array
+    report.incidents = incidentsSnapshot.docs.map(doc => ({
+      id: parseInt(doc.id),
+      ...doc.data()
+    })) as Incident[];
     
-    if (!reportDoc.exists()) {
-      return null;
-    }
-    
-    const report = {
-      id: reportDoc.id,
-      ...reportDoc.data()
-    } as Report;
-    
-    // Enrich the report with detailed data from FastAPI backend
+    // Enrich the report with full detailed data from FastAPI backend
     const enrichedReport = await populateSingleReport(report);
+    
+    // The player information is now included directly in the incidents
+    // No need to populate the incidents with player information
     
     return enrichedReport;
   } catch (error) {
     console.error(`Error fetching detailed report ${reportId} from Firebase:`, error);
+    throw error;
+  }
+}
+
+// Add a new incident to a report's subcollection
+export async function addIncidentToReport(reportId: string, incident: Incident): Promise<Incident> {
+  try {
+    // Reference to the incidents subcollection for this report
+    const incidentsRef = collection(db, REPORTS_COLLECTION, reportId, 'incidents');
+    
+    // Add the document to the subcollection
+    // We'll use the incident.id as the document ID if it's provided
+    const docRef = doc(incidentsRef, incident.id?.toString());
+    await setDoc(docRef, incident);
+    
+    // Return the incident as is - player information should already be included
+    return incident;
+  } catch (error) {
+    console.error(`Error adding incident to report ${reportId}:`, error);
     throw error;
   }
 }
@@ -181,11 +184,6 @@ async function populateSingleReport(report: Report): Promise<Report> {
       report.referee = refereeResponse.data;
     }
     
-    // Get player details for incidents
-    if (report.incidents && report.incidents.length > 0) {
-  
-    }
-    
     return report;
   } catch (error) {
     console.error(`Error enriching report details:`, error);
@@ -205,26 +203,6 @@ async function populateReportsShort(reports: Report[]): Promise<Report[]> {
     const batch = reports.slice(i, i + batchSize);
     const enrichedBatch = await Promise.all(
       batch.map(report => populateSingleReportShort(report))
-    );
-    enrichedReports.push(...enrichedBatch);
-  }
-  
-  return enrichedReports;
-}
-
-// Helper function to enrich multiple reports in batches
-async function populateReports(reports: Report[]): Promise<Report[]> {
-  // Process in smaller batches to avoid overwhelming the API
-  const batchSize = 5;
-  const enrichedReports = [];
-  
-  // Process reports in batches
-  for (let i = 0; i < reports.length; i += batchSize) {
-    // Slice the reports array into smaller batches
-    const batch = reports.slice(i, i + batchSize);
-    // awaits for all promises in the batch to resolve
-    const enrichedBatch = await Promise.all(
-      batch.map(report => populateSingleReport(report))
     );
     enrichedReports.push(...enrichedBatch);
   }

@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
-import { RefereePairing } from "../types/socket";
-
+import { RefereePairing, Incident as SocketIncident } from "../types/socket";
+import { getReportDetailById, addIncidentToReport } from "./firebase";
+import { Incident } from "../types/firebase";
 
 const io = new Server({
   cors: {
@@ -63,17 +64,57 @@ function setUpClockEvents(socket: Socket) {
 
 
 function setUpReportsEvents(socket: Socket) {
-
-  socket.on("new-report", (id: string) => {
-    console.log("New report event received");
-    // todo: emit the right data
+  // Listen for a request to get a specific report with all incident details
+  socket.on("new-report", async (id: string) => {
+    console.log(`Fetching report ${id} details`);
+    try {
+      const reportDetail = await getReportDetailById(id);
+      if (reportDetail) {
+        // Send back the report with all incidents populated with player information
+        io.emit("report-updated", reportDetail);
+        console.log(`Sent report ${id} with ${reportDetail.incidents.length} incidents`);
+      } else {
+        console.log(`Report ${id} not found`);
+      }
+    } catch (error) {
+      console.error(`Error processing report ${id}:`, error);
+    }
   }); 
 
-  socket.on("new-incident", (id: string) => {
-    console.log("New incident event received");
-    // todo: emit the right data
+  // Handle adding a new incident to a report
+  socket.on("new-incident", async (data: { reportId: string, incident: Incident }) => {
+    console.log(`New incident for report ${data.reportId}`, data.incident);
+    try {
+      // Convert from socket incident type to firebase incident type
+      /* const firestoreIncident: Incident = {
+        id: data.incident.id,
+        description: data.incident.description,
+        minute: data.incident.minute,
+        type: data.incident.type,
+        player: data.incident.player
+      }; */
+      
+      // Add incident to the report's incidents subcollection
+      const addedIncident = await addIncidentToReport(data.reportId, data.incident);
+      
+      // Get the updated report with all incidents
+      const updatedReport = await getReportDetailById(data.reportId);
+      
+      if (updatedReport) {
+        // Broadcast to all clients that the report has been updated
+        io.emit("report-updated", updatedReport);
+        // Also emit the specific incident that was added
+        io.emit("incident-added", {
+          reportId: data.reportId,
+          incident: addedIncident
+        });
+        
+        console.log(`Added incident ${addedIncident.id} to report ${data.reportId}`);
+      }
+    } catch (error) {
+      console.error(`Error adding incident to report ${data.reportId}:`, error);
+    }
   });
-
 }
 
 export default io;
