@@ -63,7 +63,7 @@ def get_populated_match(id: int, db: Session = Depends(get_db)):
                     "id": player.id,
                     "name": player.name,
                     "dorsal": player.dorsal_number,
-                    "is_goalkeeper": player.is_goalkeeper
+                    "goalkeeper": player.is_goalkeeper
                     
                 } for player in local.players
             ]
@@ -75,7 +75,7 @@ def get_populated_match(id: int, db: Session = Depends(get_db)):
                     "id": player.id,
                     "name": player.name,
                     "dorsal": player.dorsal_number,
-                    "is_goalkeeper": player.is_goalkeeper
+                    "goalkeeper": player.is_goalkeeper
                     
                 } for player in visitor.players
             ]
