@@ -1,7 +1,6 @@
 package com.example.refereezyapp.utils.recyclers
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +46,7 @@ class IncidentAdapter(
         if (incident.player != null) {
             val match = report.match
             val team = if (match.isLocalPlayer(incident.player)) match.local_team else match.visitor_team
-            val color = if (incident.player.is_goalkeeper) team.secondary_color else team.primary_color
+            val color = if (incident.player.goalkeeper) team.secondary_color else team.primary_color
             holder.dorsal.backgroundTintList = ColorStateList.valueOf(color.toColorInt())
             holder.dorsal.text = incident.player.dorsal.toString()
         }

@@ -4,16 +4,16 @@ data class Incident(
     val id: String = "",
     val description: String = "",
     val minute: Int = 0,
-    val player_id: Int? = null,
+    val player: PlayerIncident? = null,
     val type: IncidentType = IncidentType.OTHER
 ) {
 
     override fun toString(): String {
-        return "Incident(id=$id, description='$description', minute=$minute, player_id=$player_id, type=$type)"
+        return "Incident(id=$id, description='$description', minute=$minute, player_id=${player?.id}, type=$type)"
     }
 
     fun populateWith(match: PopulatedMatch): PopulatedIncident {
-        val player = match.getPlayerById(player_id)
+        val player = match.getPlayerById(player?.id)
         return PopulatedIncident(this, player)
     }
 
@@ -30,20 +30,7 @@ class PopulatedIncident(
 
 
 enum class IncidentType {
-    GOAL, YELLOW_CARD, RED_CARD, LESION, FIGHT, SUSPEND, OTHER;
-
-    fun fromString(value: String): IncidentType {
-        return when (value) {
-            "GOAL" -> GOAL
-            "YELLOW_CARD" -> YELLOW_CARD
-            "RED_CARD" -> RED_CARD
-            "LESION" -> LESION
-            "FIGHT" -> FIGHT
-            "SUSPEND" -> SUSPEND
-            "OTHER" -> OTHER
-            else -> throw Exception("Invalid incident type: $value")
-        }
-    }
+    GOAL, YELLOW_CARD, RED_CARD, LESION, FIGHT, SUSPEND, OTHER
 }
 
 

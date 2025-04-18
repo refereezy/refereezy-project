@@ -32,9 +32,7 @@ class TeamPickActivity : _BaseReportActivity() {
         //! this class extends BaseReportActivity, which initializes the basic values
 
         // getting previous data
-        val type = intent.getSerializableExtra("type") as? IncidentType
-
-        PopUp.show(this, "$type for ...", PopUp.Type.INFO)
+        val type = intent.getSerializableExtra("type") as IncidentType // to ensure there is a type before continueing
 
         // components
         val localBtn = findViewById<ImageButton>(R.id.localBtn)

@@ -57,8 +57,9 @@ object ReportService {
                 return@runBlocking
             }
 
-            val player = report.match.getPlayerById(incident.player_id)
-            player?.team = report.match.getTeamById(player.team.id)!!
+            val player = report.match.getPlayerById(incident.player?.id)
+            // commented this line cz it looks redundant
+            // player?.team = report.match.getTeamById(player.team.id)!!
             val populated = PopulatedIncident(incident, player)
 
             report.incidents.add(populated)

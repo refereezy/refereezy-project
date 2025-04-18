@@ -38,7 +38,6 @@ class MicrophoneActivity : _BaseReportActivity() {
         }
 
         // components
-        // val micBtn = findViewById<ImageButton>(R.id.micBtn)
         val continueBtn = findViewById<ImageButton>(R.id.continueBtn)
         val flipBtn = findViewById<ImageButton>(R.id.flipBtn)
         val micTextBoard = findViewById<TextView>(R.id.micTextBoard)
