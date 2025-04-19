@@ -1,4 +1,4 @@
-package com.example.rellotgejais.screens
+package com.example.rellotgejais.screens.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

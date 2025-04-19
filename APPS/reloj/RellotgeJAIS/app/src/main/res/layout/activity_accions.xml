@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".screens.MainActivity">
+    tools:context=".screens.user.MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_vertical"
@@ -94,7 +94,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal50"
-        android:name="com.example.rellotgejais.screens.TimerFragment"
+        android:name="com.example.rellotgejais.screens.fragments.TimerFragment"
         tools:layout="@layout/fragment_timer"/>
 
     <fragment
@@ -102,7 +102,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
-        android:name="com.example.rellotgejais.screens.Scoreboard"
+        android:name="com.example.rellotgejais.screens.fragments.ScoreboardFragment"
         tools:layout="@layout/fragment_scoreboard"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"

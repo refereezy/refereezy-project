@@ -16,29 +16,29 @@
         android:theme="@style/Theme.RellotgeJAIS"
         tools:targetApi="31">
         <activity
-            android:name=".screens.MicroPhoneActivity"
+            android:name=".screens.report.MicroPhoneActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.IncidenceActivity"
+            android:name=".screens.report.IncidenceActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.ActionListActivity"
+            android:name=".screens.report.ActionListActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.PlayerPickActivity"
+            android:name=".screens.report.PlayerPickActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.CardPickActivity"
+            android:name=".screens.report.CardPickActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.TeamPickActivity"
+            android:name=".screens.report.TeamPickActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.ActionsActivity"
+            android:name=".screens.report.ActionsActivity"
             android:exported="false"
             android:taskAffinity="" />
         <activity
-            android:name=".screens.MainActivity"
+            android:name=".screens.user.MainActivity"
             android:exported="true"
             android:taskAffinity="">
             <intent-filter>
@@ -51,6 +51,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
     </application>
 
 </manifest>

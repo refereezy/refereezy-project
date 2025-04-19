@@ -1,4 +1,4 @@
-package com.example.rellotgejais.screens
+package com.example.rellotgejais.screens.report
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

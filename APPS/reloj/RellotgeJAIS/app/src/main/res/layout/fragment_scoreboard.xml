@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:background="@drawable/scoreboard"
-    tools:context=".screens.Scoreboard">
+    tools:context=".screens.fragments.ScoreboardFragment">
 
 
     <TextView

@@ -1,17 +1,17 @@
-package com.example.rellotgejais.screens
+package com.example.rellotgejais.screens.fragments
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.rellotgejais.R
+import com.example.rellotgejais.screens.report.ActionListActivity
 
-class Scoreboard : Fragment() {
+class ScoreboardFragment : Fragment() {
     private lateinit var marcador: TextView
     private lateinit var escudoIzquierdo: ImageView
     private lateinit var escudoDerecho: ImageView
@@ -31,7 +31,7 @@ class Scoreboard : Fragment() {
         escudoIzquierdo = view.findViewById(R.id.escudoIzquierdo)
         escudoDerecho = view.findViewById(R.id.escudoDerecho)
 
-        val longClickListener = OnLongClickListener {
+        val longClickListener = View.OnLongClickListener {
             startActivity(Intent(activity, ActionListActivity::class.java))
             true
         }
@@ -46,6 +46,6 @@ class Scoreboard : Fragment() {
     }
 
     companion object {
-        fun newInstance(): Scoreboard = Scoreboard()
+        fun newInstance(): ScoreboardFragment = ScoreboardFragment()
     }
 }

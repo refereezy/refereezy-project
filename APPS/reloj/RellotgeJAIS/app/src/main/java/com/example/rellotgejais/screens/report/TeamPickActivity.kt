@@ -1,4 +1,4 @@
-package com.example.rellotgejais.screens
+package com.example.rellotgejais.screens.report
 
 import android.content.Intent
 import android.os.Bundle

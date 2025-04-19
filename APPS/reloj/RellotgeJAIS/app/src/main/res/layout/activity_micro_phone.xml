@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.MicroPhoneActivity"
+    tools:context=".screens.report.MicroPhoneActivity"
     android:background="@color/black">
 
     <fragment
@@ -17,11 +17,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingTop="15dp"
         tools:layout="@layout/fragment_timer"
-        android:name="com.example.rellotgejais.screens.TimerFragment"/>
+        android:name="com.example.rellotgejais.screens.fragments.TimerFragment"/>
 
     <fragment
         android:id="@+id/scoreboard_fragment"
-        android:name="com.example.rellotgejais.screens.Scoreboard"
+        android:name="com.example.rellotgejais.screens.fragments.ScoreboardFragment"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="36dp"

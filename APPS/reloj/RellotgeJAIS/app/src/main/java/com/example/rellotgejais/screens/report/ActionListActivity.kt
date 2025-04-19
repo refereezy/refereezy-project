@@ -1,4 +1,4 @@
-package com.example.rellotgejais.screens
+package com.example.rellotgejais.screens.report
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rellotgejais.R
 import com.example.rellotgejais.models.Incident
+import com.example.rellotgejais.screens.IncidenciaAdapter
 
 
 class ActionListActivity : AppCompatActivity() {
