@@ -37,6 +37,13 @@ data class PopulatedMatch (
         return null
     }
 
+    fun getTeam(type: TeamType): Team {
+        return when(type) {
+            TeamType.LOCAL -> local_team
+            TeamType.VISITOR -> visitor_team
+        }
+    }
+
     fun getPlayerById(id: Int?): Player? {
         for (player in local_team.players.plus(visitor_team.players)) {
             if (player.id == id) {

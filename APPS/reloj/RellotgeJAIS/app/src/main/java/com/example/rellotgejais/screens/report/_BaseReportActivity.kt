@@ -1,24 +1,20 @@
-package com.example.refereezyapp.screens.report
+package com.example.rellotgejais.screens.report
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.refereezyapp.MyApp
-import com.example.refereezyapp.data.handlers.ReportService
-import com.example.refereezyapp.data.handlers.TimerViewModel
-import com.example.refereezyapp.data.managers.MatchManager
-import com.example.refereezyapp.data.models.IncidentType
-import com.example.refereezyapp.data.models.PopulatedIncident
-import com.example.refereezyapp.data.models.PopulatedReport
-import com.example.refereezyapp.data.models.Team
-import com.example.refereezyapp.data.models.TeamType
-import com.example.refereezyapp.data.managers.ReportManager
-import com.example.refereezyapp.screens.fragments.ScoreFragment
-import com.example.refereezyapp.screens.user.MatchActivity
-import kotlin.collections.forEach
+import com.example.rellotgejais.MyApp
+import com.example.rellotgejais.data.handlers.ReportHandler
+import com.example.rellotgejais.data.managers.ReportManager
+import com.example.rellotgejais.models.IncidentType
+import com.example.rellotgejais.models.PopulatedIncident
+import com.example.rellotgejais.models.PopulatedReport
+import com.example.rellotgejais.models.Team
+import com.example.rellotgejais.models.TeamType
+import com.example.rellotgejais.models.TimerViewModel
+import com.example.rellotgejais.screens.fragments.ScoreFragment
+import com.example.rellotgejais.screens.user.MainActivity
 
 open class _BaseReportActivity : AppCompatActivity() {
 
@@ -52,16 +48,11 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        println(scoreboard.toString())
         reloadTeamGoals()
 
     }
 
-
-    fun flipScreen(view: View) {
-        requestedOrientation = if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-            ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
-        else ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-    }
 
     fun countTeamGoals(teamId: Int, incidents: List<PopulatedIncident>): Int {
         var goals = 0
@@ -75,14 +66,16 @@ open class _BaseReportActivity : AppCompatActivity() {
     // normal move to, stacks if needed
     fun moveTo(activity: Class<*>, stack: Boolean = false) {
         val intent = Intent(this, activity)
-        if (stack) { intent.putExtras(this.intent.extras?: Bundle()) }
+        if (stack) {
+            intent.putExtras(this.intent.extras ?: Bundle())
+        }
         startActivity(intent)
     }
 
     // move to with description, always stacks
     fun moveTo(activity: Class<*>, description: String?) {
         val intent = Intent(this, activity)
-        intent.putExtras(this.intent.extras?: Bundle()) // siempre stackea
+        intent.putExtras(this.intent.extras ?: Bundle()) // siempre stackea
         intent.putExtra("description", description)
         startActivity(intent)
     }
@@ -90,7 +83,9 @@ open class _BaseReportActivity : AppCompatActivity() {
     // move to with type, stacks if needed
     fun moveTo(activity: Class<*>, type: IncidentType, stack: Boolean = false) {
         val intent = Intent(this, activity)
-        if (stack) { intent.putExtras(this.intent.extras?: Bundle()) }
+        if (stack) {
+            intent.putExtras(this.intent.extras ?: Bundle())
+        }
         intent.putExtra("type", type)
         startActivity(intent)
     }
@@ -98,7 +93,7 @@ open class _BaseReportActivity : AppCompatActivity() {
     // move to with team, stacks if needed
     fun moveTo(activity: Class<*>, team: TeamType) {
         val intent = Intent(this, activity)
-        intent.putExtras(this.intent.extras?: Bundle()) // siempre stackea
+        intent.putExtras(this.intent.extras ?: Bundle()) // siempre stackea
         intent.putExtra("team", team)
         startActivity(intent)
     }
@@ -113,11 +108,8 @@ open class _BaseReportActivity : AppCompatActivity() {
     // ends the report and moves to MatchActivity
     fun endMatchReport() {
         timer.stop()
-        ReportService.endReport(report)
+        ReportHandler.endReport(report)
         ReportManager.clearReport()
-        MatchManager.removeMatch(report.match.raw.id) // esto no hace mucho efecto pues la MatchActivity vuelve a cargarlas
-        moveTo(MatchActivity::class.java)
+        moveTo(MainActivity::class.java)
     }
-
-
 }

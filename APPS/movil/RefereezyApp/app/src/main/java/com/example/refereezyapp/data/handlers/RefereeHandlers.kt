@@ -14,6 +14,7 @@ import com.example.refereezyapp.data.models.RefereeUpdate
 import com.example.refereezyapp.data.managers.MatchManager
 import com.example.refereezyapp.data.managers.RefereeManager
 import com.example.refereezyapp.data.managers.ReportManager
+import com.example.refereezyapp.data.models.RefereeLoad
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -22,7 +23,7 @@ object RefereeService {
 
     fun login(referee: Referee) {
         RefereeManager.setCurrentReferee(referee)
-        LocalStorageManager.saveRefereeReference(referee.id.toString(), referee.password)
+        LocalStorageManager.saveRefereeReference(referee.id.toString(), referee.token)
     }
 
     fun logout() {
@@ -32,12 +33,13 @@ object RefereeService {
         MatchManager.clearMatches()
     }
 
-    fun getReferee(id: Int, password: String): Referee? {
+    fun getReferee(id: Int, token: String): Referee? {
         var res: Referee? = null
 
         runBlocking {
             try {
-                val response = async { RetrofitManager.instance.getReferee(id, password) }.await()
+                val creds = RefereeLoad(id, token)
+                val response = async { RetrofitManager.instance.loadReferee(creds) }.await()
                 if (response.isSuccessful) {
                     res = response.body()
                 } else {
@@ -60,7 +62,7 @@ class RefereeViewModel : ViewModel() {
     fun changePassword(referee: Referee, newPassword: String) {
         viewModelScope.launch {
             try {
-                val update = RefereeUpdate(referee.password, newPassword)
+                val update = RefereeUpdate(referee.token, newPassword)
                 val response = RetrofitManager.instance.changePassword(referee.id, update)
                 val value = response.body()
                 _referee.value = value
@@ -112,9 +114,10 @@ class RefereeViewModel : ViewModel() {
         }
     }
 
-    fun getReferee(id: Int, password: String) {
+    fun getReferee(id: Int, token: String) {
         viewModelScope.launch {
-            val response = RetrofitManager.instance.getReferee(id, password)
+            val creds = RefereeLoad(id, token)
+            val response = RetrofitManager.instance.loadReferee(creds)
             if (response.isSuccessful) {
                 val ref = response.body()
                 _referee.value = ref

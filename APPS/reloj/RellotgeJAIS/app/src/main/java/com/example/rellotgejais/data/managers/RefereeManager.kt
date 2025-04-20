@@ -1,6 +1,6 @@
-package com.example.refereezyapp.data.managers
+package com.example.rellotgejais.data.managers
 
-import com.example.refereezyapp.data.models.Referee
+import com.example.rellotgejais.models.Referee
 
 object RefereeManager {
 
@@ -17,5 +17,6 @@ object RefereeManager {
     fun logout() {
         currentReferee = null
     }
+
 
 }

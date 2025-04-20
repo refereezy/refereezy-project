@@ -4,7 +4,7 @@ data class Referee (
     val id: Int,
     val name: String,
     val dni: String,
-    var password: String,
+    val token: String,
     var clock_code: String?
 )
 
@@ -14,6 +14,11 @@ data class RefereeLogin (
 )
 
 data class RefereeUpdate (
-    val password: String,
+    val token: String,
     val new_password: String
+)
+
+data class RefereeLoad (
+    val id: Int,
+    val token: String
 )

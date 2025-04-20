@@ -30,7 +30,7 @@
     <!--BotonQuadrante izquierda    -->
 
     <ImageButton
-        android:id="@+id/tarjetas"
+        android:id="@+id/cardsBtn"
         android:layout_width="120px"
         android:layout_height="120px"
         android:layout_marginEnd="48dp"
@@ -44,7 +44,7 @@
         app:layout_constraintEnd_toStartOf="@id/guideline_vertical" />
 
     <ImageButton
-        android:id="@+id/PausaStart"
+        android:id="@+id/pauseBtn"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="48dp"
@@ -58,7 +58,7 @@
         app:layout_constraintStart_toEndOf="@id/guideline_vertical" />
 
     <ImageButton
-        android:id="@+id/gol"
+        android:id="@+id/goalBtn"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="4dp"
@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@id/guideline_horizontal" />
 
     <ImageButton
-        android:id="@+id/inccidencias"
+        android:id="@+id/warningBtn"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="12dp"
@@ -97,19 +97,16 @@
         android:name="com.example.rellotgejais.screens.fragments.TimerFragment"
         tools:layout="@layout/fragment_timer"/>
 
-    <fragment
-        android:id="@+id/scoreboard_fragment"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/scoreboard"
         android:layout_width="150dp"
+        android:layout_marginTop="32dp"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
-        android:name="com.example.rellotgejais.screens.fragments.ScoreboardFragment"
-        tools:layout="@layout/fragment_scoreboard"
-        android:layout_marginTop="32dp"
+        tools:layout="@layout/fragment_score"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/guideline_horizontal" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

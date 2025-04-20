@@ -18,9 +18,9 @@ INSERT INTO CLOCK (code) VALUES
 ('CLK123'),
 ('CLK456');
 
-INSERT INTO REFEREE (name, password, dni, clock_code, client_id) VALUES
-('Mike Ref', 'password123', '12345678A', 'CLK123', 1),
-('Sarah Ref', 'password456', '87654321B', 'CLK456', 2);
+INSERT INTO REFEREE (name, password, dni, clock_code, client_id, token) VALUES
+('Mike Ref', 'password123', '12345678A', 'CLK123', 1, '$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa.'),
+('Sarah Ref', 'password456', '87654321B', 'CLK456', 2, '$2b$12$Airxgu62eyAsXRhwqp7ejujxdkdKR6c.t8lCXBdVdqWFr2OZdkuZe');
 
 INSERT INTO MATCHES (date, matchgroup_id, client_id, local_team_id, visitor_team_id, referee_id) VALUES
 ('2025-05-15 15:00:00', 1, 1, 1, 2, 1),

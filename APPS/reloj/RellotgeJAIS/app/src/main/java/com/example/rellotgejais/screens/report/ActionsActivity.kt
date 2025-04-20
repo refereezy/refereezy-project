@@ -8,12 +8,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
+import com.example.rellotgejais.models.IncidentType
 import com.example.rellotgejais.models.TimerViewModel
+import com.example.rellotgejais.screens.user.ConfirmationDialog
+import kotlin.text.replace
 
-class ActionsActivity : AppCompatActivity() {
-    var timerState: Boolean = false
-    private lateinit var timer: TimerViewModel
+class ActionsActivity : _BaseReportActivity() {
 
+    private lateinit var cardsBtn: ImageButton
+    private lateinit var pauseBtn: ImageButton
+    private lateinit var goalBtn: ImageButton
+    private lateinit var incidentButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,37 +26,59 @@ class ActionsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_accions)
 
 
-        timer = (application as MyApp).timerViewModel
-        val buttonPlayPause = findViewById<ImageButton>(R.id.PausaStart)
-        val btnTarjetas = findViewById<ImageButton>(R.id.tarjetas)
-        val btnIncidencias = findViewById<ImageButton>(R.id.inccidencias)
-        val btnGol = findViewById<ImageButton>(R.id.gol)
-        buttonPlayPause.setOnClickListener { v: View? ->
-            if (timerState) {
-                buttonPlayPause.setImageResource(android.R.drawable.ic_media_play)
-                timer.stopTimer()
+        //! this class extends BaseReportActivity, which initializes the basic values
 
-            } else {
-                buttonPlayPause.setImageResource(android.R.drawable.ic_media_pause)
-                timer.startTimer()
-            }
-            timerState = !timerState
+        // components
+        cardsBtn = findViewById<ImageButton>(R.id.cardsBtn)
+        pauseBtn = findViewById<ImageButton>(R.id.pauseBtn)
+        goalBtn = findViewById<ImageButton>(R.id.goalBtn)
+        incidentButton = findViewById<ImageButton>(R.id.warningBtn)
+
+        // drawing data
+        // nothing to draw rn
+
+
+        // behaviours
+        cardsBtn.setOnClickListener { moveTo(CardPickActivity::class.java) }
+        goalBtn.setOnClickListener { moveTo(TeamPickActivity::class.java, IncidentType.GOAL) }
+
+        // incidentBtn behaviours
+        incidentButton.setOnClickListener { moveTo(IncidentActivity::class.java) }
+        incidentButton.setOnLongClickListener { moveTo(IncidentListActivity::class.java); true }
+
+        // pauseBtn behaviours
+        pauseBtn.setOnClickListener(this::toggleTimerState)
+        pauseBtn.setOnLongClickListener { tryCloseReport(); true}
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // re dibuja la puntuacion incluso cuando se cambia de activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.scoreboard, scoreboard)
+            .commit()
+    }
+
+    fun toggleTimerState (v: View) {
+        if (timer.isRunning) {
+            pauseBtn.setImageResource(android.R.drawable.ic_media_play)
+            timer.stop()
+        } else {
+            pauseBtn.setImageResource(android.R.drawable.ic_media_pause)
+            timer.play()
         }
+    }
 
-
-
-        btnGol.setOnClickListener { v: View? ->
-            val intentt = Intent(this, TeamPickActivity::class.java)
-            startActivity(intentt)
-        }
-        btnTarjetas.setOnClickListener { v: View? ->
-            val intent = Intent(this, CardPickActivity::class.java)
-            startActivity(intent)
-        }
-        btnIncidencias.setOnClickListener { v: View? ->
-            val intent = Intent(this, IncidenceActivity::class.java)
-            startActivity(intent)
-        }
-
+    fun tryCloseReport () {
+        // alertar que intenta acabar el partido
+        ConfirmationDialog.showReportDialog(
+            this,
+            "Are you sure you want to end the match?",
+            onConfirm = this::endMatchReport,
+            onCancel = {}
+        )
     }
 }

@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
             // guarda el referee
             RefereeManager.setCurrentReferee(referee)
             // guarda el referee en localStorage
-            LocalStorageManager.saveRefereeReference(referee.id.toString(), referee.password)
+            LocalStorageManager.saveRefereeReference(referee.id.toString(), referee.token)
             // redirige a la pantalla de matches
             val intent = Intent(this, MatchActivity::class.java)
             startActivity(intent)

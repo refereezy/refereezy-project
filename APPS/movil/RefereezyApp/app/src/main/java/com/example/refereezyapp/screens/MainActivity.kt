@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     
         // cargar arbitro de localStorage si hay.
         val refereeId = LocalStorageManager.getRefereeId()
-        val refereePass = LocalStorageManager.getRefereePass()
+        val refereePass = LocalStorageManager.getRefereeToken()
 
         if (refereeId == null || refereePass == null) {
             updateLoadingStatus("No referee session found")
@@ -131,7 +131,6 @@ class MainActivity : AppCompatActivity() {
                 updateLoadingStatus("Report found with id: ${report.raw.id}")
 
                 ReportManager.setCurrentReport(report)
-                MatchManager.setCurrentMatch(report.match)
 
             } else {
                 updateLoadingStatus("No previous report found")

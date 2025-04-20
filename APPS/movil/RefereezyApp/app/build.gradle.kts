@@ -63,6 +63,11 @@ dependencies {
     implementation(libs.glide)
     kapt(libs.glide.compiler)
 
+    // socket
+    implementation("io.socket:socket.io-client:2.0.1") {
+        exclude(group = "org.json", module = "json")
+    }
+
     // Camara X
     implementation("com.google.guava:guava:32.1.3-android")
     implementation("androidx.camera:camera-core:1.3.1")
@@ -72,7 +77,6 @@ dependencies {
 
     // ML Kit Barcode Scanning
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
-
 
     // tests
     testImplementation(libs.junit)

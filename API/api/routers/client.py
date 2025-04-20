@@ -21,7 +21,7 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
     db.add(new_client)
     db.commit()
     db.refresh(new_client)
-    new_client.password == '***'
+    new_client.password = '***'
     return new_client
 
 @router.get("/{client_id}", response_model=ClientResponse)

@@ -19,13 +19,13 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
-        tools:layout="@layout/fragment_scoreboard"
+        tools:layout="@layout/fragment_score"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:name="com.example.rellotgejais.screens.fragments.ScoreboardFragment"/>
+        />
 
 
     <ImageButton

@@ -1,6 +1,5 @@
 package com.example.refereezyapp.data.handlers
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +13,6 @@ import com.example.refereezyapp.data.managers.MatchManager
 import kotlinx.coroutines.launch
 
 
-@SuppressLint("StaticFieldLeak")
 class MatchViewModel : ViewModel() {
 
     private val _matches = MutableLiveData<List<Match>>()

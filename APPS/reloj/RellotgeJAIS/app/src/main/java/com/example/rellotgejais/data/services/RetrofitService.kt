@@ -1,13 +1,13 @@
-package com.example.refereezyapp.data
+package com.example.rellotgejais.data.services
 
-import com.example.refereezyapp.data.models.Clock
-import com.example.refereezyapp.data.models.Match
-import com.example.refereezyapp.data.models.PopulatedMatch
-import com.example.refereezyapp.data.models.Referee
-import com.example.refereezyapp.data.models.RefereeLoad
-import com.example.refereezyapp.data.models.RefereeLogin
-import com.example.refereezyapp.data.models.RefereeUpdate
-import com.example.refereezyapp.utils.LocalDateTimeAdapter
+
+
+import com.example.rellotgejais.models.Clock
+import com.example.rellotgejais.models.Match
+import com.example.rellotgejais.models.PopulatedMatch
+import com.example.rellotgejais.models.Referee
+import com.example.rellotgejais.models.RefereeLoad
+import com.example.rellotgejais.util.LocalDateTimeAdapter
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -16,7 +16,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import java.security.SecureRandom
@@ -34,17 +33,9 @@ interface RetrofitService {
     @GET("/")
     suspend fun testConnection(): Response<String>
 
-    // to login
-    @POST("/referee/login")
-    suspend fun login(@Body credentials: RefereeLogin): Response<Referee>
-
     // to load referee object again
     @POST("/referee/load")
-    suspend fun loadReferee(@Body token: RefereeLoad): Response<Referee>
-
-    // to update password
-    @PATCH("/referee/{id}/password")
-    suspend fun changePassword(@Path("id") id: Int, @Body update: RefereeUpdate): Response<Referee>
+    suspend fun loadReferee(@Body referee: RefereeLoad): Response<Referee>
 
     // to pair a clock
     @GET("/assignTo/{id}")
@@ -53,10 +44,6 @@ interface RetrofitService {
     // cancel clock pairing
     @DELETE("/revoke/{id}")
     suspend fun revokeClock(@Path("id") id: Int)
-
-    // to get referee matches
-    @GET("/referee/{id}/matches")
-    suspend fun getRefereeMatches(@Path("id") id: Int): Response<List<Match>>
 
     // to get matches with their data
     @GET("/matches/populated/{id}")

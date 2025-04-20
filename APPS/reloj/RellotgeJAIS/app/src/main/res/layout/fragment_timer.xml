@@ -6,7 +6,7 @@
     tools:context=".screens.fragments.TimerFragment"
     android:id="@+id/chronometer">
     <TextView
-        android:id="@+id/textViewTimer"
+        android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="00:00"

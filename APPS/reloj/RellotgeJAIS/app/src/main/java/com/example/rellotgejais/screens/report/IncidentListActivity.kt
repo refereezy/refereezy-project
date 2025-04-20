@@ -9,14 +9,14 @@ import com.example.rellotgejais.models.Incident
 import com.example.rellotgejais.screens.IncidenciaAdapter
 
 
-class ActionListActivity : AppCompatActivity() {
+class IncidentListActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: IncidenciaAdapter
     private val listaIncidencias = mutableListOf<Incident>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_action_list)
+        setContentView(R.layout.activity_incident_list)
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = object : LinearLayoutManager(this) {

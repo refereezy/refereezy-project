@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:background="@drawable/scoreboard"
-    tools:context=".screens.fragments.ScoreboardFragment">
+    tools:context=".screens.fragments.ScoreFragment">
 
 
     <TextView
@@ -20,7 +20,7 @@
         android:textStyle="bold" />
 
     <ImageView
-        android:id="@+id/escudoIzquierdo"
+        android:id="@+id/localTeamLogo"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center_vertical"
@@ -28,7 +28,7 @@
         android:src="@drawable/ic_launcher_foreground" />
 
     <ImageView
-        android:id="@+id/escudoDerecho"
+        android:id="@+id/visitorTeamLogo"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center_vertical|end"

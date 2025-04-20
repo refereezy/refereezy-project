@@ -54,6 +54,7 @@ class Referee(Base):
     dni = Column(String, unique=True, nullable=False)
     clock_code = Column(String, ForeignKey("clock.code"))
     password = Column(String, nullable=False)
+    token = Column(String, nullable=False)
     client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
 
     client = relationship("Client", back_populates="referees")
