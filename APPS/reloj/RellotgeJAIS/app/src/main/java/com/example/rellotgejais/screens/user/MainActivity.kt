@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         val tempToken = "$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa."
         val tempId = 1
 
-        refereeViewModel.getReferee(tempId, tempToken)
         refereeViewModel.referee.observe(this) { referee ->
             if (referee != null) {
                 RefereeManager.setCurrentReferee(referee)
@@ -54,8 +53,7 @@ class MainActivity : AppCompatActivity() {
 
 
         nextActivity.setOnClickListener { v: View? ->
-            val intent = Intent(this, ActionsActivity::class.java)
-            startActivity(intent)
+            refereeViewModel.getReferee(tempId, tempToken)
         }
     }
 

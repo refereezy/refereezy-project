@@ -1,17 +1,12 @@
 package com.example.rellotgejais.screens.report
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
 import com.example.rellotgejais.models.IncidentType
-import com.example.rellotgejais.models.TimerViewModel
 import com.example.rellotgejais.screens.user.ConfirmationDialog
-import kotlin.text.replace
 
 class ActionsActivity : _BaseReportActivity() {
 
