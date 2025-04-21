@@ -7,7 +7,6 @@
             <solid android:color="#96000000" />
             <corners android:radius="1000dp" />
             <size android:width="50dp" android:height="50dp" />
-            <stroke android:width="3dp" android:color="#FFFFFF" />
         </shape>
     </item>
 
@@ -16,7 +15,7 @@
         <shape android:shape="oval">
             <!-- Aquí defines el color de tint con alfa para que se mezcle;
                  por ejemplo, si el color de tint deseado es blanco, usas blanco semitransparente -->
-            <solid android:color="#7AFFFFFF" />  <!-- 50% transparencia -->
+            <solid android:color="#77D1D1D1" /> <!-- capa para mantener al texto con base oscura -->
             <corners android:radius="1000dp" />
             <size android:width="50dp" android:height="50dp" />
         </shape>

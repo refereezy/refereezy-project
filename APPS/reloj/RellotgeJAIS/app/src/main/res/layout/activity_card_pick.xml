@@ -15,24 +15,38 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <fragment
+    <!-- Reloj / Tiempo -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/timer"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="24sp"
+        android:layout_marginTop="12dp"
+        android:name="com.example.rellotgejais.screens.fragments.TimerFragment"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_timer" />
+
+    <!-- Marcador -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/scoreboard"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
-        tools:layout="@layout/fragment_score"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="-10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@id/timer"
+        android:name="com.example.rellotgejais.screens.fragments.ScoreFragment"
+        tools:layout="@layout/fragment_score" />
 
 
     <ImageButton
         android:id="@+id/redCard"
         android:layout_width="120px"
         android:layout_height="120px"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         android:layout_marginBottom="4dp"
         android:background="@drawable/round_button"
         android:contentDescription="Botón tarjeta"
@@ -42,13 +56,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline_vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.601" />
+        app:layout_constraintVertical_bias="0.674" />
 
     <ImageButton
         android:id="@+id/yellowCard"
         android:layout_width="120px"
         android:layout_height="120px"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="4dp"
         android:background="@drawable/round_button"
         android:contentDescription="Botón tarjeta"
@@ -58,6 +72,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline_vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.601" />
+        app:layout_constraintVertical_bias="0.674" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

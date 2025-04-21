@@ -10,37 +10,39 @@
     tools:context=".screens.report.IncidentListActivity">
 
     <!-- Reloj / Tiempo -->
-    <TextView
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/timer"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="84:00"
-        android:textSize="26sp"
-        android:textColor="@android:color/white"
-        android:paddingTop="7dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="24sp"
+        android:layout_marginTop="12dp"
+        android:name="com.example.rellotgejais.screens.fragments.TimerFragment"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_timer" />
 
     <!-- Marcador -->
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/scoreboard"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/timer"
-        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        android:layout_marginTop="-10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout="@layout/fragment_score"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timer"
+        android:name="com.example.rellotgejais.screens.fragments.ScoreFragment"
+        tools:layout="@layout/fragment_score" />
 
     <!-- Lista de incidencias optimizada para Wear OS -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="wrap_content"
-        android:layout_height="71dp"
-        android:layout_marginTop="16dp"
+        android:id="@+id/incidentRecycler"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="16dp"
-        android:paddingLeft="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/scoreboard"
         app:layout_constraintVertical_bias="0.0"

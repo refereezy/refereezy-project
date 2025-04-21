@@ -8,29 +8,31 @@
     tools:context=".screens.report.PlayerPickActivity">
 
     <!-- Reloj / Tiempo -->
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/timer"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
-        tools:layout="@layout/fragment_timer"
-        android:name="com.example.rellotgejais.screens.fragments.TimerFragment"/>
+        android:textSize="24sp"
+        android:layout_marginTop="12dp"
+        android:name="com.example.rellotgejais.screens.fragments.TimerFragment"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_timer" />
 
     <!-- Marcador -->
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/scoreboard"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/timer"
-        tools:layout_editor_absoluteX="85dp"
-        tools:layout="@layout/fragment_score"
         tools:ignore="MissingConstraints"
-        android:padding="8dp"
+        android:layout_marginTop="-10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/timer"
+        android:name="com.example.rellotgejais.screens.fragments.ScoreFragment"
+        tools:layout="@layout/fragment_score" />
+
 
     <!-- ScrollView para desplazamiento en ambas direcciones -->
     <ScrollView
@@ -43,10 +45,10 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <GridLayout
+            android:id="@+id/playerGrid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:columnCount="3"
-            android:paddingTop="10dp"
             android:paddingBottom="50dp"
             android:rowCount="4"
             android:layout_gravity="center_horizontal"

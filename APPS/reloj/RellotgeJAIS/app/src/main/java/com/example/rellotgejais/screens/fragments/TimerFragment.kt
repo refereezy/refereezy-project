@@ -35,7 +35,7 @@ class TimerFragment : Fragment() {
             textViewTimer.text = String.format("%02d:%02d", minutes, secs)
         }
 
-        textViewTimer.setOnClickListener {
+        textViewTimer.setOnLongClickListener {
             if (!timerViewModel.isRunning) {
                 if (timerViewModel.getElapsedMinutes() < 45) {
                     confirmTimeTruncation("00:00") {
@@ -46,7 +46,9 @@ class TimerFragment : Fragment() {
                         timerViewModel.setCustomTime(45, 0)
                     }
                 }
+                true
             }
+            true
         }
 
         return view

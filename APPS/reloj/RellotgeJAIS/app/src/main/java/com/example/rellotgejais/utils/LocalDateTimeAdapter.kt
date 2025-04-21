@@ -1,4 +1,4 @@
-package com.example.rellotgejais.util
+package com.example.rellotgejais.utils
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -9,11 +9,6 @@ import com.google.gson.JsonSerializer
 import java.lang.reflect.Type
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
-// Generado por IA
-
-// Basicamente convierte los Strings formateados por python de DateTime a String y luego
-// los convierte a formato LocalDateTime para poder ser utilizados en la app
 
 class LocalDateTimeAdapter : JsonDeserializer<LocalDateTime>, JsonSerializer<LocalDateTime> {
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME

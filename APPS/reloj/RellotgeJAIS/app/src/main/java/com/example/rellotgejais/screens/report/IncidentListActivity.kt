@@ -1,43 +1,43 @@
 package com.example.rellotgejais.screens.report
 
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rellotgejais.R
 import com.example.rellotgejais.models.Incident
 import com.example.rellotgejais.screens.IncidenciaAdapter
+import com.example.rellotgejais.utils.adapters.IncidentAdapter
 
 
-class IncidentListActivity : AppCompatActivity() {
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: IncidenciaAdapter
-    private val listaIncidencias = mutableListOf<Incident>()
+class IncidentListActivity : _BaseReportActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_incident_list)
 
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = object : LinearLayoutManager(this) {
-            override fun canScrollVertically(): Boolean {
-                return false
-            }
-        }
+        //! this class extends BaseReportActivity, which initializes the basic values
 
-        recyclerView.setHasFixedSize(true)
+        // components
+        val incidentRecycler = findViewById<RecyclerView>(R.id.incidentRecycler)
 
-        // Agregar datos de ejemplo
-       /* listaIncidencias.apply {
-            add(Incident(R.drawable.gol, 4, "Gol", 12, 0, "Gol"))
-            add(Incident(R.drawable.t_amarilla, 10, "Tarjeta Amarilla", 14, 0, "T_Amarilla"))
-            add(Incident(R.drawable.gol, 4, "Gol", 12, 0, "Gol"))
-            add(Incident(R.drawable.t_amarilla, 10, "Tarjeta Amarilla", 14, 0, "T_Amarilla"))
-        }
+        // drawing data
+        incidentRecycler.layoutManager = LinearLayoutManager(this)
+        incidentRecycler.adapter = IncidentAdapter(report.incidents
+            .sortedBy { it.raw.minute }
+            .toMutableList(), report)
 
-        adapter = IncidenciaAdapter(listaIncidencias)
-        recyclerView.adapter = adapter
-    */
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // re dibuja la puntuacion incluso cuando se cambia de activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.scoreboard, scoreboard)
+            .commit()
     }
 
 }

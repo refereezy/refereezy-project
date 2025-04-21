@@ -3,11 +3,10 @@ package com.example.rellotgejais.data.services
 
 
 import com.example.rellotgejais.models.Clock
-import com.example.rellotgejais.models.Match
 import com.example.rellotgejais.models.PopulatedMatch
 import com.example.rellotgejais.models.Referee
 import com.example.rellotgejais.models.RefereeLoad
-import com.example.rellotgejais.util.LocalDateTimeAdapter
+import com.example.rellotgejais.utils.LocalDateTimeAdapter
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Response

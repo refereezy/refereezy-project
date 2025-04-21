@@ -1,91 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:layout_width="189dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="40dp"
+    android:background="@drawable/incidencia_background"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    tools:ignore="MissingConstraints"
+    android:layout_gravity="center"
+    tools:layout_editor_absoluteX="22dp"
+    tools:layout_editor_absoluteY="84dp"
+    android:layout_marginBottom="5dp"
+    >
 
+    <!-- Tiempo de la incidencia -->
+    <TextView
+        android:id="@+id/minute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/k2d_bold"
+        android:layout_marginStart="10dp"
+        android:text="12:00"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:paddingRight="5dp"/>
+
+    <!-- Número de jugador en círculo -->
+    <!-- borde blanco -->
     <LinearLayout
-        android:layout_width="189dp"
-        android:layout_height="40dp"
-        android:background="@drawable/incidencia_background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="22dp"
-        tools:layout_editor_absoluteY="84dp"
-        android:paddingLeft="10dp">
+        android:background="@drawable/circle_shape"
+        android:backgroundTint="@color/white"
+        android:padding="3dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_marginHorizontal="7dp"
+        >
 
-        <!-- Tiempo de la incidencia -->
-        <TextView
-            android:id="@+id/tvTiempo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/k2d_bold"
-            android:text="12:00"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:paddingRight="5dp"/>
-
-        <!-- Número de jugador en círculo -->
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            >
-            <net.orandja.shadowlayout.ShadowLayout
-                android:id="@+id/shadow"
+        <!-- Color interno -->
+        <LinearLayout
+            android:id="@+id/baseColor"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/player_circle"
+            android:backgroundTint="@color/white"
+            android:backgroundTintMode="multiply"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Número de jugador -->
+            <TextView
+                android:id="@+id/dorsal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:shadow_color="#C2185B"
-                app:shadow_with_content="true"
-                app:shadow_radius="5"
-                app:shadow_with_color="false"
-                app:shadow_cast_only_background="true"
-                android:layout_margin="10dp"
-                android:background="@drawable/player_circle"
-                android:backgroundTint="@color/black"
-                android:backgroundTintMode="src_over"
-                android:gravity="center_vertical">
+                android:fontFamily="@font/inter_bold"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="17dp" />
 
-                <TextView
-                    android:id="@+id/dorsal"
-                    style="@style/SpecialButton"
-                    android:layout_margin="0dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1"
-                    />
-
-            </net.orandja.shadowlayout.ShadowLayout>
 
         </LinearLayout>
-
-
-        <!-- Imagen de la incidencia (balón, tarjeta amarilla, etc.) -->
-        <ImageView
-            android:id="@+id/incidenciaImage"
-            android:layout_width="55px"
-            android:layout_height="55px"
-            android:contentDescription="tarjeta"
-            android:padding="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/t_amarilla"
-            android:paddingHorizontal="10dp"/>
-
-        <ImageButton
-            android:layout_width="65px"
-            android:layout_height="65px"
-            android:contentDescription="eliminar item"
-            android:padding="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/trash"
-            />
 
     </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Imagen de la incidencia (balón, tarjeta amarilla, etc.) -->
+    <ImageView
+        android:id="@+id/incidentImage"
+        android:layout_width="55px"
+        android:layout_height="55px"
+        android:contentDescription="tarjeta"
+        android:padding="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/t_amarilla"
+        android:paddingHorizontal="10dp"/>
+
+    <ImageButton
+        android:id="@+id/deleteBtn"
+        android:layout_width="65px"
+        android:layout_height="65px"
+        android:contentDescription="eliminar item"
+        android:padding="0dp"
+        android:layout_marginStart="15dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/trash"
+        />
+
+</LinearLayout>
+

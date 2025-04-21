@@ -8,30 +8,31 @@
     tools:context=".screens.report.MicroPhoneActivity"
     android:background="@color/black">
 
-    <fragment
+    <!-- Reloj / Tiempo -->
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/timer"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:paddingTop="15dp"
-        tools:layout="@layout/fragment_timer"
-        android:name="com.example.rellotgejais.screens.fragments.TimerFragment"/>
+        android:textSize="24sp"
+        android:layout_marginTop="12dp"
+        android:name="com.example.rellotgejais.screens.fragments.TimerFragment"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_timer" />
 
-    <fragment
-        android:id="@+id/scoreboard_fragment"
+    <!-- Marcador -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/scoreboard"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="36dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toStartOf="@id/guideline_vertical"
-        app:layout_constraintStart_toStartOf="@+id/timer"
+        tools:ignore="MissingConstraints"
+        android:layout_marginTop="-10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timer"
+        android:name="com.example.rellotgejais.screens.fragments.ScoreFragment"
         tools:layout="@layout/fragment_score" />
-
-
 
 
 
