@@ -8,10 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.activity.OnBackPressedCallback
 import com.example.refereezyapp.R
-import com.example.refereezyapp.data.handlers.ReportService
-import com.example.refereezyapp.data.managers.MatchManager
 import com.example.refereezyapp.data.models.IncidentType
-import com.example.refereezyapp.data.managers.ReportManager
 import com.example.refereezyapp.screens.user.MatchActivity
 import com.example.refereezyapp.utils.ConfirmationDialog
 import com.example.refereezyapp.utils.PopUp

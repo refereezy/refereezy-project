@@ -98,7 +98,7 @@ class MicrophoneActivity : _BaseReportActivity() {
         micbtn.setOnClickListener {view ->
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                 == PackageManager.PERMISSION_GRANTED) {
-                if (miceStatse) {
+                if (!miceStatse) {
                     micbtn.setImageResource(R.drawable.micred)
                     miceStatse = true
                     speechRecognizer.startListening(speechIntent)
