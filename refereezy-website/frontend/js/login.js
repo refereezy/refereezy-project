@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // Enviar los datos al backend para autenticar al usuario
-            const res = await fetch(`${API_URL}/login`, {
+            const res = await fetch(`${API_URL}/clients/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('authToken', responseData.token);
 
             // Redirigir al usuario al dashboard o página principal
-            window.location.href = '/dashboard.html';  // Cambia esto a la URL de tu dashboard
+            window.location.href = './dashboard.html';  // Cambia esto a la URL de tu dashboard
 
         } catch (err) {
             console.error(err);

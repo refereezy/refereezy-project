@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import IntegrityError, DataError
 from starlette.requests import Request
 import traceback
+from utils import hash_password, verify_password
 
 app = FastAPI(title="Football API", version="1.0")
 
@@ -28,6 +29,8 @@ app.include_router(match.router)
 app.include_router(client.router)
 app.include_router(clock.router)
 app.include_router(auth.router)
+
+
 
 @app.get("/")
 def read_root():

@@ -2,8 +2,8 @@
 
 -- Datos de prueba
 INSERT INTO CLIENT (name, plan, plan_expiration, email, password, phone) VALUES
-('John Doe', 'Eazy', '2025-12-31', 'john@example.com', '1234', '1234567890'),
-('Alice Smith', 'Exceptional', '2025-11-30', 'alice@example.com', '5678', '0987654321');
+('John Doe', 'Eazy', '2025-12-31', 'john@example.com', '$2b$12$QIy0hUnHLN0rsNamEB00p.1lMy7Y.UrcU0klIvI5U9l8GNGvAl9qu', '1234567890'),
+('Alice Smith', 'Exceptional', '2025-11-30', 'alice@example.com', '$2b$12$B5pDqofT0YVKGuKITVb1buRl1JVbNF1B7ezsoYgvacRHB.4wDkWkm', '0987654321');
 
 INSERT INTO MATCH_GROUP (visibility, code, client_id) VALUES
 ('public', 'MG001', 1),
