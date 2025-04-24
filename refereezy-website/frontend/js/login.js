@@ -42,10 +42,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Suponiendo que la respuesta es un token JWT o algo que identifique al usuario
             const responseData = await res.json();
-
+            
             // Guardar el token en localStorage (si se utiliza JWT)
-            localStorage.setItem('authToken', responseData.token);
-
+            //localStorage.setItem('authToken', responseData.token);
+            localStorage.setItem('auth_ok', true)
+            localStorage.setItem('client_id', responseData.id)
             // Redirigir al usuario al dashboard o página principal
             window.location.href = './dashboard.html';  // Cambia esto a la URL de tu dashboard
 

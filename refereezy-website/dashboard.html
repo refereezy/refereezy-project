@@ -29,13 +29,14 @@
 
   <script>
     // Proteger el dashboard: requiere login
-    const token = localStorage.getItem("token");
-    if (!token) {
+    //const token = localStorage.getItem("token");
+    const auth_ok = localStorage.getItem("auth_ok")
+    if (!auth_ok) {
       window.location.href = "./login.html";
     }
 
     function logout() {
-      localStorage.removeItem("token");
+      localStorage.removeItem("auth_ok");
       window.location.href = "./index.html";
     }
   </script>

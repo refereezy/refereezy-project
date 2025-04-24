@@ -46,10 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const teamName = teamNameInput.value.trim();
         const primaryColor = primaryColorInput.value.trim();
         const secondaryColor = secondaryColorInput.value.trim();
-        const clientIdRaw = clientIdInput.value.trim();
-        const clientId = parseInt(clientIdRaw, 10);
+        const clientId = parseInt(localStorage.getItem('client_id'), 10);
 
-        if (!teamName || !primaryColor || !secondaryColor || !clientIdRaw) {
+        if (!teamName || !primaryColor || !secondaryColor) {
             alert('Por favor completa todos los campos');
             return;
         }
@@ -92,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             teamNameInput.value = '';
             primaryColorInput.value = '';
             secondaryColorInput.value = '';
-            clientIdInput.value = '';
+            //clientIdInput.value = '';
             logoPreview.innerHTML = '<span>Vista previa del logo</span>';
             currentLogo = null;
             removeLogoBtn.style.display = 'none'; // Ocultar el botón de quitar logo
