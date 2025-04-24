@@ -65,7 +65,7 @@ interface RetrofitService {
 }
 
 object RetrofitManager {
-    private const val BASE_URL = "http://10.0.2.2:8080"
+    private const val BASE_URL = "http://refereezy.smcardona.tech:8080"
 
     //Desde aqui es posible colocar timeouts a las respuestas o asignar un Token si la app necesita uno
     private val client = getUnsafeOkHttpClient()
