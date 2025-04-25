@@ -1,3 +1,9 @@
+const auth_ok = localStorage.getItem("auth_ok");
+if (auth_ok) {
+    window.location.href = "./dashboard.html";
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // Obtener referencias a los elementos del formulario
     const loginForm = document.querySelector('.form-container');
