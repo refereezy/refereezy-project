@@ -1,9 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 from models import Team
 from schemas import TeamCreate, TeamResponse
 from dependencies import get_db
 from typing import List
+import cloudinary
+import os
+from dotenv import load_dotenv
+import cloudinary.uploader
+
+load_dotenv()
+
+cloudinary.config( 
+    cloud_name=os.getenv("CLOUDINARY_NAME"), 
+    api_key=os.getenv("CLOUDINARY_API_KEY"), 
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"), 
+    secure=True
+)
 
 router = APIRouter(prefix="/teams", tags=["Teams"])
 
@@ -28,12 +41,22 @@ def get_teams_by_client(client_id: int, db: Session = Depends(get_db)):
     return teams
 
 # Post Team
-@router.post("/", response_model=TeamResponse)
-def create_team(team: TeamCreate, db: Session = Depends(get_db)):
-    db_team = Team(**team.dict())
+@router.post("/teams", response_model=TeamResponse)
+async def create_team(
+    team: TeamCreate = Depends(TeamCreate.as_form),
+    logo: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    # Subir imagen a Cloudinary
+    upload_result = cloudinary.uploader.upload(logo.file, folder="logos_equipos/")
+    logo_url = upload_result.get("secure_url")
+
+    # Guardar en la base de datos
+    db_team = Team(**team.dict(), logo_url=logo_url)
     db.add(db_team)
     db.commit()
     db.refresh(db_team)
+
     return db_team
 
 @router.put("/{team_id}", response_model=TeamResponse)

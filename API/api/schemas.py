@@ -1,18 +1,36 @@
 from datetime import datetime
 from pydantic import BaseModel
 from typing import Optional
+from fastapi import Form
 
 #  Model para Team
 class TeamBase(BaseModel):
-    # He quitado el id: int
     name: str
     primary_color: str
     secondary_color: str
     logo_url: str
     client_id: int
 
-class TeamCreate(TeamBase):
-    pass
+class TeamCreate(BaseModel):
+    name: str
+    primary_color: str
+    secondary_color: str
+    client_id: int
+
+    @classmethod
+    def as_form(
+        cls,
+        name: str = Form(...),
+        primary_color: str = Form(...),
+        secondary_color: str = Form(...),
+        client_id: int = Form(...)
+    ):
+        return cls(
+            name=name,
+            primary_color=primary_color,
+            secondary_color=secondary_color,
+            client_id=client_id
+        )
 
 class TeamResponse(TeamBase):
     # id: int
