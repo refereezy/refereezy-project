@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Guardar el token en localStorage (si se utiliza JWT)
             //localStorage.setItem('authToken', responseData.token);
+            console.log(responseData);
             localStorage.setItem('auth_ok', true)
             localStorage.setItem('client_id', responseData.id)
             // Redirigir al usuario al dashboard o página principal

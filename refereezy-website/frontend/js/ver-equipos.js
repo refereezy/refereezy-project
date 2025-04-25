@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const logoContainer = document.createElement('div');
         logoContainer.className = 'team-logo';
 
-        if (team.logo) {
+        if (team.logo_url) {
             const img = document.createElement('img');
-            img.src = team.logo;
+            img.src = team.logo_url;
             img.alt = `${team.name} logo`;
             logoContainer.appendChild(img);
         } else {

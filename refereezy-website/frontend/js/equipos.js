@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const teamNameInput = document.querySelector('.team-name-input');
     const primaryColorInput = document.querySelector('.primary-color-input');
     const secondaryColorInput = document.querySelector('.secondary-color-input');
-    const clientIdInput = document.querySelector('.client-id-input');
 
     const API_URL = "http://localhost:8080";
     let currentLogo = null;
+    let logoFile = null; // Store the actual file object
 
     logoUploadBtn.addEventListener('click', () => {
         const input = document.createElement('input');
@@ -20,12 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
         input.onchange = (e) => {
             const file = e.target.files[0];
             if (file) {
+                logoFile = file; // Store the file object for later upload
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     currentLogo = e.target.result;
                     logoPreview.innerHTML = `
                         <img src="${currentLogo}" alt="Logo preview" 
-                             style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                            style="max-width: 100%; max-height: 100%; object-fit: contain;">
                     `;
                     removeLogoBtn.style.display = 'block'; // Mostrar el botón de quitar logo
                 };
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     removeLogoBtn.addEventListener('click', () => {
         currentLogo = null;
+        logoFile = null; // Clear the file object
         logoPreview.innerHTML = '<span>Vista previa del logo</span>';
         removeLogoBtn.style.display = 'none'; // Ocultar el botón de quitar logo
     });
@@ -58,25 +60,26 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const newTeam = {
-            // Aquí se debería de quitar el id
-            id: 0,
-            name: teamName,
-            primary_color: primaryColor,
-            secondary_color: secondaryColor,
-            client_id: clientId,
-            logo_url: currentLogo || ""
-        };
+        if (!logoFile) {
+            alert('Por favor selecciona un logo para el equipo');
+            return;
+        }
 
-        console.log("Enviando equipo:", newTeam);
+        // Create FormData object to handle file upload and form fields
+        const formData = new FormData();
+        formData.append('name', teamName);
+        formData.append('primary_color', primaryColor);
+        formData.append('secondary_color', secondaryColor);
+        formData.append('client_id', clientId);
+        formData.append('logo', logoFile); // Add the file with the name "logo" as expected by the API
+
+        console.log("Enviando equipo con logo...");
 
         try {
-            const res = await fetch(`${API_URL}/teams`, {
+            const res = await fetch(`${API_URL}/teams/teams`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newTeam)
+                // Don't set Content-Type header - fetch will set it automatically with the boundary for FormData
+                body: formData
             });
 
             if (!res.ok) {
@@ -91,9 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
             teamNameInput.value = '';
             primaryColorInput.value = '';
             secondaryColorInput.value = '';
-            //clientIdInput.value = '';
             logoPreview.innerHTML = '<span>Vista previa del logo</span>';
             currentLogo = null;
+            logoFile = null;
             removeLogoBtn.style.display = 'none'; // Ocultar el botón de quitar logo
         } catch (err) {
             console.error("Error al guardar el equipo:", err);
