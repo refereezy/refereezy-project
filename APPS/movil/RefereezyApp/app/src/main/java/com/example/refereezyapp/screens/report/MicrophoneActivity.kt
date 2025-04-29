@@ -175,4 +175,5 @@ class MicrophoneActivity : _BaseReportActivity() {
         super.onDestroy()
         speechRecognizer.destroy()
     }
+
 }

@@ -29,15 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         /**
          * TODO: Requerimientos de emparejamiento con QR
-         * - Pedir QR a la api
-         * - Almacenar QR en el reloj
-         * - Mostrar QR en la api.
-         * - Registrar codigo QR en Socket.io
-         * - Esperar a que el arbitro envie sus datos al emparejar el reloj
-         * - NO almacenar los datos del arbitro en el reloj
-         * - Cuando se tengan los datos del arbitro, hacer procedimiento de buscar reporte.
-         * - Si no hay reporte, informar que no hay ningun reporte iniciado.
-         * - Mostrar botón para volver a comprobar (tal vez cooldown de 5 segundos?)
+         * Cargar datos de si esta vinculado
+         * pedir a la api el referee
          */
 
         val tempToken = "$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa."
