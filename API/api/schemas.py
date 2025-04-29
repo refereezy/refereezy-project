@@ -33,7 +33,7 @@ class TeamCreate(BaseModel):
         )
 
 class TeamResponse(TeamBase):
-    # id: int
+    id: int
     class Config:
         orm_mode = True
 

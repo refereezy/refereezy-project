@@ -18,6 +18,13 @@ def get_players_by_client_id(client_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="No players found for the given client_id")
     return players
 
+@router.get("/team/{team_id}/{dorsal_number}", response_model=PlayerResponse)
+def get_player_by_team_and_number(team_id: int, dorsal_number: int, db: Session = Depends(get_db)):
+    player = db.query(Player).filter(Player.team_id == team_id, Player.dorsal_number == dorsal_number).first()
+    if not player:
+        raise HTTPException(status_code=404, detail="Player not found with the given team_id and dorsal_number")
+    return player
+
 @router.get("/{player_id}", response_model=PlayerResponse)
 def get_player(player_id: int, db: Session = Depends(get_db)):
     player = db.query(Player).filter(Player.id == player_id).first()
@@ -52,3 +59,10 @@ def delete_player(player_id: int, db: Session = Depends(get_db)):
     db.delete(db_player)
     db.commit()
     return {"message": "Player deleted"}
+
+@router.get("/team/{team_id}", response_model=List[PlayerResponse])
+def get_players_by_team(team_id: int, db: Session = Depends(get_db)):
+    players = db.query(Player).filter(Player.team_id == team_id).all()
+    if not players:
+        raise HTTPException(status_code=404, detail="No players found for the given team_id")
+    return players

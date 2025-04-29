@@ -41,7 +41,7 @@ def get_teams_by_client(client_id: int, db: Session = Depends(get_db)):
     return teams
 
 # Post Team
-@router.post("/teams", response_model=TeamResponse)
+@router.post("/", response_model=TeamResponse)
 async def create_team(
     team: TeamCreate = Depends(TeamCreate.as_form),
     logo: UploadFile = File(...),
