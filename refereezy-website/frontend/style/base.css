@@ -98,3 +98,12 @@ body {
         display: none;
     }
 }
+.dashboard-nav {
+    width: 100%;
+    background-color: var(--nav-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }

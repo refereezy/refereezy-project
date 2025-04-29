@@ -1,12 +1,5 @@
 /* Reset y variables */
-:root {
-    --bg: #202020;
-    --nav-bg: #2b2b2b;
-    --text: #ffffff;
-    --primary: #7ed957;
-    --secondary: #27c02e;
-    --hover: #6bc746;
-  }
+@import url('base.css');
 
 * {
     margin: 0;
@@ -23,6 +16,7 @@ body {
 
   /* Navbar */
   .dashboard-nav {
+    width: 100%;
     background-color: var(--nav-bg);
     display: flex;
     justify-content: space-between;
@@ -67,7 +61,7 @@ body {
     position: relative;
     border-radius: 1rem;
     overflow: hidden;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    /* background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 

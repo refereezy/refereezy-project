@@ -1,5 +1,5 @@
 const auth_ok = localStorage.getItem("auth_ok")
-if (!auth_ok) {
+if (!auth_ok){
   window.location.href = "../../login.html";
 }
 
