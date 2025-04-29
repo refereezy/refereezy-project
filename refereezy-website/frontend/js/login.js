@@ -1,3 +1,9 @@
+const auth_ok = localStorage.getItem("auth_ok");
+if (auth_ok) {
+    window.location.href = "./dashboard.html";
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // Obtener referencias a los elementos del formulario
     const loginForm = document.querySelector('.form-container');
@@ -45,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Guardar el token en localStorage (si se utiliza JWT)
             //localStorage.setItem('authToken', responseData.token);
+            console.log(responseData);
             localStorage.setItem('auth_ok', true)
             localStorage.setItem('client_id', responseData.id)
             // Redirigir al usuario al dashboard o página principal

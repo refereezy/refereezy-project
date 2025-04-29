@@ -5,3 +5,5 @@ fastapi
 SQLAlchemy
 psycopg2-binary
 bcrypt
+python-multipart
+cloudinary

@@ -1,5 +1,5 @@
 from fastapi import FastAPI,HTTPException
-from routers import team, player, referee, match_group, match, client, clock, auth
+from routers import team, player, referee, match_group, match, client, clock
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import IntegrityError, DataError
@@ -28,7 +28,6 @@ app.include_router(match_group.router)
 app.include_router(match.router)
 app.include_router(client.router)
 app.include_router(clock.router)
-app.include_router(auth.router)
 
 
 
@@ -60,6 +59,6 @@ async def general_exception_handler(request: Request, exc: Exception):
     traceback.print_exc()
     print(exc)
     return JSONResponse(
-        status_code=500,
+        status_code=501,
         content={"detail": "An unexpected error occurred."}
     )
