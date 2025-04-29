@@ -8,6 +8,9 @@
     --primary: #7ed957;
     --secondary: #27c02e;
     --hover: #6bc746;
+    --grid-bg: rgba(43, 43, 43, 0.8);
+    --grid-header: rgba(126, 217, 87, 0.9);
+    --row-hover: rgba(126, 217, 87, 0.2);
   }
 * {
     margin: 0;
@@ -69,8 +72,8 @@ body {
     position: relative;
     border-radius: 1rem;
     overflow: hidden;
-   /*  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--nav-bg);
 }
 
 /* Title Section */
@@ -78,6 +81,7 @@ body {
     position: relative;
     padding: 1.5rem 0;
     text-align: center;
+    margin-bottom: 1rem;
 }
 
 .title-background {
@@ -96,10 +100,138 @@ body {
     z-index: 1;
 }
 
+/* Filtros */
+.player-filters {
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.reset-filter-btn {
+    padding: 0.5rem 1rem;
+    background-color: var(--nav-bg);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.reset-filter-btn:hover {
+    background-color: var(--primary);
+    color: black;
+}
+
+.toggle-form-btn {
+    padding: 0.5rem 1.5rem;
+    background-color: var(--primary);
+    color: black;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toggle-form-btn:hover {
+    background-color: var(--hover);
+}
+
+/* Grid de jugadores */
+.players-container {
+    padding: 1rem 2rem;
+}
+
+.players-grid {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1.5fr 1.5fr 1fr;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.player-header {
+    padding: 0.75rem 1rem;
+    background-color: var(--grid-header);
+    color: black;
+    font-weight: 600;
+    text-align: left;
+    font-size: 1.1rem;
+    border-radius: 0.25rem;
+}
+
+.player-cell {
+    padding: 0.75rem 1rem;
+    background-color: var(--grid-bg);
+    border-radius: 0.25rem;
+    transition: background-color 0.3s;
+}
+
+.player-number {
+    font-weight: 600;
+    color: var(--primary);
+    text-align: center;
+}
+
+.player-name {
+    font-weight: 500;
+}
+
+.player-position {
+    font-style: italic;
+}
+
+/* Hover effect para las celdas */
+.player-cell:hover {
+    background-color: var(--row-hover);
+}
+
+/* Mensaje de no jugadores */
+.no-players-message {
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text);
+    opacity: 0.7;
+}
+
+.no-players-message p:first-child {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
 /* Form Section */
 .form-container {
     padding: 2rem;
-    space-between: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 1rem;
+}
+
+.form-container h2 {
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+    font-size: 1.5rem;
 }
 
 .input-group {
@@ -108,7 +240,11 @@ body {
     gap: 1.5rem;
 }
 
-.player-name-input {
+.player-name-input,
+.player-number-input,
+.player-dni-input,
+.team-search-input,
+.form-team-search-input {
     flex: 1;
     height: 3.5rem;
     padding: 0 1rem;
@@ -123,21 +259,105 @@ body {
 
 .player-number-input {
     width: 8rem;
-    height: 3.5rem;
-    padding: 0 1rem;
-    background-color: rgba(43, 43, 43, 0.8);
-    border: none;
-    border-radius: 0.5rem;
-    color: var(--text);
-    font-size: 1rem;
-    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
-    transition: box-shadow 0.3s;
+    flex: 0.5;
 }
 
 .player-name-input:focus,
-.player-number-input:focus {
+.player-number-input:focus,
+.player-dni-input:focus,
+.team-search-input:focus,
+.form-team-search-input:focus {
     outline: none;
     box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
+}
+
+/* Team selector styles */
+.team-select-container {
+    flex: 1;
+    position: relative;
+}
+
+.team-search-container {
+    position: relative;
+}
+
+.team-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: var(--nav-bg);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    margin-top: 0.5rem;
+}
+
+.team-list {
+    list-style: none;
+    padding: 0;
+}
+
+.team-list li {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.team-list li:hover {
+    background-color: var(--primary);
+    color: black;
+}
+
+.selected-team {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.selected-team-name {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Checkbox styles */
+.checkbox-group {
+    margin-bottom: 1.5rem;
+}
+
+.goalkeeper-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.goalkeeper-checkbox {
+    appearance: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-color: rgba(43, 43, 43, 0.8);
+    border-radius: 0.25rem;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.goalkeeper-checkbox:checked {
+    background-color: var(--primary);
+}
+
+.goalkeeper-checkbox:checked::before {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    font-size: 0.8rem;
 }
 
 .action-buttons {
@@ -147,8 +367,7 @@ body {
     margin-top: 1rem;
 }
 
-.add-player-btn,
-.view-players-btn {
+.add-player-btn {
     width: 100%;
     height: 3.5rem;
     background-color: var(--primary);
@@ -160,20 +379,75 @@ body {
     cursor: pointer;
     transition: all 0.3s;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    line-height: 3.5rem;
 }
 
-.add-player-btn:hover,
-.view-players-btn:hover {
+.add-player-btn:hover {
     background-color: var(--hover);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Notificaciones */
+.notification {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--nav-bg);
+    color: var(--text);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 1000;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.success {
+    border-left: 4px solid var(--primary);
+}
+
+.notification.error {
+    border-left: 4px solid #ff4d4d;
+}
+
+.notification.info {
+    border-left: 4px solid #3498db;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .nav-links {
         display: none;
+    }
+    
+    .player-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .players-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .player-header {
+        display: none;
+    }
+    
+    .player-cell {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem;
+    }
+    
+    .player-cell::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--primary);
     }
     
     .input-group {

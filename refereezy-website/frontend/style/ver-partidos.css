@@ -1,3 +1,5 @@
+@import url('base.css');
+
 /* Reset y variables */
 :root {
     --background: #202020;

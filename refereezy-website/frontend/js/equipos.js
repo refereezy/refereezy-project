@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Enviando equipo con logo...");
 
         try {
-            const res = await fetch(`${API_URL}/teams/teams`, {
+            const res = await fetch(`${API_URL}/teams`, {
                 method: 'POST',
                 // Don't set Content-Type header - fetch will set it automatically with the boundary for FormData
                 body: formData
