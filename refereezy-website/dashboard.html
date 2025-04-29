@@ -26,17 +26,16 @@
     <h1>👋 Bienvenido a tu Panel de Control</h1>
     <p>Selecciona una sección en el menú para empezar.</p>
   </main>
-
+  
   <script>
-    // Proteger el dashboard: requiere login
-    //const token = localStorage.getItem("token");
     const auth_ok = localStorage.getItem("auth_ok")
     if (!auth_ok) {
       window.location.href = "./login.html";
     }
-
+    
     function logout() {
       localStorage.removeItem("auth_ok");
+      localStorage.removeItem("client_id");
       window.location.href = "./index.html";
     }
   </script>

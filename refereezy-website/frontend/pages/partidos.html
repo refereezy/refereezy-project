@@ -12,21 +12,18 @@
         <nav class="nav-bar">
             <div class="nav-container">
                 <div class="nav-content">
-                    <!-- Logo -->
-                    <div class="logo-container">
-                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="RefereeZY Logo" class="logo">
-                    </div>
-                    
                     <!-- Navigation Links -->
-                    <div class="nav-links">
-                        <a href="../../index.html" class="nav-item">Inicio<span class="separator"></span></a>
-                        <a href="equipos.html" class="nav-item">Equipos<span class="separator"></span></a>
-                        <a href="jugadores.html" class="nav-item">Jugadores<span class="separator"></span></a>
-                        <a href="arbitros.html" class="nav-item">Arbitros<span class="separator"></span></a>
-                        <a href="partidos.html" class="nav-item">Partidos<span class="separator"></span></a>
-                        <a href="planes.html" class="nav-item">Planes</a>
-                        <button class="login-button">Iniciar sesion</button>
-                    </div>
+                    <nav class="dashboard-nav">
+                        <div class="nav-logo">Refereezy ⚽</div>
+                        <ul class="nav-links">
+                          <li><a href="./equipos.html">Equipos</a></li>
+                          <li><a href="./jugadores.html">Jugadores</a></li>
+                          <li><a href="./arbitros.html">Árbitros</a></li>
+                          <li><a href="./partidos.html">Partidos</a></li>
+                          <li><a href="./planes.html">Planes</a></li>
+                          <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </nav>
@@ -67,6 +64,7 @@
             </div>
         </main>
     </div>
+    <script src="../js/commons.js"></script>
     <script src="../js/partidos.js"></script>
 </body>
 </html>
