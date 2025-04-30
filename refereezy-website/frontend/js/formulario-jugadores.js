@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Cerrar dropdown al hacer clic fuera
         document.addEventListener('click', (e) => {
+            // Prevent closing the dropdown if we're clicking the search input itself
+            if (e.target === teamSearchInput) {
+                return;
+            }
+            
             if (!teamSearchInput.contains(e.target) && !teamDropdown.contains(e.target)) {
                 teamDropdown.style.display = 'none';
             }
@@ -70,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Seleccionar un equipo para el formulario
     function selectTeam(team) {
+        console.log('Equipo seleccionado:', team);
         selectedTeam = team;
         selectedTeamName.textContent = team.name;
         teamSearchInput.value = team.name;

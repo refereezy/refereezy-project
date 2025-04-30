@@ -39,7 +39,30 @@
                         <h1>Gestión de Jugadores</h1>
                     </div>
 
-                    <!-- Formulario (oculto inicialmente) -->
+                    
+
+                    <!-- Filtros -->
+                    <div class="player-filters">
+                        <div class="filter-group">
+                            <label>Filtrar por equipo:</label>
+                            <div class="team-select-container">
+                                <div class="team-search-container">
+                                    <input type="text" placeholder="Buscar equipo..." class="team-search-input">
+                                    <div class="team-dropdown" style="display: none;">
+                                        <ul class="team-list"></ul>
+                                    </div>
+                                </div>
+                                <div class="selected-team">
+                                    <span>Equipo seleccionado: </span>
+                                    <span class="selected-team-name">Todos</span>
+                                </div>
+                            </div>
+                            <button class="reset-filter-btn">Resetear filtro</button>
+                        </div>
+                        <button class="toggle-form-btn"><i class="fas fa-plus"></i> Agregar jugador</button>
+                    </div>
+
+                    <!-- Formulario (inicialmente oculto) -->
                     <div class="form-container" style="display: none;">
                         <h2>Añadir nuevo jugador</h2>
                         <div class="input-group">
@@ -75,29 +98,6 @@
                         </div>
                     </div>
 
-                    <!-- Filtros -->
-                    <div class="player-filters">
-                        <div class="filter-group">
-                            <label>Filtrar por equipo:</label>
-                            <div class="team-select-container">
-                                <div class="team-search-container">
-                                    <input type="text" placeholder="Buscar equipo..." class="team-search-input">
-                                    <div class="team-dropdown" style="display: none;">
-                                        <ul class="team-list"></ul>
-                                    </div>
-                                </div>
-                                <div class="selected-team">
-                                    <span>Equipo seleccionado: </span>
-                                    <span class="selected-team-name">Todos</span>
-                                </div>
-                            </div>
-                            <button class="reset-filter-btn">Resetear filtro</button>
-                        </div>
-                        <button class="toggle-form-btn"><i class="fas fa-plus"></i> Agregar jugador</button>
-                    </div>
-
-                    
-
                     <!-- Listado de Jugadores -->
                     <div class="players-container">
                         <!-- Grid para listar jugadores -->
@@ -111,8 +111,6 @@
                             <p>Agrega nuevos jugadores con el botón "Agregar jugador"</p>
                         </div>
                     </div>
-
-                    
                 </div>
             </div>
         </main>

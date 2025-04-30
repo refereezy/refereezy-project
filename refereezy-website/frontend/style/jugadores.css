@@ -11,6 +11,7 @@
     --grid-bg: rgba(43, 43, 43, 0.8);
     --grid-header: rgba(126, 217, 87, 0.9);
     --row-hover: rgba(126, 217, 87, 0.2);
+    --form-bg: rgba(43, 43, 43, 0.95);
   }
 * {
     margin: 0;
@@ -225,7 +226,11 @@ body {
 .form-container {
     padding: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 1rem;
+    margin-top: 0;
+    background-color: var(--form-bg);
+    border-radius: 0.5rem;
+    margin: 1rem 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .form-container h2 {
