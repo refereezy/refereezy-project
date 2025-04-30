@@ -87,7 +87,7 @@
 
 
     <fragment
-        android:id="@+id/chronometer"
+        android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal50"

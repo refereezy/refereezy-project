@@ -3,20 +3,16 @@ package com.example.rellotgejais.screens.report
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.ImageButton
+import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
-import androidx.gridlayout.widget.GridLayout
 import com.example.rellotgejais.R
 import com.example.rellotgejais.data.handlers.ReportHandler
 import com.example.rellotgejais.models.Incident
 import com.example.rellotgejais.models.IncidentType
 import com.example.rellotgejais.models.TeamType
-import kotlin.text.replace
-import kotlin.toString
 
 class PlayerPickActivity : _BaseReportActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,10 +30,8 @@ class PlayerPickActivity : _BaseReportActivity() {
 
         // PopUp.show(this, "$type for ...", PopUp.Type.INFO)
 
-
         // components
         val grid = findViewById<GridLayout>(R.id.playerGrid)
-
         for (player in team.players) {
             val inflater = LayoutInflater.from(this).inflate(R.layout.layout_player_pick, grid, false)
             val dorsal = inflater.findViewById<TextView>(R.id.dorsal)
@@ -48,7 +42,7 @@ class PlayerPickActivity : _BaseReportActivity() {
             baseColor.backgroundTintList = ColorStateList.valueOf(color.toColorInt())
             dorsal.text = player.dorsal.toString()
 
-            dorsal.setOnClickListener {
+            inflater.setOnClickListener {
                 val incident = Incident(
                     type = type,
                     description = description?: type.name,
