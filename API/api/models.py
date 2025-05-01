@@ -51,11 +51,11 @@ class Referee(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    dni = Column(String, unique=True, nullable=False)
-    clock_code = Column(String, ForeignKey("clock.code"))
     password = Column(String, nullable=False)
-    token = Column(String, nullable=False)
+    dni = Column(String, unique=True, nullable=False)
+    clock_code = Column(String, nullable=True)
     client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
+    token = Column(String, nullable=False)
 
     client = relationship("Client", back_populates="referees")
     matches = relationship("Match", back_populates="referee", cascade="all, delete")
@@ -87,11 +87,3 @@ class Match(Base):
     referee = relationship("Referee", foreign_keys=[referee_id])
     local_team = relationship("Team", foreign_keys=[local_team_id])
     visitor_team = relationship("Team", foreign_keys=[visitor_team_id])
-
-
-
-class Clock(Base):
-    __tablename__ = "clock"
-
-    code = Column(String, primary_key=True)
-    

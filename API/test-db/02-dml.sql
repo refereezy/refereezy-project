@@ -14,17 +14,15 @@ INSERT INTO TEAM (name, logo_url, primary_color, secondary_color, client_id) VAL
 ('Madrid', 'https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png', '#0000ff', '#000000', 1),
 ('Milan', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_of_AC_Milan.svg/1306px-Logo_of_AC_Milan.svg.png', '#00ff00', '#ffff00', 2);
 
-INSERT INTO CLOCK (code) VALUES
-('CLK123'),
-('CLK456');
-
 INSERT INTO REFEREE (name, password, dni, clock_code, client_id, token) VALUES
 ('Mike Ref', 'password123', '12345678A', 'CLK123', 1, '$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa.'),
 ('Sarah Ref', 'password456', '87654321B', 'CLK456', 2, '$2b$12$Airxgu62eyAsXRhwqp7ejujxdkdKR6c.t8lCXBdVdqWFr2OZdkuZe');
 
 INSERT INTO MATCHES (date, matchgroup_id, client_id, local_team_id, visitor_team_id, referee_id) VALUES
 ('2025-05-15 15:00:00', 1, 1, 1, 2, 1),
-('2025-05-20 18:00:00', 2, 1, 3, 1, 1);
+('2025-05-20 18:00:00', 2, 1, 3, 1, NULL),
+('2025-05-25 20:00:00', 1, 2, 2, 3, 2),
+('2025-06-01 17:00:00', 2, 2, 1, 3, NULL);
 
 INSERT INTO PLAYER (name, dorsal_number, dni, team_id, client_id, is_goalkeeper) VALUES
 -- Jugadores para el Team 1

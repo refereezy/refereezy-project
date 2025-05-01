@@ -61,7 +61,7 @@ class MatchBase(BaseModel):
     date: datetime
     matchgroup_id: int
     client_id: int
-    referee_id: int
+    referee_id: Optional[int]
     local_team_id: int
     visitor_team_id: int
 

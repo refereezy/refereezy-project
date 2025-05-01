@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from dependencies import get_db
-from models import Clock, Referee
+from models import Referee
 from schemas import ClockSchema
 import random, string
 
@@ -11,26 +11,11 @@ router = APIRouter(tags=["Pairing"])
 
 @router.get("/clock/generate", response_model=ClockSchema)
 def gen_code(db: Session = Depends(get_db)):
-  attemps = 0
-  while True:
-    code = ''.join(random.choices(string.ascii_letters + string.digits, k=50))
-    
-    clock = Clock()
-    clock.code = code
-    
-    try:
-      db.add(clock)
-      db.commit()
-      return {"code": code}
-    except Exception as e:
-      db.rollback()
-      attemps+=1
-      # Retry generating and adding a new code
-      if (attemps == 10):
-        raise HTTPException(status_code=500, detail="Failed to generate a unique clock code")
-      
-      continue
-    
+  
+  code = ''.join(random.choices(string.ascii_letters + string.digits, k=50))
+  
+  return {"code": code}
+
 @router.post("/assignTo/{referee_id}")
 def assign_code(referee_id: int, clock: ClockSchema, db: Session = Depends(get_db)):
   
@@ -38,11 +23,6 @@ def assign_code(referee_id: int, clock: ClockSchema, db: Session = Depends(get_d
   
   if not referee:
     raise HTTPException(status_code=404, detail="Referee not found")
-  
-  db_clock = db.query(Clock).filter(Clock.code == clock.code).count()
-  
-  if db_clock == 0:
-    raise HTTPException(status_code=404, detail="Clock code non existent")
   
   referee.clock_code = clock.code
   
@@ -62,13 +42,7 @@ def revoke_code(referee_id: int, db: Session = Depends(get_db)):
   if not referee.clock_code:
     raise HTTPException(status_code=400, detail="Referee does not have a clock code assigned")
   
-  # Find the clock with the assigned code
-  clock = db.query(Clock).filter(Clock.code == referee.clock_code).first()
-  if not clock:
-    raise HTTPException(status_code=404, detail="Clock code not found")
-  
-  # Delete the clock and remove the code from the referee
-  db.delete(clock)
+  # Remove the code from the referee
   referee.clock_code = None
   db.commit()
   

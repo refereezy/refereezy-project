@@ -33,7 +33,7 @@ def get_referees_by_client(client_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=RefereeResponse)
 def create_referee(referee: RefereeCreate, db: Session = Depends(get_db)):
-    db_referee = Referee(**referee.dict())
+    db_referee = Referee(**referee.dict(), token = tokenize_password(referee.password))
     db.add(db_referee)
     db.commit()
     db.refresh(db_referee)
@@ -41,7 +41,7 @@ def create_referee(referee: RefereeCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{referee_id}", response_model=RefereeResponse)
-def update_referee(referee_id: int, referee: RefereeCreate, db: Session = Depends(get_db)):
+def update_referee(referee_id: int, referee: RefereeUpdate, db: Session = Depends(get_db)):
     db_referee = db.query(Referee).filter(Referee.id == referee_id).first()
     if not db_referee:
         raise HTTPException(status_code=404, detail="Referee not found")
