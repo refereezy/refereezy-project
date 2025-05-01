@@ -1,6 +1,19 @@
 /* Reset y variables */
 @import url('base.css');
 
+:root {
+    --bg: #202020;
+    --nav-bg: #2b2b2b;
+    --text: #ffffff;
+    --primary: #7ed957;
+    --secondary: #27c02e;
+    --hover: #6bc746;
+    --grid-bg: rgba(43, 43, 43, 0.8);
+    --grid-header: rgba(126, 217, 87, 0.9);
+    --row-hover: rgba(126, 217, 87, 0.2);
+    --form-bg: rgba(43, 43, 43, 0.95);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -14,8 +27,8 @@ body {
     min-height: 100vh;
 }
 
-  /* Navbar */
-  .dashboard-nav {
+/* Navbar */
+.dashboard-nav {
     width: 100%;
     background-color: var(--nav-bg);
     display: flex;
@@ -23,29 +36,29 @@ body {
     align-items: center;
     padding: 1rem 2rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
-  
-  .nav-logo {
+}
+
+.nav-logo {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--primary);
-  }
-  
-  .nav-links {
+}
+
+.nav-links {
     list-style: none;
     display: flex;
     gap: 1.5rem;
-  }
-  
-  .nav-links li a {
+}
+
+.nav-links li a {
     color: var(--text);
     text-decoration: none;
     transition: color 0.3s;
-  }
-  
-  .nav-links li a:hover {
+}
+
+.nav-links li a:hover {
     color: var(--primary);
-  }
+}
 
 /* Teams Section */
 .teams-section {
@@ -61,8 +74,8 @@ body {
     position: relative;
     border-radius: 1rem;
     overflow: hidden;
-    /* background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--nav-bg);
 }
 
 /* Title Section */
@@ -70,6 +83,7 @@ body {
     position: relative;
     padding: 1.5rem 0;
     text-align: center;
+    margin-bottom: 1rem;
 }
 
 .title-background {
@@ -88,18 +102,201 @@ body {
     z-index: 1;
 }
 
-/* Form Section */
-.form-container {
+/* Filtros y botón de añadir */
+.team-filters {
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.team-search-input {
+    height: 3.5rem;
+    padding: 0 1rem;
+    background-color: rgba(43, 43, 43, 0.8);
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--text);
+    font-size: 1rem;
+    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    transition: box-shadow 0.3s;
+    width: 300px;
+}
+
+.team-search-input:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
+}
+
+.toggle-form-btn {
+    padding: 0.5rem 1.5rem;
+    background-color: var(--primary);
+    color: black;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toggle-form-btn:hover {
+    background-color: var(--hover);
+}
+
+.toggle-form-btn i {
+    font-size: 0.875rem;
+}
+
+/* Teams Grid */
+.teams-container {
+    padding: 1rem 2rem;
+}
+
+.teams-grid {
+    display: grid;
+    grid-template-columns: 90px 2fr 1fr 1.5fr 1fr;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.team-header {
+    padding: 0.75rem 1rem;
+    background-color: var(--grid-header);
+    color: black;
+    font-weight: 600;
+    text-align: left;
+    font-size: 1.1rem;
+    border-radius: 0.25rem;
+}
+
+.team-cell {
+    padding: 0.75rem 1rem;
+    background-color: var(--grid-bg);
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+/* Hover effect para las celdas */
+.team-cell:hover {
+    background-color: var(--row-hover);
+}
+
+.team-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-logo img {
+    max-width: 50px;
+    max-height: 50px;
+    object-fit: contain;
+}
+
+.team-logo i {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.team-name {
+    font-weight: 500;
+}
+
+.player-count {
+    text-align: center;
+}
+
+.color-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.color-sample {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 2px solid #4a4a4a;
+}
+
+.team-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.team-action-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+/* Mensaje cuando no hay equipos */
+.no-teams-message {
     padding: 2rem;
-    space-between: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text);
+    opacity: 0.7;
+}
+
+.no-teams-message p:first-child {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Modal Form */
+.modal-content {
+    background-color: var(--nav-bg);
+}
+
+.modal-content h2 {
+    color: var(--primary);
 }
 
 .input-group {
     margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
 }
 
 .team-name-input {
-    width: 100%;
+    flex: 1;
     height: 3.5rem;
     padding: 0 1rem;
     background-color: rgba(43, 43, 43, 0.8);
@@ -116,10 +313,57 @@ body {
     box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
 }
 
+.color-section {
+    display: flex;
+    justify-content: space-around;
+    margin: 1.5rem 0;
+}
+
+.color-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.color-circle {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.circle-number {
+    position: relative;
+    z-index: 2;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+    pointer-events: none;
+}
+
+.color-picker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Logo section */
 .logo-section {
     display: flex;
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin: 1.5rem 0;
 }
 
 .logo-input-container {
@@ -174,17 +418,10 @@ body {
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.875rem;
     text-align: center;
+    margin: 25px;
 }
 
-.action-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.add-team-btn,
-.view-teams-btn {
+.add-team-btn {
     width: 100%;
     height: 3.5rem;
     background-color: var(--primary);
@@ -196,63 +433,63 @@ body {
     cursor: pointer;
     transition: all 0.3s;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    line-height: 3.5rem;
 }
 
-.add-team-btn:hover,
-.view-teams-btn:hover {
+.add-team-btn:hover {
     background-color: var(--hover);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.color-wrapper {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-/* Estilos generales para ambas bolitas */
-.color-circle {
-    position: relative;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background-color: #ffffff;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-/* Número centrado */
-.circle-number {
-    position: relative;
-    z-index: 2;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #000;
-    pointer-events: none;
-}
-
-/* Input color invisible pero funcional */
-.color-picker {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-
-/* Puedes personalizar individualmente si quieres */
-.primary-color-input {
-    /* background-color se sobrescribe cuando el usuario elige un color */
-}
-
-.secondary-color-input {
-    /* lo mismo aquí */
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .team-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .teams-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-header {
+        display: none;
+    }
+    
+    .team-cell {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem;
+    }
+    
+    .team-cell::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .title-container h1 {
+        font-size: 2rem;
+    }
+    
+    .color-section {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .logo-section {
+        flex-direction: column;
+    }
+    
+    .logo-preview {
+        width: 100%;
+        margin-top: 1rem;
+    }
 }

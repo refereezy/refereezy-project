@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Equipos - Refereezy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../style/base.css">
     <link rel="stylesheet" href="../style/equipos.css">
 </head>
@@ -39,34 +40,76 @@
                         <h1>Gestión de Equipos</h1>
                     </div>
 
-                    <!-- Formulario -->
-                    <div class="form-container">
-                        <div class="input-group">
-                            <input type="text" placeholder="Nombre del equipo" class="team-name-input">
-                            <input type="color" placeholder="Color primario (ej. #FF0000)" class="primary-color-input">
-                            <input type="color" placeholder="Color secundario (ej. #0000FF)" class="secondary-color-input">
+                    <!-- Filtros y botón para agregar equipo -->
+                    <div class="team-filters">
+                        <div class="filter-group">
+                            <input type="text" placeholder="Buscar equipo..." class="team-search-input">
+                        </div>
+                        <button class="toggle-form-btn"><i class="fas fa-plus"></i> Agregar equipo</button>
+                    </div>
+
+                    <!-- Listado de Equipos -->
+                    <div class="teams-container">
+                        <!-- Grid para listar equipos -->
+                        <div class="teams-grid">
+                            <!-- Headers y datos de equipos serán insertados por JavaScript -->
                         </div>
 
-                        <div class="logo-section">
-                            <div class="logo-input-container">
-                                <button class="logo-upload-btn">Añadir logo del equipo</button>
-                                <button class="remove-logo-btn" style="display: none;">Quitar logo</button>
-                            </div>
-                            <div class="logo-preview">
-                                <span>Vista previa del logo</span>
-                            </div>
-                        </div>
-
-                        <div class="action-buttons">
-                            <button class="add-team-btn">Agregar equipo</button>
-                            <button class="view-teams-btn">Ver más Equipos</button>
+                        <!-- Mensaje cuando no hay equipos -->
+                        <div class="no-teams-message" style="display: none;">
+                            <p>No hay equipos registrados</p>
+                            <p>Agrega nuevos equipos con el botón "Agregar equipo"</p>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+        
+        <!-- Modal para añadir equipos -->
+        <div id="teamFormModal" class="modal">
+            <div class="modal-content">
+                <h2>Añadir nuevo equipo</h2>
+                <div class="input-group">
+                    <input type="text" placeholder="Nombre del equipo" class="team-name-input">
+                </div>
+                
+                <div class="color-section">
+                    <div class="color-wrapper">
+                        <div class="color-circle primary-color-circle">
+                            <span class="circle-number">1</span>
+                            <input type="color" class="color-picker primary-color-input">
+                        </div>
+                        <span>Color primario</span>
+                    </div>
+                    
+                    <div class="color-wrapper">
+                        <div class="color-circle secondary-color-circle">
+                            <span class="circle-number">2</span>
+                            <input type="color" class="color-picker secondary-color-input">
+                        </div>
+                        <span>Color secundario</span>
+                    </div>
+                </div>
+
+                <div class="logo-section">
+                    <div class="logo-input-container">
+                        <button class="logo-upload-btn">Añadir escudo del equipo</button>
+                        <button class="remove-logo-btn" style="display: none;">Quitar escudo</button>
+                    </div>
+                    <div class="logo-preview">
+                        <span>Vista previa del escudo</span>
+                    </div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="primary-button add-team-btn">Agregar equipo</button>
+                    <button class="secondary-button" id="closeTeamFormBtn">Cancelar</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="../js/base.js"></script>
-    <script src="../js/equipos.js"></script>
+    <script src="../js/listar-equipos.js"></script>
+    <script src="../js/formulario-equipos.js"></script>
 </body>
 </html>
