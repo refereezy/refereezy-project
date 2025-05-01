@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Árbitros - RefereeZY</title>
+    <link rel="stylesheet" href="../style/base.css">
     <link rel="stylesheet" href="../style/arbitros.css">
 </head>
 <body>
@@ -34,27 +35,59 @@
                 <div class="referees-card">
                     <div class="title-container">
                         <div class="title-background"></div>
-                        <h1>Gestión de Arbitros</h1>
+                        <h1>Gestión de Árbitros</h1>
                     </div>
 
-                    <div class="form-container">
-                        <div class="input-group">
-                            <input type="text" placeholder="Nombre del Arbitro" class="referee-name-input" id="refereeName">
-                            <select class="match-select" id="matchSelect">
-                                <option value="">Seleccione un partido</option>
-                            </select>
+                    <!-- Filtros y botón para mostrar formulario -->
+                    <div class="referee-filters">
+                        <div class="filter-group">
+                            <button class="toggle-form-btn" id="toggleFormBtn">
+                                <span>Agregar Árbitro</span>
+                            </button>
                         </div>
+                    </div>
 
+                    <!-- Lista de árbitros -->
+                    <div class="referees-container">
+                        <div class="referees-content"></div>
+                    </div>
+
+                    <!-- Formulario para agregar árbitros (inicialmente oculto) -->
+                    <div class="form-container" id="refereeFormContainer" style="display: none;">
+                        <h2>Agregar Nuevo Árbitro</h2>
+                        <div class="input-group">
+                            <input type="text" placeholder="Nombre del Árbitro" class="referee-name-input" id="refereeName">
+                            <input type="text" placeholder="DNI del Árbitro" class="referee-dni-input" id="refereeDni">
+                        </div>
+                        <div class="input-group">
+                            <input type="password" placeholder="Contraseña" class="referee-password-input" id="refereePassword">
+                        </div>
                         <div class="action-buttons">
-                            <button class="add-referee-btn">Agregar arbitro</button>
-                            <a href="ver-arbitros.html" class="view-referees-btn">Ver mas Arbitros</a>
+                            <button class="add-referee-btn" id="addRefereeBtn">Agregar Árbitro</button>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+
+        <!-- Modal para asignar partido -->
+        <div id="assignMatchModal" class="modal">
+            <div class="modal-content">
+                <h2>Asignar Partido</h2>
+                <p>Asignando partido para: <span id="selectedRefereeName"></span></p>
+                <select id="availableMatches" class="match-select">
+                    <option value="">Seleccione un partido</option>
+                </select>
+                <div class="modal-buttons">
+                    <button id="assignMatchBtn" class="primary-button">Asignar</button>
+                    <button id="closeModalBtn" class="secondary-button">Cancelar</button>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="../js/base.js"></script>
     <script src="../js/commons.js"></script>
-    <script src="../js/arbitros.js"></script>
+    <script src="../js/listar-arbitros.js"></script>
+    <script src="../js/formulario-arbitros.js"></script>
 </body>
 </html>

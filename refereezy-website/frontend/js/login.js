@@ -1,16 +1,15 @@
-const auth_ok = localStorage.getItem("auth_ok");
-if (auth_ok) {
-    window.location.href = "./dashboard.html";
-}
-
-
 document.addEventListener('DOMContentLoaded', function() {
+    const clientId = getClientId();
+    if (clientId) {
+        window.location.href = "./dashboard.html";
+    }
+
     // Obtener referencias a los elementos del formulario
     const loginForm = document.querySelector('.form-container');
     const emailInput = document.querySelector('input[type="text"]');
     const passwordInput = document.querySelector('input[type="password"]');
     const loginButton = document.querySelector('.login-submit-button');
-    const API_URL = "http://localhost:8080"; // Cambia esta URL según sea necesario
+    // API_URL ahora está disponible desde base.js
 
     // Función para manejar el inicio de sesión
     async function handleLogin(event) {
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Validación básica
         if (!email || !password) {
-            alert('Por favor, complete todos los campos');
+            showNotification('Por favor, complete todos los campos', 'warning');
             return;
         }
 
@@ -49,17 +48,21 @@ document.addEventListener('DOMContentLoaded', function() {
             // Suponiendo que la respuesta es un token JWT o algo que identifique al usuario
             const responseData = await res.json();
             
-            // Guardar el token en localStorage (si se utiliza JWT)
-            //localStorage.setItem('authToken', responseData.token);
-            console.log(responseData);
-            localStorage.setItem('auth_ok', true)
-            localStorage.setItem('client_id', responseData.id)
-            // Redirigir al usuario al dashboard o página principal
-            window.location.href = './dashboard.html';  // Cambia esto a la URL de tu dashboard
+            // Guardar el token en localStorage
+            localStorage.setItem('client_id', responseData.id);
+            localStorage.setItem('token', responseData.token); // Si hay token
+            localStorage.setItem('user_type', 'client');
+            
+            showNotification('Inicio de sesión exitoso', 'success');
+            
+            // Redirigir al usuario al dashboard
+            setTimeout(() => {
+                window.location.href = './dashboard.html';
+            }, 1000);
 
         } catch (err) {
             console.error(err);
-            alert('Error al iniciar sesión: ' + err.message);
+            showNotification('Error al iniciar sesión: ' + err.message, 'error');
         }
     }
 
