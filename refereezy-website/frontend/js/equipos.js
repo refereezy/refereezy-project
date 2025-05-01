@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const primaryColorInput = document.querySelector('.primary-color-input');
     const secondaryColorInput = document.querySelector('.secondary-color-input');
 
-    const API_URL = "http://localhost:8080";
+    // Use API_URL from base.js instead of redefining it
     let currentLogo = null;
     let logoFile = null; // Store the actual file object
 
@@ -48,20 +48,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const teamName = teamNameInput.value.trim();
         const primaryColor = primaryColorInput.value.trim();
         const secondaryColor = secondaryColorInput.value.trim();
-        const clientId = parseInt(localStorage.getItem('client_id'), 10);
+        const clientId = getClientId(); // Use getClientId from base.js
 
         if (!teamName || !primaryColor || !secondaryColor) {
-            alert('Por favor completa todos los campos');
+            showNotification('Por favor completa todos los campos', 'error');
             return;
         }
 
-        if (isNaN(clientId) || clientId <= 0) {
-            alert('El ID del cliente debe ser un número válido mayor a 0');
+        if (!clientId) {
+            showNotification('No se pudo obtener el ID del cliente', 'error');
             return;
         }
 
         if (!logoFile) {
-            alert('Por favor selecciona un logo para el equipo');
+            showNotification('Por favor selecciona un logo para el equipo', 'error');
             return;
         }
 
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(errorText || 'Error al guardar el equipo');
             }
 
-            alert('✅ ¡Equipo agregado exitosamente!');
+            showNotification('¡Equipo agregado exitosamente!', 'success');
 
             // Limpiar formulario
             teamNameInput.value = '';
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             removeLogoBtn.style.display = 'none'; // Ocultar el botón de quitar logo
         } catch (err) {
             console.error("Error al guardar el equipo:", err);
-            alert('❌ Error al guardar el equipo: ' + err.message);
+            showNotification('Error al guardar el equipo: ' + err.message, 'error');
         }
     });
 

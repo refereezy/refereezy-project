@@ -136,39 +136,39 @@ body {
     color: var(--primary);
   }
 
-/* Notifications */
+/* Notificaciones */
 .notification {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 12px 20px;
-    border-radius: 4px;
-    background-color: var(--primary);
-    color: #fff;
-    font-weight: 500;
-    max-width: 300px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
-    transform: translateX(110%);
-    transition: transform 0.3s ease;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--nav-bg);
+    color: var(--text);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 0.3s, transform 0.3s;
     z-index: 1000;
 }
 
 .notification.show {
-    transform: translateX(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .notification.success {
-    background-color: var(--success);
+    border-left: 4px solid var(--success);
 }
 
 .notification.error {
-    background-color: var(--error);
+    border-left: 4px solid var(--error);
 }
 
 .notification.info {
-    background-color: var(--info);
+    border-left: 4px solid var(--info);
 }
 
 .notification.warning {
-    background-color: var(--warning);
+    border-left: 4px solid var(--warning);
 }

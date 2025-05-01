@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleFormBtn = document.querySelector('.toggle-form-btn');
     const playerFormContainer = document.querySelector('.form-container');
 
-    const API_URL = "http://localhost:8080";
-    const clientId = localStorage.getItem('client_id');
+    // Use API_URL from base.js instead of redefining it
+    const clientId = getClientId(); // Use getClientId from base.js
     
     let teams = [];
     let allPlayers = [];
@@ -219,25 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Mostrar notificación de error o éxito
-    function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.textContent = message;
-        
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }, 100);
-    }
+    // Removed duplicate showNotification function - using the one from base.js
 
     // Exponer funciones que necesitará el archivo de formulario
     window.playerManager = {

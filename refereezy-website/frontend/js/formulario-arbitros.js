@@ -1,7 +1,7 @@
 // Módulo para gestionar el formulario de creación de árbitros
 document.addEventListener('DOMContentLoaded', () => {
-    const API_URL = "http://localhost:8080";
-    const clientId = localStorage.getItem('client_id');
+    // Use API_URL from base.js instead of redefining it
+    const clientId = getClientId(); // Use getClientId from base.js
 
     // Referencias a elementos del DOM del formulario
     const refereeNameInput = document.getElementById('refereeName');
@@ -87,28 +87,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Función para mostrar notificaciones, reutilizamos la del módulo de listado si está disponible
-    function showNotification(message, type = 'info') {
-        if (window.refereeManager && window.refereeManager.showNotification) {
-            window.refereeManager.showNotification(message, type);
-        } else {
-            // Implementación de respaldo por si no está disponible la función global
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.classList.add('show');
-                
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                    setTimeout(() => {
-                        document.body.removeChild(notification);
-                    }, 300);
-                }, 3000);
-            }, 100);
-        }
-    }
+    // Use showNotification from base.js, removing the redundant implementation
 });

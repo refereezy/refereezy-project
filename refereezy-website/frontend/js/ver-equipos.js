@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_URL = "http://localhost:8080";
+    // Use API_URL from base.js instead of redefining it
+    const clientId = getClientId(); // Use getClientId from base.js
     const teamsGrid = document.querySelector('.teams-grid');
 
     // Función para crear una tarjeta de equipo
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para cargar los equipos
     async function loadTeams() {
         try {
-            const response = await fetch(`${API_URL}/teams`);
+            const response = await fetch(`${API_URL}/teams/client/${clientId}`);
             const teams = await response.json();
 
             teamsGrid.innerHTML = '';
@@ -52,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 teamsGrid.appendChild(card);
             });
         } catch (error) {
+            // Use showNotification from base.js
+            showNotification('Error al cargar los equipos: ' + error.message, 'error');
             teamsGrid.innerHTML = `
                 <div class="no-teams-message">
                     <p>Error al cargar los equipos.</p>

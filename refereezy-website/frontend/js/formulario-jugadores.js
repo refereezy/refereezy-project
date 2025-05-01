@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const goalkeeperCheckbox = document.querySelector('.goalkeeper-checkbox');
     const addPlayerBtn = document.querySelector('.add-player-btn');
 
-    const API_URL = "http://localhost:8080";
-    const clientId = localStorage.getItem('client_id');
+    // Use API_URL from base.js instead of redefining it
+    const clientId = getClientId(); // Use getClientId from base.js
     
     let selectedTeam = null;
 
@@ -145,23 +145,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Mostrar notificación de error o éxito
-    function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.textContent = message;
-        
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }, 100);
-    }
+    // Using showNotification from base.js, no need to redefine it
 });

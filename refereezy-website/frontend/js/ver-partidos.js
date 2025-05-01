@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const matchesContent = document.querySelector('.matches-content');
-    const API_URL = "http://localhost:8080";
+    // Use API_URL from base.js instead of redefining it
 
     // Obtener detalles de los árbitros desde la API
     async function getRefereesDetails(refereeIds) {
@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Obtener nombres de equipos
     async function getTeamDetails(localTeamId, visitorTeamId) {
         try {
-            const res = await fetch(`${API_URL}/matches/client/1/with_teams?client_id=1`);
+            const clientId = getClientId();
+            const res = await fetch(`${API_URL}/matches/client/${clientId}/with_teams?client_id=${clientId}`);
             const matches = await res.json();
     
             let localTeam = null;
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const { localName, visitorName } = await getTeamDetails(match.local_team?.id, match.visitor_team?.id);
 
-        console.log(`Partido: ${localName} vs ${visitorName}`); // 👈 Aquí imprime en consola
+        console.log(`Partido: ${localName} vs ${visitorName}`);
 
         const refereesNames = await getRefereesDetails(match.referees);
         const refereesCount = match.referees ? match.referees.length : 0;
@@ -88,7 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const dateTime = document.createElement('div');
         dateTime.className = 'match-date-time';
-        dateTime.textContent = `${match.date} - ${match.time}`;
+        // Use formatDate and formatTime from base.js
+        dateTime.textContent = `${formatDate(match.date)} - ${formatTime(match.time)}`;
 
         const referees = document.createElement('div');
         referees.className = 'match-referee';
@@ -143,7 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cargar partidos desde la API
     async function loadMatches() {
         try {
-            const res = await fetch(`${API_URL}/matches/client/1/with_teams?client_id=1`);
+            const clientId = getClientId();
+            const res = await fetch(`${API_URL}/matches/client/${clientId}/with_teams?client_id=${clientId}`);
             const matches = await res.json();
             console.log(matches);
             if (matches.length === 0) {
@@ -152,6 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 await showMatchesGrid(matches);
             }
         } catch (err) {
+            // Use showNotification from base.js instead of inline HTML error message
+            showNotification('Error al cargar los partidos: ' + err.message, 'error');
             matchesContent.innerHTML = `
                 <div class="no-matches-message">
                     <p>Error al cargar los partidos</p>
