@@ -8,13 +8,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const refereeDniInput = document.getElementById('refereeDni');
     const refereePasswordInput = document.getElementById('refereePassword');
     const addRefereeBtn = document.getElementById('addRefereeBtn');
+    const toggleFormBtn = document.getElementById('toggleFormBtn');
+    const closeRefereeFormBtn = document.getElementById('closeRefereeFormBtn');
+    const refereeFormModal = document.getElementById('refereeFormModal');
 
     // Configurar eventos del formulario
     setupFormEvents();
 
     function setupFormEvents() {
+        // Manejador para abrir modal de formulario
+        toggleFormBtn.addEventListener('click', openRefereeFormModal);
+        
+        // Manejador para cerrar modal de formulario
+        closeRefereeFormBtn.addEventListener('click', closeRefereeFormModal);
+        
+        // Cerrar modal al hacer clic fuera del contenido
+        window.addEventListener('click', (e) => {
+            if (e.target === refereeFormModal) {
+                closeRefereeFormModal();
+            }
+        });
+
         // Manejador para agregar árbitro
         addRefereeBtn.addEventListener('click', addReferee);
+    }
+    
+    // Abrir modal del formulario
+    function openRefereeFormModal() {
+        refereeFormModal.style.display = 'block';
+    }
+    
+    // Cerrar modal del formulario
+    function closeRefereeFormModal() {
+        refereeFormModal.style.display = 'none';
+        // Limpiar formulario
+        refereeNameInput.value = '';
+        refereeDniInput.value = '';
+        refereePasswordInput.value = '';
     }
 
     // Añadir un nuevo árbitro
@@ -68,18 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             showNotification('Árbitro creado exitosamente', 'success');
 
-            // Limpiar formulario
-            refereeNameInput.value = '';
-            refereeDniInput.value = '';
-            refereePasswordInput.value = '';
+            // Limpiar formulario y cerrar modal
+            closeRefereeFormModal();
 
             // Actualizar la lista de árbitros
             if (window.refereeManager) {
                 await window.refereeManager.refreshReferees();
             }
-
-            // Ocultar el formulario después de agregar
-            document.getElementById('refereeFormContainer').style.display = 'none';
             
         } catch (err) {
             console.error('Error al crear árbitro:', err);

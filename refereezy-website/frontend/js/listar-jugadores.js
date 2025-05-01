@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetFilterBtn = document.querySelector('.reset-filter-btn');
     const noPlayersMessage = document.querySelector('.no-players-message');
     const toggleFormBtn = document.querySelector('.toggle-form-btn');
-    const playerFormContainer = document.querySelector('.form-container');
+    const playerFormModal = document.getElementById('playerFormModal');
 
     // Use API_URL from base.js instead of redefining it
     const clientId = getClientId(); // Use getClientId from base.js
@@ -62,15 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
             renderPlayers(allPlayers);
         });
 
-        // Toggle formulario
+        // Abrir modal de formulario
         toggleFormBtn.addEventListener('click', () => {
-            if (playerFormContainer.style.display === 'none' || playerFormContainer.style.display === '') {
-                playerFormContainer.style.display = 'block';
-                toggleFormBtn.innerHTML = '<i class="fas fa-minus"></i> Ocultar formulario';
-            } else {
-                playerFormContainer.style.display = 'none';
-                toggleFormBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar jugador';
-            }
+            playerFormModal.style.display = 'block';
         });
     }
 
@@ -218,8 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
             playersGrid.appendChild(playerPosition);
         });
     }
-
-    // Removed duplicate showNotification function - using the one from base.js
 
     // Exponer funciones que necesitará el archivo de formulario
     window.playerManager = {

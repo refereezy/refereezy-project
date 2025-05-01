@@ -51,24 +51,27 @@
                     <div class="referees-container">
                         <div class="referees-content"></div>
                     </div>
-
-                    <!-- Formulario para agregar árbitros (inicialmente oculto) -->
-                    <div class="form-container" id="refereeFormContainer" style="display: none;">
-                        <h2>Agregar Nuevo Árbitro</h2>
-                        <div class="input-group">
-                            <input type="text" placeholder="Nombre del Árbitro" class="referee-name-input" id="refereeName">
-                            <input type="text" placeholder="DNI del Árbitro" class="referee-dni-input" id="refereeDni">
-                        </div>
-                        <div class="input-group">
-                            <input type="password" placeholder="Contraseña" class="referee-password-input" id="refereePassword">
-                        </div>
-                        <div class="action-buttons">
-                            <button class="add-referee-btn" id="addRefereeBtn">Agregar Árbitro</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </main>
+
+        <!-- Modal para formulario de árbitros -->
+        <div id="refereeFormModal" class="modal">
+            <div class="modal-content">
+                <h2>Agregar Nuevo Árbitro</h2>
+                <div class="input-group">
+                    <input type="text" placeholder="Nombre del Árbitro" class="referee-name-input" id="refereeName">
+                    <input type="text" placeholder="DNI del Árbitro" class="referee-dni-input" id="refereeDni">
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Contraseña" class="referee-password-input" id="refereePassword">
+                </div>
+                <div class="modal-buttons">
+                    <button class="primary-button" id="addRefereeBtn">Agregar Árbitro</button>
+                    <button class="secondary-button" id="closeRefereeFormBtn">Cancelar</button>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal para asignar partido -->
         <div id="assignMatchModal" class="modal">

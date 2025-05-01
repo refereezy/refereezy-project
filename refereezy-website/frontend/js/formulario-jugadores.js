@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedTeamName = document.querySelector('.form-selected-team-name');
     const goalkeeperCheckbox = document.querySelector('.goalkeeper-checkbox');
     const addPlayerBtn = document.querySelector('.add-player-btn');
+    const closePlayerFormBtn = document.getElementById('closePlayerFormBtn');
+    const playerFormModal = document.getElementById('playerFormModal');
 
     // Use API_URL from base.js instead of redefining it
     const clientId = getClientId(); // Use getClientId from base.js
@@ -48,8 +50,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Manejador para cerrar el modal
+        closePlayerFormBtn.addEventListener('click', closePlayerFormModal);
+        
+        // Cerrar modal al hacer clic fuera del contenido
+        window.addEventListener('click', (e) => {
+            if (e.target === playerFormModal) {
+                closePlayerFormModal();
+            }
+        });
+
         // Manejador para agregar jugador
         addPlayerBtn.addEventListener('click', addPlayer);
+    }
+    
+    // Cerrar modal del formulario
+    function closePlayerFormModal() {
+        playerFormModal.style.display = 'none';
+        // Limpiar formulario
+        playerNameInput.value = '';
+        playerNumberInput.value = '';
+        playerDniInput.value = '';
+        goalkeeperCheckbox.checked = false;
+        selectedTeam = null;
+        selectedTeamName.textContent = 'Ninguno';
+        teamSearchInput.value = '';
     }
 
     // Renderizar lista de equipos para el formulario
@@ -75,7 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Seleccionar un equipo para el formulario
     function selectTeam(team) {
-        console.log('Equipo seleccionado:', team);
         selectedTeam = team;
         selectedTeamName.textContent = team.name;
         teamSearchInput.value = team.name;
@@ -97,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Verificar si el número ya está en uso (en el backend)
-            const resCheck = await fetch(`${API_URL}/players/team/${selectedTeam.id}/number/${playerNumber}`);
+            const resCheck = await fetch(`${API_URL}/players/team/${selectedTeam.id}/${playerNumber}`);
             if (resCheck.ok) {
                 showNotification('Este número de jugador ya está en uso', 'error');
                 return;
@@ -128,14 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             showNotification('Jugador agregado exitosamente!', 'success');
 
-            // Limpiar formulario
-            playerNameInput.value = '';
-            playerNumberInput.value = '';
-            playerDniInput.value = '';
-            goalkeeperCheckbox.checked = false;
-            selectedTeam = null;
-            selectedTeamName.textContent = 'Ninguno';
-            teamSearchInput.value = '';
+            // Cerrar modal y limpiar formulario
+            closePlayerFormModal();
 
             // Actualizar la lista de jugadores
             await window.playerManager.refreshPlayers();

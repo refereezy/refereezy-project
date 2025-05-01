@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // DOM Elements
     const refereeContent = document.querySelector('.referees-content');
-    const toggleFormBtn = document.getElementById('toggleFormBtn');
-    const refereeFormContainer = document.getElementById('refereeFormContainer');
     
     // Assign Match Modal
     const modal = document.getElementById('assignMatchModal');
@@ -24,13 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadReferees();
 
     function setupEvents() {
-        // Toggle para mostrar/ocultar formulario
-        toggleFormBtn.addEventListener('click', () => {
-            refereeFormContainer.style.display = 
-                refereeFormContainer.style.display === 'none' ? 'block' : 'none';
-        });
-
-        // Eventos para el modal
+        // Eventos para el modal de asignar partido
         closeModalBtn.addEventListener('click', closeModal);
         assignMatchBtn.addEventListener('click', assignMatch);
 
@@ -104,14 +96,12 @@ document.addEventListener('DOMContentLoaded', () => {
         info.appendChild(dniInfo);
         info.appendChild(matches);
 
-        if (assignedMatches.length === 0) {
-            const assignButton = document.createElement('button');
-            assignButton.className = 'assign-match-btn';
-            assignButton.textContent = 'Asignar a Partido';
-            assignButton.dataset.refereeId = referee.id;
-            assignButton.addEventListener('click', () => openAssignModal(referee));
-            info.appendChild(assignButton);
-        }
+        const assignButton = document.createElement('button');
+        assignButton.className = 'assign-match-btn';
+        assignButton.textContent = 'Asignar a Partido';
+        assignButton.dataset.refereeId = referee.id;
+        assignButton.addEventListener('click', () => openAssignModal(referee));
+        info.appendChild(assignButton);
 
         card.appendChild(info);
         return card;
