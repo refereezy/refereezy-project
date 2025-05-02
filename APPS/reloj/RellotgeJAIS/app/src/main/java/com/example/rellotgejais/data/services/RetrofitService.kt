@@ -48,6 +48,10 @@ interface RetrofitService {
     @GET("/matches/populated/{id}")
     suspend fun getMatch(@Path("id") id: Int): Response<PopulatedMatch>
 
+    //To get code for QR
+    @GET("/clock/generate")
+    suspend fun generateCode(): Response<String>
+
 }
 
 object RetrofitManager {
