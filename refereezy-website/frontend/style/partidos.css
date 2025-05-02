@@ -8,9 +8,15 @@
     --primary: #7ed957;
     --secondary: #27c02e;
     --hover: #6bc746;
+    --grid-bg: rgba(43, 43, 43, 0.8);
+    --grid-header: rgba(126, 217, 87, 0.9);
+    --row-hover: rgba(126, 217, 87, 0.2);
+    --form-bg: rgba(43, 43, 43, 0.95);
     --error: #ff3838;
-    --card-bg: #2b2b2b;
     --border: #3a3a3a;
+    --dropdown-bg: #333333;
+    --dropdown-hover: #404040;
+    --dropdown-border: rgba(126, 217, 87, 0.3);
 }
 
 * {
@@ -24,38 +30,6 @@ body {
     color: var(--text);
     font-family: system-ui, -apple-system, sans-serif;
     min-height: 100vh;
-}
-
-/* Navbar */
-.dashboard-nav {
-    background-color: var(--nav-bg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.nav-logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary);
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 1.5rem;
-}
-
-.nav-links li a {
-    color: var(--text);
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.nav-links li a:hover {
-    color: var(--primary);
 }
 
 /* Matches Section */
@@ -72,7 +46,7 @@ body {
     position: relative;
     border-radius: 1rem;
     overflow: hidden;
-    background-color: var(--card-bg);
+    background-color: var(--nav-bg);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -81,6 +55,7 @@ body {
     position: relative;
     padding: 1.5rem 0;
     text-align: center;
+    margin-bottom: 1rem;
 }
 
 .title-background {
@@ -101,9 +76,12 @@ body {
 
 /* Filter Container */
 .filter-container {
-    background-color: var(--card-bg);
+    background-color: var(--form-bg);
     padding: 1.5rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    margin: 0 1rem 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .filter-row {
@@ -121,26 +99,37 @@ body {
 .filter-group label {
     display: block;
     margin-bottom: 0.5rem;
+    font-weight: 600;
     color: var(--text);
-    font-size: 0.9rem;
 }
 
 .filter-group select,
-.filter-group input {
+.filter-group input,
+.team-search-input {
     width: 100%;
-    padding: 0.75rem;
+    height: 3.5rem;
+    padding: 0 1rem;
     background-color: rgba(43, 43, 43, 0.8);
-    border: 1px solid var(--border);
-    border-radius: 0.375rem;
+    border: none;
+    border-radius: 0.5rem;
     color: var(--text);
-    font-size: 0.9rem;
+    font-size: 1rem;
+    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    transition: box-shadow 0.3s;
+}
+
+.filter-group select:focus,
+.filter-group input:focus,
+.team-search-input:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
 }
 
 .filter-actions {
     display: flex;
     justify-content: flex-end;
     gap: 0.75rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 }
 
 .filter-btn {
@@ -148,11 +137,127 @@ body {
     border-radius: 0.375rem;
     font-weight: 500;
     cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn.secondary-button {
+    padding: 0.5rem 1rem;
+    background-color: var(--nav-bg);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: 0.25rem;
+}
+
+.filter-btn.secondary-button:hover {
+    background-color: var(--primary);
+    color: black;
+}
+
+.primary-button.create-match-btn {
+    padding: 0.5rem 1.5rem;
+    background-color: var(--primary);
+    color: black;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.primary-button.create-match-btn:hover {
+    background-color: var(--hover);
+}
+
+.filter-option {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    background-color: var(--dropdown-bg);
+    font-weight: 500;
+}
+
+.filter-option:hover {
+    background-color: rgba(126, 217, 87, 0.2);
+    color: var(--primary);
+}
+
+.filter-separator {
+    height: 3px;
+    background-color: var(--primary);
+    margin: 0;
+    opacity: 0.5;
+}
+
+/* Team selector styles */
+.team-select-container {
+    position: relative;
+    width: 100%;
+}
+
+.team-search-container {
+    position: relative;
+}
+
+.team-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: var(--dropdown-bg);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    margin-top: 0.5rem;
+    border: 1px solid var(--dropdown-border);
+}
+
+.team-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.team-list li {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.team-list li:hover {
+    background-color: var(--dropdown-hover);
+}
+
+.team-list li:last-child {
+    border-bottom: none;
+}
+
+.team-list li:hover:not(.filter-option) {
+    background-color: var(--primary);
+    color: black;
+}
+
+.selected-team {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.selected-team-name {
+    color: var(--primary);
+    font-weight: bold;
 }
 
 /* Matches Grid */
 .matches-grid-container {
-    background-color: var(--card-bg);
+    background-color: var(--nav-bg);
     padding: 0 1rem;
 }
 
@@ -162,7 +267,17 @@ body {
     gap: 1rem;
     padding: 1rem 0.5rem;
     font-weight: 600;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.matches-grid-header > div {
+    padding: 0.75rem 1rem;
+    background-color: var(--grid-header);
+    color: black;
+    font-weight: 600;
+    text-align: left;
+    font-size: 1.1rem;
+    border-radius: 0.25rem;
 }
 
 .matches-grid {
@@ -175,12 +290,12 @@ body {
     grid-template-columns: 1fr 3fr 1.5fr 1fr;
     gap: 1rem;
     padding: 1rem 0.5rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     align-items: center;
 }
 
 .match-item:hover {
-    background-color: rgba(126, 217, 87, 0.05);
+    background-color: var(--row-hover);
 }
 
 .match-date {
@@ -292,13 +407,13 @@ body {
     align-items: center;
     gap: 1rem;
     padding: 1.25rem;
-    background-color: var(--card-bg);
+    background-color: var(--nav-bg);
 }
 
 .pagination-controls button {
     padding: 0.5rem 1rem;
     background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border);
+    border: 1px solid var(--primary);
     color: var(--text);
     border-radius: 0.375rem;
     cursor: pointer;
@@ -308,11 +423,13 @@ body {
 .pagination-controls button:hover:not([disabled]) {
     background-color: rgba(126, 217, 87, 0.1);
     border-color: var(--primary);
+    color: var(--primary);
 }
 
 .pagination-controls button[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
+    border: 1px solid var(--border);
 }
 
 #pageIndicator {
@@ -321,6 +438,12 @@ body {
 }
 
 /* Modal Form Styles */
+.modal-content {
+    background-color: var(--nav-bg);
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
 .form-group {
     margin-bottom: 1.25rem;
 }
@@ -329,17 +452,27 @@ body {
     display: block;
     margin-bottom: 0.5rem;
     color: var(--text);
+    font-weight: 600;
 }
 
 .form-group select,
 .form-group input {
     width: 100%;
-    padding: 0.75rem;
+    height: 3.5rem;
+    padding: 0 1rem;
     background-color: rgba(43, 43, 43, 0.8);
-    border: 1px solid var(--border);
-    border-radius: 0.375rem;
+    border: none;
+    border-radius: 0.5rem;
     color: var(--text);
     font-size: 1rem;
+    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    transition: box-shadow 0.3s;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
 }
 
 .form-row {
@@ -359,13 +492,14 @@ body {
     border-radius: 0.5rem;
     padding: 1rem;
     margin-bottom: 1.5rem;
+    box-shadow: 0 0 10px rgba(126, 217, 87, 0.1);
 }
 
 .match-info-item {
     display: flex;
     justify-content: space-between;
     padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .match-info-item:last-child {
@@ -375,16 +509,6 @@ body {
 .match-info-label {
     font-weight: 500;
     color: rgba(255, 255, 255, 0.7);
-}
-
-/* Danger Button */
-.danger-button {
-    background-color: #dc2626 !important;
-    color: white !important;
-}
-
-.danger-button:hover {
-    background-color: #b91c1c !important;
 }
 
 /* Responsive */

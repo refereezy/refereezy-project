@@ -12,10 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elements
     const matchesGrid = document.getElementById('matchesGrid');
     const noMatchesMessage = document.getElementById('noMatchesMessage');
-    const teamFilter = document.getElementById('teamFilter');
     const dateFromFilter = document.getElementById('dateFromFilter');
     const dateToFilter = document.getElementById('dateToFilter');
-    const refereeFilter = document.getElementById('refereeFilter');
     const sortByFilter = document.getElementById('sortByFilter');
     const applyFilterBtn = document.getElementById('applyFilterBtn');
     const clearFilterBtn = document.getElementById('clearFilterBtn');
@@ -24,10 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextPageBtn = document.getElementById('nextPageBtn');
     const pageIndicator = document.getElementById('pageIndicator');
     
+    // Team search inputs
+    const teamSearch1Input = document.getElementById('teamSearch1');
+    const teamSearch2Input = document.getElementById('teamSearch2');
+    const teamDropdown1 = document.getElementById('teamDropdown1');
+    const teamDropdown2 = document.getElementById('teamDropdown2');
+
+    // Referee search input
+    const refereeSearchInput = document.getElementById('refereeSearch');
+    const refereeDropdown = document.getElementById('refereeDropdown');
+    
     // Modal elements
     const assignRefereeModal = document.getElementById('assignRefereeModal');
     const matchInfoForReferee = document.getElementById('matchInfoForReferee');
-    const selectReferee = document.getElementById('selectReferee');
+    const assignRefereeSearch = document.getElementById('assignRefereeSearch');
+    const assignRefereeDropdown = document.getElementById('assignRefereeDropdown');
     const cancelAssignBtn = document.getElementById('cancelAssignBtn');
     const saveAssignBtn = document.getElementById('saveAssignBtn');
     const removeRefereeBtn = document.getElementById('removeRefereeBtn');
@@ -45,6 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     let pageSize = 7;
     let currentMatchId = null;
+    let selectedTeam1Id = '';
+    let selectedTeam2Id = '';
+    let selectedTeam1Name = '';
+    let selectedTeam2Name = '';
+    let selectedRefereeId = '';
+    let selectedRefereeName = '';
+    let selectedAssignRefereeId = '';
+    let selectedAssignRefereeName = '';
+    let refereeFilterType = ''; // 'assigned', 'unassigned', 'specific' o ''
     
     /**
      * Initial data loading
@@ -58,6 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ]);
             
             populateFilters();
+            setupTeamSearch();
+            setupRefereeSearch();
             applyFilters();
         } catch (error) {
             console.error('Error loading initial data:', error);
@@ -127,20 +147,493 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     /**
+     * Set up team search functionality
+     */
+    function setupTeamSearch() {
+        // Search for teams in dropdown 1
+        teamSearch1Input.addEventListener('input', () => {
+            // Reset selection if input changes
+            if (selectedTeam1Name && teamSearch1Input.value !== selectedTeam1Name) {
+                clearSelectedTeam(1);
+            }
+            filterTeams(teamSearch1Input.value, teamDropdown1, 1);
+        });
+        
+        // Search for teams in dropdown 2
+        teamSearch2Input.addEventListener('input', () => {
+            // Reset selection if input changes
+            if (selectedTeam2Name && teamSearch2Input.value !== selectedTeam2Name) {
+                clearSelectedTeam(2);
+            }
+            filterTeams(teamSearch2Input.value, teamDropdown2, 2);
+        });
+        
+        // Handle Enter key for first dropdown
+        teamSearch1Input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const firstTeam = teamDropdown1.querySelector('li');
+                if (firstTeam && teamDropdown1.style.display !== 'none') {
+                    firstTeam.click();
+                    e.preventDefault();
+                }
+            } else if (e.key === 'Escape') {
+                clearSelectedTeam(1);
+                teamDropdown1.style.display = 'none';
+                e.preventDefault();
+            }
+        });
+        
+        // Handle Enter key for second dropdown
+        teamSearch2Input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const firstTeam = teamDropdown2.querySelector('li');
+                if (firstTeam && teamDropdown2.style.display !== 'none') {
+                    firstTeam.click();
+                    e.preventDefault();
+                }
+            } else if (e.key === 'Escape') {
+                clearSelectedTeam(2);
+                teamDropdown2.style.display = 'none';
+                e.preventDefault();
+            }
+        });
+        
+        // Clear functionality on blur if input is empty
+        teamSearch1Input.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (!teamSearch1Input.value.trim()) {
+                    clearSelectedTeam(1);
+                } else if (selectedTeam1Id && teamSearch1Input.value !== selectedTeam1Name) {
+                    // Reset to selected name or clear if doesn't match
+                    teamSearch1Input.value = selectedTeam1Name || '';
+                }
+                teamDropdown1.style.display = 'none';
+            }, 200);
+        });
+        
+        teamSearch2Input.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (!teamSearch2Input.value.trim()) {
+                    clearSelectedTeam(2);
+                } else if (selectedTeam2Id && teamSearch2Input.value !== selectedTeam2Name) {
+                    // Reset to selected name or clear if doesn't match
+                    teamSearch2Input.value = selectedTeam2Name || '';
+                }
+                teamDropdown2.style.display = 'none';
+            }, 200);
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.team-search-container')) {
+                teamDropdown1.style.display = 'none';
+                teamDropdown2.style.display = 'none';
+                refereeDropdown.style.display = 'none';
+                assignRefereeDropdown.style.display = 'none';
+            }
+        });
+    }
+    
+    /**
+     * Set up referee search and filter functionality
+     */
+    function setupRefereeSearch() {
+        // Initial setup of referee dropdown options
+        populateRefereeFilterDropdown();
+        
+        // Setup referee search
+        refereeSearchInput.addEventListener('input', () => {
+            // Reset selection if input changes
+            if (selectedRefereeName && refereeSearchInput.value !== selectedRefereeName) {
+                clearSelectedReferee();
+            }
+            filterReferees(refereeSearchInput.value);
+        });
+        
+        // Handle Enter key for referee dropdown
+        refereeSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const firstReferee = refereeDropdown.querySelector('li:not(.filter-option):not(.filter-separator)');
+                if (firstReferee && refereeDropdown.style.display !== 'none') {
+                    firstReferee.click();
+                    e.preventDefault();
+                }
+            } else if (e.key === 'Escape') {
+                clearSelectedReferee();
+                refereeDropdown.style.display = 'none';
+                e.preventDefault();
+            }
+        });
+        
+        // Clear functionality on blur if input is empty or doesn't match
+        refereeSearchInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (!refereeSearchInput.value.trim()) {
+                    clearSelectedReferee();
+                } else if (selectedRefereeId && selectedRefereeName && 
+                           refereeSearchInput.value !== selectedRefereeName) {
+                    // Reset to selected name
+                    refereeSearchInput.value = selectedRefereeName || '';
+                }
+                refereeDropdown.style.display = 'none';
+            }, 200);
+        });
+        
+        // Setup assign referee search for modal
+        assignRefereeSearch.addEventListener('input', () => {
+            // Filtra los árbitros en el modal de asignación
+            if (selectedAssignRefereeName && assignRefereeSearch.value !== selectedAssignRefereeName) {
+                clearAssignSelectedReferee();
+            }
+            filterAssignReferees(assignRefereeSearch.value);
+        });
+        
+        // Handle Enter key for assign referee dropdown
+        assignRefereeSearch.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const firstReferee = assignRefereeDropdown.querySelector('li');
+                if (firstReferee && assignRefereeDropdown.style.display !== 'none') {
+                    firstReferee.click();
+                    e.preventDefault();
+                }
+            } else if (e.key === 'Escape') {
+                clearAssignSelectedReferee();
+                assignRefereeDropdown.style.display = 'none';
+                e.preventDefault();
+            }
+        });
+        
+        // Clear functionality on blur for assign referee search
+        assignRefereeSearch.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (!assignRefereeSearch.value.trim()) {
+                    clearAssignSelectedReferee();
+                } else if (selectedAssignRefereeId && selectedAssignRefereeName && 
+                           assignRefereeSearch.value !== selectedAssignRefereeName) {
+                    // Reset to selected name
+                    assignRefereeSearch.value = selectedAssignRefereeName || '';
+                }
+                assignRefereeDropdown.style.display = 'none';
+            }, 200);
+        });
+    }
+    
+    /**
+     * Populate referee filter dropdown with options and referees
+     */
+    function populateRefereeFilterDropdown() {
+        const refereeList = refereeDropdown.querySelector('ul');
+        
+        // Mantener las opciones fijas (all, assigned, unassigned)
+        const fixedOptions = Array.from(refereeList.querySelectorAll('.filter-option, .filter-separator'));
+        
+        // Limpiar la lista pero preservar las opciones fijas
+        refereeList.innerHTML = '';
+        
+        // Añadir de nuevo las opciones fijas
+        fixedOptions.forEach(option => {
+            refereeList.appendChild(option);
+        });
+        
+        // Añadir eventos a las opciones fijas
+        refereeList.querySelectorAll('.filter-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.dataset.value;
+                refereeFilterType = value;
+                
+                // Actualizar el texto del input y el estado de selección
+                if (value === 'assigned') {
+                    refereeSearchInput.value = 'Con árbitro';
+                    selectedRefereeId = '';
+                    selectedRefereeName = 'Con árbitro';
+                } else if (value === 'unassigned') {
+                    refereeSearchInput.value = 'Sin árbitro';
+                    selectedRefereeId = '';
+                    selectedRefereeName = 'Sin árbitro';
+                } else {
+                    clearSelectedReferee();
+                }
+                
+                document.getElementById('selectedRefereeInfo').style.display = value !== 'all' ? 'block' : 'none';
+                if (value !== 'all') {
+                    document.getElementById('selectedReferee').textContent = 
+                        value === 'assigned' ? 'Con árbitro' : 
+                        value === 'unassigned' ? 'Sin árbitro' : '';
+                }
+                
+                refereeDropdown.style.display = 'none';
+            });
+        });
+        
+        // Añadir los árbitros a la lista
+        referees.forEach(referee => {
+            const li = document.createElement('li');
+            li.textContent = `${referee.name} - ${referee.dni}`;
+            li.dataset.id = referee.id;
+            li.dataset.name = referee.name;
+            li.dataset.dni = referee.dni;
+            
+            li.addEventListener('click', () => {
+                selectedRefereeId = referee.id;
+                selectedRefereeName = referee.name;
+                refereeFilterType = 'specific';
+                refereeSearchInput.value = referee.name;
+                document.getElementById('selectedReferee').textContent = referee.name;
+                document.getElementById('selectedRefereeInfo').style.display = 'block';
+                refereeDropdown.style.display = 'none';
+            });
+            
+            refereeList.appendChild(li);
+        });
+    }
+    
+    /**
+     * Populate assign referee dropdown in the assignment modal
+     */
+    function populateAssignRefereeDropdown(matchRefereeId = null) {
+        const refereeList = assignRefereeDropdown.querySelector('ul');
+        refereeList.innerHTML = '<li data-id="">Sin asignar</li>'; // Opción para quitar árbitro
+        
+        // Evento para la opción "Sin asignar"
+        const noRefereeOption = refereeList.querySelector('li[data-id=""]');
+        noRefereeOption.addEventListener('click', () => {
+            selectedAssignRefereeId = '';
+            selectedAssignRefereeName = 'Sin asignar';
+            assignRefereeSearch.value = 'Sin asignar';
+            document.getElementById('selectedAssignRefereeName').textContent = 'Sin asignar';
+            document.getElementById('selectedAssignRefereeInfo').style.display = 'block';
+            assignRefereeDropdown.style.display = 'none';
+        });
+        
+        // Añadir los árbitros a la lista
+        referees.forEach(referee => {
+            const li = document.createElement('li');
+            li.textContent = `${referee.name} - ${referee.dni}`;
+            li.dataset.id = referee.id;
+            li.dataset.name = referee.name;
+            
+            li.addEventListener('click', () => {
+                selectedAssignRefereeId = referee.id;
+                selectedAssignRefereeName = referee.name;
+                assignRefereeSearch.value = referee.name;
+                document.getElementById('selectedAssignRefereeName').textContent = referee.name;
+                document.getElementById('selectedAssignRefereeInfo').style.display = 'block';
+                assignRefereeDropdown.style.display = 'none';
+            });
+            
+            refereeList.appendChild(li);
+        });
+        
+        // Seleccionar el árbitro actual si existe
+        if (matchRefereeId) {
+            const matchReferee = referees.find(r => r.id == matchRefereeId);
+            if (matchReferee) {
+                selectedAssignRefereeId = matchReferee.id;
+                selectedAssignRefereeName = matchReferee.name;
+                assignRefereeSearch.value = matchReferee.name;
+                document.getElementById('selectedAssignRefereeName').textContent = matchReferee.name;
+                document.getElementById('selectedAssignRefereeInfo').style.display = 'block';
+            }
+        } else {
+            // Si no hay árbitro, seleccionar "Sin asignar"
+            clearAssignSelectedReferee();
+            assignRefereeSearch.value = '';
+        }
+    }
+    
+    /**
+     * Filter referees in the dropdown based on search query
+     */
+    function filterReferees(query) {
+        // Mostrar tanto las opciones fijas como los árbitros que coincidan
+        const items = refereeDropdown.querySelectorAll('li');
+        refereeDropdown.style.display = 'block';
+        
+        // Siempre mostrar las opciones fijas al principio (Con árbitro, Sin árbitro)
+        refereeDropdown.querySelectorAll('.filter-option, .filter-separator').forEach(item => {
+            item.style.display = '';
+        });
+        
+        if (!query) {
+            // Si no hay consulta, mostrar todas las opciones
+            items.forEach(item => {
+                if (!item.classList.contains('filter-option') && !item.classList.contains('filter-separator')) {
+                    item.style.display = '';
+                }
+            });
+            return;
+        }
+        
+        // Filtrar árbitros por nombre o DNI
+        const lowerQuery = query.toLowerCase();
+        let foundMatch = false;
+        
+        items.forEach(item => {
+            if (item.classList.contains('filter-option') || item.classList.contains('filter-separator')) {
+                return; // Saltar opciones fijas ya que siempre se muestran
+            }
+            
+            const name = item.dataset.name?.toLowerCase() || '';
+            const dni = item.dataset.dni?.toLowerCase() || '';
+            
+            if (name.includes(lowerQuery) || dni.includes(lowerQuery)) {
+                item.style.display = '';
+                foundMatch = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+    
+    /**
+     * Filter referees in the assign dropdown based on search query
+     */
+    function filterAssignReferees(query) {
+        const items = assignRefereeDropdown.querySelectorAll('li');
+        assignRefereeDropdown.style.display = 'block';
+        
+        // Siempre mostrar la opción "Sin asignar"
+        const noRefereeOption = assignRefereeDropdown.querySelector('li[data-id=""]');
+        if (noRefereeOption) {
+            noRefereeOption.style.display = '';
+        }
+        
+        if (!query) {
+            // Si no hay consulta, mostrar todos los árbitros
+            items.forEach(item => {
+                if (!item.dataset.id || item.dataset.id !== "") {
+                    item.style.display = '';
+                }
+            });
+            return;
+        }
+        
+        // Filtrar árbitros por nombre o DNI
+        const lowerQuery = query.toLowerCase();
+        let foundMatch = false;
+        
+        items.forEach(item => {
+            if (!item.dataset.id || item.dataset.id === "") {
+                return; // Saltar la opción "Sin asignar" ya que siempre se muestra
+            }
+            
+            const name = item.dataset.name?.toLowerCase() || '';
+            const dni = item.textContent?.toLowerCase().split(' - ')[1] || '';
+            
+            if (name.includes(lowerQuery) || dni.includes(lowerQuery)) {
+                item.style.display = '';
+                foundMatch = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+    
+    /**
+     * Clear selected referee for filtering
+     */
+    function clearSelectedReferee() {
+        selectedRefereeId = '';
+        selectedRefereeName = '';
+        refereeFilterType = '';
+        document.getElementById('selectedRefereeInfo').style.display = 'none';
+    }
+    
+    /**
+     * Clear selected referee for assignment
+     */
+    function clearAssignSelectedReferee() {
+        selectedAssignRefereeId = '';
+        selectedAssignRefereeName = '';
+        document.getElementById('selectedAssignRefereeInfo').style.display = 'none';
+    }
+    
+    /**
+     * Filter teams in dropdown based on search query
+     */
+    function filterTeams(query, dropdown, dropdownNum) {
+        const list = dropdown.querySelector('ul');
+        list.innerHTML = '';
+        
+        if (!query.trim()) {
+            dropdown.style.display = 'none';
+            return;
+        }
+        
+        const filteredTeams = teams.filter(team => 
+            team.name.toLowerCase().includes(query.toLowerCase())
+        );
+        
+        if (filteredTeams.length === 0) {
+            dropdown.style.display = 'none';
+            return;
+        }
+        
+        filteredTeams.forEach(team => {
+            const li = document.createElement('li');
+            li.textContent = team.name;
+            li.dataset.id = team.id;
+            li.dataset.name = team.name;
+            
+            li.addEventListener('click', () => {
+                if (dropdownNum === 1) {
+                    selectedTeam1Id = team.id;
+                    selectedTeam1Name = team.name;
+                    teamSearch1Input.value = team.name;
+                    document.getElementById('selectedTeam1').textContent = team.name;
+                    document.getElementById('selectedTeamInfo1').style.display = 'block';
+                } else {
+                    selectedTeam2Id = team.id;
+                    selectedTeam2Name = team.name;
+                    teamSearch2Input.value = team.name;
+                    document.getElementById('selectedTeam2').textContent = team.name;
+                    document.getElementById('selectedTeamInfo2').style.display = 'block';
+                }
+                dropdown.style.display = 'none';
+            });
+            
+            list.appendChild(li);
+        });
+        
+        dropdown.style.display = 'block';
+    }
+    
+    /**
+     * Clear selected team by number
+     */
+    function clearSelectedTeam(teamNum) {
+        if (teamNum === 1) {
+            selectedTeam1Id = '';
+            selectedTeam1Name = '';
+            document.getElementById('selectedTeamInfo1').style.display = 'none';
+        } else {
+            selectedTeam2Id = '';
+            selectedTeam2Name = '';
+            document.getElementById('selectedTeamInfo2').style.display = 'none';
+        }
+    }
+    
+    /**
+     * Clear all selected teams
+     */
+    function clearSelectedTeams() {
+        // Clear first team
+        teamSearch1Input.value = '';
+        selectedTeam1Id = '';
+        selectedTeam1Name = '';
+        document.getElementById('selectedTeamInfo1').style.display = 'none';
+        
+        // Clear second team
+        teamSearch2Input.value = '';
+        selectedTeam2Id = '';
+        selectedTeam2Name = '';
+        document.getElementById('selectedTeamInfo2').style.display = 'none';
+    }
+    
+    /**
      * Populate filter dropdowns
      */
     function populateFilters() {
-        // Clear existing options
-        teamFilter.innerHTML = '<option value="">Todos los equipos</option>';
-        
-        // Add teams to filter
-        teams.forEach(team => {
-            const option = document.createElement('option');
-            option.value = team.id;
-            option.textContent = team.name;
-            teamFilter.appendChild(option);
-        });
-        
         // Set default date values for date filters
         const today = new Date();
         const oneMonthAgo = new Date(today);
@@ -157,19 +650,36 @@ document.addEventListener('DOMContentLoaded', () => {
      * Apply filters to matches
      */
     function applyFilters() {
-        const teamId = teamFilter.value;
         const dateFrom = dateFromFilter.value ? new Date(dateFromFilter.value) : null;
         const dateTo = dateToFilter.value ? new Date(dateToFilter.value) : null;
-        const refereeStatus = refereeFilter.value;
         const sortBy = sortByFilter.value;
         
         // Apply filters
         filteredMatches = allMatches.filter(match => {
             const matchDate = new Date(match.date);
             
-            // Team filter
-            if (teamId && match.local_team.id != teamId && match.visitor_team.id != teamId) {
-                return false;
+            // Team filters (for both teams, no matter if local or visitor)
+            if (selectedTeam1Id && selectedTeam2Id) {
+                // Match has to include both specific teams (exact match for both teams)
+                // Scenario 1: team1 is local and team2 is visitor
+                const scenario1 = match.local_team.id == selectedTeam1Id && match.visitor_team.id == selectedTeam2Id;
+                // Scenario 2: team2 is local and team1 is visitor
+                const scenario2 = match.local_team.id == selectedTeam2Id && match.visitor_team.id == selectedTeam1Id;
+                
+                // Only return true if one of the scenarios is true
+                if (!(scenario1 || scenario2)) {
+                    return false;
+                }
+            } else if (selectedTeam1Id) {
+                // Filter by just the first team
+                if (match.local_team.id != selectedTeam1Id && match.visitor_team.id != selectedTeam1Id) {
+                    return false;
+                }
+            } else if (selectedTeam2Id) {
+                // Filter by just the second team
+                if (match.local_team.id != selectedTeam2Id && match.visitor_team.id != selectedTeam2Id) {
+                    return false;
+                }
             }
             
             // Date range filter
@@ -181,11 +691,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Referee filter
-            if (refereeStatus === 'assigned' && !match.referee_id) {
+            if (refereeFilterType === 'assigned' && !match.referee_id) {
                 return false;
             }
-            if (refereeStatus === 'unassigned' && match.referee_id) {
+            if (refereeFilterType === 'unassigned' && match.referee_id) {
                 return false;
+            }
+            if (refereeFilterType === 'specific' && selectedRefereeId) {
+                if (match.referee_id != selectedRefereeId) {
+                    return false;
+                }
             }
             
             return true;
@@ -349,17 +864,8 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         
-        // Populate referees dropdown
-        selectReferee.innerHTML = '<option value="">Sin asignar</option>';
-        referees.forEach(referee => {
-            const option = document.createElement('option');
-            option.value = referee.id;
-            option.textContent = referee.name;
-            if (match.referee && referee.id === match.referee.id) {
-                option.selected = true;
-            }
-            selectReferee.appendChild(option);
-        });
+        // Populate referees dropdown and set selected referee if exists
+        populateAssignRefereeDropdown(match.referee_id);
         
         // Show or hide remove button based on if there's a referee
         removeRefereeBtn.style.display = match.referee ? 'block' : 'none';
@@ -395,7 +901,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Save referee assignment
      */
     async function saveRefereeAssignment() {
-        const refereeId = selectReferee.value || null;
+        const refereeId = selectedAssignRefereeId || null;
         
         try {
             // Get current match data
@@ -465,13 +971,24 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeModal(modal) {
         modal.style.display = 'none';
         currentMatchId = null;
+        
+        // Reset assign referee selection
+        if (modal === assignRefereeModal) {
+            clearAssignSelectedReferee();
+            assignRefereeSearch.value = '';
+        }
     }
     
     // Event Listeners
     applyFilterBtn.addEventListener('click', applyFilters);
     
     clearFilterBtn.addEventListener('click', () => {
-        teamFilter.value = '';
+        // Clear team filters
+        clearSelectedTeams();
+        
+        // Clear referee filter
+        refereeSearchInput.value = '';
+        clearSelectedReferee();
         
         // Reset dates to default range
         const today = new Date();
@@ -483,7 +1000,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dateFromFilter.value = oneMonthAgo.toISOString().split('T')[0];
         dateToFilter.value = oneYearAhead.toISOString().split('T')[0];
         
-        refereeFilter.value = '';
         sortByFilter.value = 'date-asc';
         
         applyFilters();
@@ -504,11 +1020,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
+    // Referee search event to show dropdown on click
+    refereeSearchInput.addEventListener('click', () => {
+        if (refereeDropdown.style.display !== 'block') {
+            filterReferees(refereeSearchInput.value);
+            refereeDropdown.style.display = 'block';
+        }
+    });
+    
+    // Assign referee search event to show dropdown on click
+    assignRefereeSearch.addEventListener('click', () => {
+        if (assignRefereeDropdown.style.display !== 'block') {
+            filterAssignReferees(assignRefereeSearch.value);
+            assignRefereeDropdown.style.display = 'block';
+        }
+    });
+    
     // Modal events
     cancelAssignBtn.addEventListener('click', () => closeModal(assignRefereeModal));
     saveAssignBtn.addEventListener('click', saveRefereeAssignment);
     removeRefereeBtn.addEventListener('click', () => {
-        selectReferee.value = '';
+        selectedAssignRefereeId = '';
         saveRefereeAssignment();
     });
     

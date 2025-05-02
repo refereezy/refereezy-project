@@ -14,8 +14,17 @@ const API_URL = "http://localhost:8080";
  */
 async function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
+    const p = document.createElement('p');
+    
+    // Handle newlines by replacing them with <br> elements
+    if (message.includes('\n')) {
+        p.innerHTML = message.split('\n').join('<br>');
+    } else {
+        p.innerHTML = message;
+    }
+    
     notification.className = `notification ${type}`;
-    notification.textContent = message;
+    notification.appendChild(p);
     
     document.body.appendChild(notification);
     

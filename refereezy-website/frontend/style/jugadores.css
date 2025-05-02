@@ -12,7 +12,7 @@
     --grid-header: rgba(126, 217, 87, 0.9);
     --row-hover: rgba(126, 217, 87, 0.2);
     --form-bg: rgba(43, 43, 43, 0.95);
-  }
+}
 * {
     margin: 0;
     padding: 0;
@@ -25,39 +25,6 @@ body {
     font-family: system-ui, -apple-system, sans-serif;
     min-height: 100vh;
 }
-
-  /* Navbar */
-  .dashboard-nav {
-    background-color: var(--nav-bg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
-  
-  .nav-logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary);
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 1.5rem;
-  }
-  
-  .nav-links li a {
-    color: var(--text);
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-  
-  .nav-links li a:hover {
-    color: var(--primary);
-  }
-
 
 /* Players Section */
 .players-section {
