@@ -19,10 +19,19 @@ INSERT INTO REFEREE (name, password, dni, clock_code, client_id, token) VALUES
 ('Sarah Ref', 'password456', '87654321B', 'CLK456', 2, '$2b$12$Airxgu62eyAsXRhwqp7ejujxdkdKR6c.t8lCXBdVdqWFr2OZdkuZe');
 
 INSERT INTO MATCHES (date, matchgroup_id, client_id, local_team_id, visitor_team_id, referee_id) VALUES
-('2025-05-15 15:00:00', 1, 1, 1, 2, 1),
-('2025-05-20 18:00:00', 2, 1, 3, 1, NULL),
-('2025-05-25 20:00:00', 1, 2, 2, 3, 2),
-('2025-06-01 17:00:00', 2, 2, 1, 3, NULL);
+('2025-05-15 15:00:00', NULL, 1, 1, 2, 1),
+('2025-05-20 18:00:00', NULL, 1, 3, 1, NULL),
+('2025-05-25 20:00:00', NULL, 1, 2, 3, 1),
+('2025-06-01 16:00:00', NULL, 1, 1, 2, 2),
+('2025-06-01 17:00:00', NULL, 1, 3, 1, NULL),
+('2025-06-01 18:00:00', NULL, 1, 2, 3, NULL),
+('2025-06-01 19:00:00', NULL, 1, 3, 1, NULL),
+('2025-06-01 20:00:00', NULL, 1, 1, 2, NULL),
+('2025-06-01 21:00:00', NULL, 1, 1, 3, NULL),
+('2025-06-01 22:00:00', NULL, 1, 2, 1, NULL),
+('2025-06-01 23:00:00', NULL, 1, 3, 2, NULL),
+('2025-06-01 16:00:00', NULL, 1, 1, 3, NULL),
+('2025-06-01 17:00:00', NULL, 1, 1, 3, NULL);
 
 INSERT INTO PLAYER (name, dorsal_number, dni, team_id, client_id, is_goalkeeper) VALUES
 -- Jugadores para el Team 1

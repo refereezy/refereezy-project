@@ -59,7 +59,7 @@ class PlayerResponse(PlayerBase):
 class MatchBase(BaseModel):
     # id: int
     date: datetime
-    matchgroup_id: int
+    matchgroup_id: Optional[int]
     client_id: int
     referee_id: Optional[int]
     local_team_id: int

@@ -1,5 +1,6 @@
 // Módulo para gestionar la visualización de árbitros
 document.addEventListener('DOMContentLoaded', () => {
+    checkAuth()
     // Use API_URL from base.js
     const clientId = getClientId();
 

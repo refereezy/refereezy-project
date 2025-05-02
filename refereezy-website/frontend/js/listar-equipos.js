@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    checkAuth()
     // Referencias a elementos del DOM
     const teamsGrid = document.querySelector('.teams-grid');
     const teamsContainer = document.querySelector('.teams-container');

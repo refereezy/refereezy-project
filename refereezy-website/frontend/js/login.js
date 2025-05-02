@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const clientId = getClientId();
+    const clientId = getClientId(); // Obtener el ID del cliente desde localStorage
     if (clientId) {
         window.location.href = "./dashboard.html";
     }

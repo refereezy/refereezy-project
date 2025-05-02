@@ -1,5 +1,7 @@
 // Módulo para gestionar el formulario de creación de árbitros
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {// Initialize common functionality on page load
+    // Apply any common page setup here
+    checkAuth();
     // Use API_URL from base.js instead of redefining it
     const clientId = getClientId(); // Use getClientId from base.js
 

@@ -15,7 +15,6 @@ import com.example.refereezyapp.data.models.Incident
 import com.example.refereezyapp.data.models.IncidentType
 import com.example.refereezyapp.data.models.TeamType
 import androidx.core.graphics.toColorInt
-import com.example.refereezyapp.utils.PopUp
 
 
 class PlayerPickActivity : _BaseReportActivity() {
@@ -39,9 +38,6 @@ class PlayerPickActivity : _BaseReportActivity() {
         val teamSelection = intent.getSerializableExtra("team") as TeamType
         val team = if (teamSelection == TeamType.LOCAL) localTeam else visitorTeam
         val description = intent.getStringExtra("description")
-
-        PopUp.show(this, "$type for ...", PopUp.Type.INFO)
-
 
         // components
         val grid = findViewById<GridLayout>(R.id.playerGrid)

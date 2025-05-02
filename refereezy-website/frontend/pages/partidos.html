@@ -35,37 +35,166 @@
                 <div class="matches-card">
                     <!-- Título con diseño angular -->
                     <div class="title-container">
-                        <div class="title-background"></div>
                         <h1>Gestión de Partidos</h1>
                     </div>
-
-                    <!-- Formulario -->
-                    <div class="form-container">
-                        <div class="input-group">
-                            <select class="team-select" id="localTeam">
-                                <option value="">Seleccione equipo local</option>
-                            </select>
+                    
+                    <!-- Filter Controls -->
+                    <div class="filter-container">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label for="teamFilter">Equipo:</label>
+                                <select id="teamFilter">
+                                    <option value="">Todos los equipos</option>
+                                </select>
+                            </div>
                             
-                            <select class="team-select" id="visitorTeam">
-                                <option value="">Seleccione equipo visitante</option>
-                            </select>
+                            <div class="filter-group">
+                                <label for="dateFromFilter">Desde:</label>
+                                <input type="date" id="dateFromFilter">
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="dateToFilter">Hasta:</label>
+                                <input type="date" id="dateToFilter">
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="refereeFilter">Árbitro:</label>
+                                <select id="refereeFilter">
+                                    <option value="">Todos</option>
+                                    <option value="assigned">Con árbitro</option>
+                                    <option value="unassigned">Sin árbitro</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="sortByFilter">Ordenar por:</label>
+                                <select id="sortByFilter">
+                                    <option value="date-asc">Fecha (más reciente)</option>
+                                    <option value="date-desc">Fecha (más antigua)</option>
+                                </select>
+                            </div>
                         </div>
-
-                        <div class="datetime-group">
-                            <input type="date" class="date-input" id="matchDate">
-                            <input type="time" class="time-input" id="matchTime">
+                        
+                        <div class="filter-actions">
+                            <button class="filter-btn secondary-button" id="applyFilterBtn">Aplicar</button>
+                            <button class="filter-btn secondary-button" id="clearFilterBtn">Limpiar</button>
+                            <button class="primary-button create-match-btn" id="showCreateModalBtn">Crear Partido</button>
                         </div>
-
-                        <div class="action-buttons">
-                            <button class="create-match-btn">Crear Partido</button>
-                            <button class="view-matches-btn">Ver Partidos</button>
+                    </div>
+                    
+                    <!-- Matches Grid Container -->
+                    <div class="matches-grid-container">
+                        <div class="matches-grid-header">
+                            <div class="match-header-date">Fecha</div>
+                            <div class="match-header-teams">Equipos</div>
+                            <div class="match-header-referee">Árbitro</div>
+                            <div class="match-header-actions">Acciones</div>
                         </div>
+                        <div id="matchesGrid" class="matches-grid">
+                            <!-- Match items will be inserted here by JS -->
+                            <div class="no-matches-message" id="noMatchesMessage">
+                                No hay partidos para mostrar
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination Controls -->
+                    <div class="pagination-controls">
+                        <button id="prevPageBtn" disabled>&laquo; Anterior</button>
+                        <span id="pageIndicator">Página 1 de 1</span>
+                        <button id="nextPageBtn" disabled>Siguiente &raquo;</button>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+    
+    <!-- Modal para Crear Partido -->
+    <div class="modal" id="createMatchModal">
+        <div class="modal-content">
+            <h2>Crear Nuevo Partido</h2>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modalLocalTeam">Equipo Local:</label>
+                    <select id="modalLocalTeam" required>
+                        <option value="">Seleccione equipo local</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="modalVisitorTeam">Equipo Visitante:</label>
+                    <select id="modalVisitorTeam" required>
+                        <option value="">Seleccione equipo visitante</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="modalMatchDate">Fecha:</label>
+                        <input type="date" id="modalMatchDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modalMatchTime">Hora:</label>
+                        <input type="time" id="modalMatchTime" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="modalReferee">Árbitro (opcional):</label>
+                    <select id="modalReferee">
+                        <option value="">Sin asignar</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="secondary-button" id="cancelCreateBtn">Cancelar</button>
+                <button class="primary-button" id="saveMatchBtn">Guardar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para Asignar/Cambiar Árbitro -->
+    <div class="modal" id="assignRefereeModal">
+        <div class="modal-content">
+            <h2>Asignar Árbitro</h2>
+            <div class="modal-body">
+                <div class="match-info" id="matchInfoForReferee"></div>
+                
+                <div class="form-group">
+                    <label for="selectReferee">Seleccionar Árbitro:</label>
+                    <select id="selectReferee">
+                        <option value="">Sin asignar</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="secondary-button" id="cancelAssignBtn">Cancelar</button>
+                <button class="primary-button" id="saveAssignBtn">Guardar</button>
+                <button class="secondary-button danger-button" id="removeRefereeBtn">Quitar Árbitro</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmación para Eliminar -->
+    <div class="modal" id="deleteMatchModal">
+        <div class="modal-content">
+            <h2>Eliminar Partido</h2>
+            <p>¿Está seguro que desea eliminar este partido? Esta acción no se puede deshacer.</p>
+            <div class="match-info" id="matchInfoForDelete"></div>
+            
+            <div class="modal-buttons">
+                <button class="secondary-button" id="cancelDeleteBtn">Cancelar</button>
+                <button class="secondary-button danger-button" id="confirmDeleteBtn">Eliminar</button>
+            </div>
+        </div>
+    </div>
+    
     <script src="../js/base.js"></script>
-    <script src="../js/partidos.js"></script>
+    <script src="../js/listar-partidos.js"></script>
+    <script src="../js/crear-partidos.js"></script>
 </body>
 </html>

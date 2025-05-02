@@ -20,7 +20,7 @@ def get_matches_by_client(client_id: int, db: Session = Depends(get_db)):
 
 
 
-@router.get("/client/{id}/with_teams")
+@router.get("/client/{client_id}/with_teams")
 def get_client_matches_populated(client_id: int, db: Session = Depends(get_db)):
     matches = db.query(Match).filter(Match.client_id == client_id).all()
     
@@ -31,7 +31,8 @@ def get_client_matches_populated(client_id: int, db: Session = Depends(get_db)):
         {
             **match.__dict__,
             "local_team": match.local_team,
-            "visitor_team": match.visitor_team
+            "visitor_team": match.visitor_team,
+            "referee": match.referee
         } for match in matches
     ]
 

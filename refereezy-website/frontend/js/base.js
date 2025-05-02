@@ -4,6 +4,7 @@
  */
 
 // Global API URL - centralized configuration
+// This URL should be updated to match the backend server's address: http://refereezy.smcardona.tech:8080
 const API_URL = "http://localhost:8080";
 
 /**
@@ -11,23 +12,21 @@ const API_URL = "http://localhost:8080";
  * @param {string} message - The message to display
  * @param {string} type - Notification type: 'info', 'success', 'error', 'warning'
  */
-function showNotification(message, type = 'info') {
+async function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.textContent = message;
     
     document.body.appendChild(notification);
     
-    setTimeout(() => {
-        notification.classList.add('show');
-        
-        setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
-    }, 100);
+    notification.classList.add('show');
+    
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    notification.classList.remove('show');
+    
+    await new Promise(resolve => setTimeout(resolve, 300));
+    document.body.removeChild(notification);
+    
 }
 
 /**
@@ -37,7 +36,7 @@ function logout() {
     localStorage.removeItem('client_id');
     localStorage.removeItem('user_type');
     localStorage.removeItem('token');
-    window.location.href = '/login.html';
+    window.location.href = './login.html';
 }
 
 /**
@@ -72,14 +71,8 @@ function formatTime(dateStr) {
  * Check if the user is logged in, redirect to login if not
  */
 function checkAuth() {
-    const clientId = localStorage.getItem('client_id');
+    const clientId = getClientId();
     if (!clientId) {
-        window.location.href = '/login.html';
+        window.location.href = './login.html';
     }
 }
-
-// Initialize common functionality on page load
-document.addEventListener('DOMContentLoaded', () => {
-    // Apply any common page setup here
-    checkAuth();
-});

@@ -46,6 +46,8 @@ open class _BaseReportActivity : AppCompatActivity() {
         localTeam = report.match.local_team
         visitorTeam = report.match.visitor_team
 
+        reloadTeamGoals()
+
     }
 
     override fun onResume() {
