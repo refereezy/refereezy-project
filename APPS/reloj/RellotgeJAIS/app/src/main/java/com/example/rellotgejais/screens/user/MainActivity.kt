@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
+import com.example.rellotgejais.data.handlers.ClockHandler
 import com.example.rellotgejais.data.handlers.RefereeViewModel
 import com.example.rellotgejais.data.handlers.ReportHandler
 import com.example.rellotgejais.data.managers.RefereeManager
@@ -21,6 +22,7 @@ import kotlinx.coroutines.runBlocking
 class MainActivity : AppCompatActivity() {
 
     private val refereeViewModel: RefereeViewModel by viewModels()
+    private val clockViewModel: ClockHandler by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,15 @@ class MainActivity : AppCompatActivity() {
          * Cargar datos de si esta vinculado
          * pedir a la api el referee
          */
+
+        //API QR
+        clockViewModel.generateCode()
+        clockViewModel.clock.observe(this) { code ->
+            if (code != null) {
+                val intent = Intent(this, QrActivity::class.java)
+                startActivity(intent)
+            }
+        }
 
         val tempToken = "$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa."
         val tempId = 1

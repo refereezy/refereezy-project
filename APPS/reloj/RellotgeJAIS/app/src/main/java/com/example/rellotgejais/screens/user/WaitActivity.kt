@@ -1,9 +1,12 @@
 package com.example.rellotgejais.screens.user
 
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rellotgejais.R
+import com.example.rellotgejais.data.services.LocalStorageService
 
 class WaitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,5 +22,7 @@ class WaitActivity : AppCompatActivity() {
  * - Si no hay reporte, informar que no hay ningun reporte iniciado.
  * - Mostrar botón para volver a comprobar (tal vez cooldown de 5 segundos?)
  **/
+
+
     }
 }

@@ -14,14 +14,13 @@ class ClockHandler: ViewModel() {
     private val _clock = MutableLiveData<String?>()
     val clock: LiveData<String?> get() = _clock
 
-    fun generateCode(code: String) {
+    fun generateCode() {
         viewModelScope.launch {
             val response = RetrofitManager.instance.generateCode()
             if (response.isSuccessful) {
                 val codeQr = response.body()
                 _clock.value = codeQr
-                println(codeQr)
-                codeQr?.let { saveClockQrCode(it) }
+                saveClockQrCode(codeQr!!)
             } else {
                 Log.e("Retrofit (generateCode)", "Error de conexión: ${response.errorBody()}")
                 _clock.value = null

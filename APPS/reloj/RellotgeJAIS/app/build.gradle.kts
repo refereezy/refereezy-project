@@ -66,6 +66,9 @@ dependencies {
         exclude(group = "org.json", module = "json")
     }
 
+    //QR
+    implementation ("com.google.zxing:core:3.5.2")
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
     // UI
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("net.orandja.shadowlayout:shadowlayout:1.0.1")
