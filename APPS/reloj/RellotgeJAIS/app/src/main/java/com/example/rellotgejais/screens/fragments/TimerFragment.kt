@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
 import com.example.rellotgejais.models.TimerViewModel
-import com.example.rellotgejais.screens.user.ConfirmationDialog
-import kotlin.div
-import kotlin.rem
+import com.example.rellotgejais.utils.ConfirmationDialog
 
 class TimerFragment : Fragment() {
 

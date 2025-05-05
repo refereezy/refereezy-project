@@ -9,6 +9,7 @@ object LocalStorageService {
     private const val PREFS_NAME = "RefereezyPrefs"
     private const val KEY_REFEREE_ID = "refereeId"
     private const val KEY_REFEREE_TOKEN = "refereeToken"
+    private const val KEY_CLOCK_QR_CODE = "clockQrCode"
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -32,5 +33,11 @@ object LocalStorageService {
 
     fun getRefereeToken(): String? {
         return sharedPreferences.getString(KEY_REFEREE_TOKEN, null)
+    }
+    fun saveClockQrCode(qrCode: String) {
+        sharedPreferences.edit(commit = true) { putString(KEY_CLOCK_QR_CODE, qrCode) }
+    }
+    fun getClockQrCode(): String? {
+        return sharedPreferences.getString(KEY_CLOCK_QR_CODE, null)
     }
 }
