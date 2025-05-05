@@ -50,7 +50,7 @@ interface RetrofitService {
 
     //To get code for QR
     @GET("/clock/generate")
-    suspend fun generateCode(): Response<String>
+    suspend fun generateCode(): Response<Clock>
 
 }
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import com.example.rellotgejais.data.handlers.RefereeViewModel
 import com.example.rellotgejais.data.handlers.ReportHandler
 import com.example.rellotgejais.data.managers.RefereeManager
 import com.example.rellotgejais.data.managers.ReportManager
+import com.example.rellotgejais.data.services.LocalStorageService
 import com.example.rellotgejais.screens.report.ActionsActivity
 import kotlinx.coroutines.runBlocking
 
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        val nextActivity = findViewById<Button>(R.id.nextActivity)
+        val nextActivity = findViewById<TextView>(R.id.nextActivity)
 
 
         // components
@@ -37,6 +39,12 @@ class MainActivity : AppCompatActivity() {
             .load(R.raw.loading_football)
             .into(loadingGif)
 
+        LocalStorageService.initialize(this);
+
+        if (LocalStorageService.getRefereeId()!=null && LocalStorageService.getRefereeToken()!=null) {
+            val intent = Intent(this, WaitActivity::class.java)
+            startActivity(intent)
+        }
 
         /**
          * TODO: Requerimientos de emparejamiento con QR
@@ -48,46 +56,23 @@ class MainActivity : AppCompatActivity() {
         clockViewModel.generateCode()
         clockViewModel.clock.observe(this) { code ->
             if (code != null) {
-                val intent = Intent(this, QrActivity::class.java)
-                startActivity(intent)
+                nextActivity.setOnClickListener { v: View? ->
+                    val intent = Intent(this, QrActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
 
-        val tempToken = "$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa."
-        val tempId = 1
+//        //refereeViewModel.getReferee(tempId, tempToken)
+//        val tempToken = "$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa."
+//        val tempId = 1
 
-        refereeViewModel.referee.observe(this) { referee ->
-            if (referee != null) {
-                RefereeManager.setCurrentReferee(referee)
-                loadReport()
-            }
-        }
 
-        nextActivity.setOnClickListener { v: View? ->
-            refereeViewModel.getReferee(tempId, tempToken)
-        }
+
+
     }
 
-    fun loadReport() {
-        val referee = RefereeManager.getCurrentReferee()!!
-        runBlocking {
-            val report = ReportHandler.getReport(referee.id)
-            if (report == null) {
-                println("No report found")
-                return@runBlocking
-            }
-            println("Report found: ${report.raw.id}")
-            ReportManager.setCurrentReport(report)
 
-        }
-
-        val report = ReportManager.getCurrentReport()!!
-        val timerViewModel = (application as MyApp).timerViewModel
-        timerViewModel.initTimer(report.raw.timer[0], report.raw.timer[1])
-        val intent = Intent(this@MainActivity, ActionsActivity::class.java)
-        startActivity(intent)
-
-    }
     fun goToLogin() {
         val intent = Intent(this, WaitActivity::class.java)
         startActivity(intent)

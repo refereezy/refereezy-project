@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rellotgejais.R
 import com.example.rellotgejais.models.Incident
-import com.example.rellotgejais.screens.IncidenciaAdapter
 import com.example.rellotgejais.utils.adapters.IncidentAdapter
 
 

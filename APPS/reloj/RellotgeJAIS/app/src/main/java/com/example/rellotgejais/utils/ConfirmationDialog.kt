@@ -1,4 +1,4 @@
-package com.example.rellotgejais.screens.user
+package com.example.rellotgejais.utils
 
 import android.content.Context
 import android.view.LayoutInflater

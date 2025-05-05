@@ -6,7 +6,7 @@ import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import com.example.rellotgejais.R
 import com.example.rellotgejais.models.IncidentType
-import com.example.rellotgejais.screens.user.ConfirmationDialog
+import com.example.rellotgejais.utils.ConfirmationDialog
 
 class ActionsActivity : _BaseReportActivity() {
 
