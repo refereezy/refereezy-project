@@ -1,12 +1,12 @@
-package com.example.refereezyapp.data
+package com.example.refereezyapp.data.services
 
 import android.util.Log
 import com.example.refereezyapp.data.handlers.MatchService
-import com.google.firebase.firestore.DocumentSnapshot
-import com.example.refereezyapp.data.models.MatchReport
 import com.example.refereezyapp.data.models.Incident
+import com.example.refereezyapp.data.models.MatchReport
 import com.example.refereezyapp.data.models.PopulatedReport
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-object FirebaseManager {
+object FirebaseService {
 
     private  val REPORT_COLLECTION = "reports"
     private  val INCIDENT_COLLECTION = "incidents"
@@ -87,7 +87,8 @@ object FirebaseManager {
         val report = MatchReport(
             id = reportRef.id,
             match_id = matchId,
-            referee_id = refereeId)
+            referee_id = refereeId
+        )
 
         reportRef.set(report).await()
 

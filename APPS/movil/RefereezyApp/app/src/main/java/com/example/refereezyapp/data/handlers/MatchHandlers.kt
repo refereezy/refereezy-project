@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.refereezyapp.data.FirebaseManager
-import com.example.refereezyapp.data.RetrofitManager
+import com.example.refereezyapp.data.services.FirebaseService
+import com.example.refereezyapp.data.services.RetrofitManager
 import com.example.refereezyapp.data.models.Match
 import com.example.refereezyapp.data.models.PopulatedMatch
 import com.example.refereezyapp.data.managers.MatchManager
@@ -25,7 +25,7 @@ class MatchViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = RetrofitManager.instance.getRefereeMatches(id)
-                val doneMatches = FirebaseManager.getDoneMatches(id)
+                val doneMatches = FirebaseService.getDoneMatches(id)
 
                 if (!response.isSuccessful) {
                     Log.e("Retrofit (loadMatches)", "Error de conexión: ${response.errorBody()}")

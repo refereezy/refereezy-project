@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from models import Player
+from models import Player, Client
 from schemas import PlayerCreate, PlayerResponse
 from dependencies import get_db
 from typing import List
@@ -13,10 +13,10 @@ def get_players(db: Session = Depends(get_db)):
 
 @router.get("/client/{client_id}", response_model=List[PlayerResponse])
 def get_players_by_client_id(client_id: int, db: Session = Depends(get_db)):
-    players = db.query(Player).filter(Player.client_id == client_id).all()
-    if not players:
-        raise HTTPException(status_code=404, detail="No players found for the given client_id")
-    return players
+    client = db.query(Client).filter(Client.id == client_id).first()
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+    return client.players
 
 @router.get("/team/{team_id}/{dorsal_number}", response_model=PlayerResponse)
 def get_player_by_team_and_number(team_id: int, dorsal_number: int, db: Session = Depends(get_db)):

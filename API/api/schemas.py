@@ -124,8 +124,6 @@ class MatchGroupResponse(MatchGroupBase):
 class ClientBase(BaseModel):
     # id: int
     name: str
-    plan: str
-    plan_expiration: datetime
     email: str
     password: str # no estaba
     phone: str
@@ -134,6 +132,8 @@ class ClientCreate(ClientBase):
     pass
 
 class ClientResponse(ClientBase):
+    plan: str
+    plan_expiration: datetime
     id: int
     class Config:
         orm_mode = True

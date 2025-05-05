@@ -15,8 +15,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-
-
     <!-- Reloj / Tiempo -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/timer"

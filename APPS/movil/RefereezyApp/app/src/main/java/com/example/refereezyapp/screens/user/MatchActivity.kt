@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.refereezyapp.MyApp
 import com.example.refereezyapp.R
-import com.example.refereezyapp.data.FirebaseManager
+import com.example.refereezyapp.data.services.FirebaseService
 import com.example.refereezyapp.data.handlers.MatchService
 import com.example.refereezyapp.data.handlers.MatchViewModel
 import com.example.refereezyapp.data.handlers.ReportService
@@ -190,7 +190,7 @@ class MatchActivity : AppCompatActivity() {
 
         if (report == null || report.raw.done) {
             runBlocking {
-                report = FirebaseManager.getReport(referee.id)
+                report = FirebaseService.getReport(referee.id)
             }
         }
 

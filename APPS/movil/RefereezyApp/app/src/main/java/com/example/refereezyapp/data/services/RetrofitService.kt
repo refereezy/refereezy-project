@@ -1,4 +1,4 @@
-package com.example.refereezyapp.data
+package com.example.refereezyapp.data.services
 
 import com.example.refereezyapp.data.models.Clock
 import com.example.refereezyapp.data.models.Match

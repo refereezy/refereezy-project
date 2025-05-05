@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from models import Match, Team
+from models import Match, Team, Client
 from schemas import MatchCreate, MatchResponse
 from dependencies import get_db
 from typing import List
@@ -13,19 +13,18 @@ def get_matches(db: Session = Depends(get_db)):
 
 @router.get("/client/{client_id}", response_model=List[MatchResponse])
 def get_matches_by_client(client_id: int, db: Session = Depends(get_db)):
-    matches = db.query(Match).filter(Match.client_id == client_id).all()
-    if not matches:
-        raise HTTPException(status_code=404, detail="No matches found for the given client ID")
-    return matches
-
-
+    client = db.query(Client).filter(Client.id == client_id).first()
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+    return client.matches
 
 @router.get("/client/{client_id}/with_teams")
 def get_client_matches_populated(client_id: int, db: Session = Depends(get_db)):
-    matches = db.query(Match).filter(Match.client_id == client_id).all()
+    client = db.query(Client).filter(Client.id == client_id).first()
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
     
-    if not matches:
-        raise HTTPException(status_code=404, detail="No matches found for the given client ID")
+    matches = client.matches
     
     return [
         {

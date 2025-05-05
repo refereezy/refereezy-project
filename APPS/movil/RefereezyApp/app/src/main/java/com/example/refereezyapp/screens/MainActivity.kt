@@ -13,13 +13,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.refereezyapp.R
-import com.example.refereezyapp.data.FirebaseManager
-import com.example.refereezyapp.data.LocalStorageManager
+import com.example.refereezyapp.data.services.FirebaseService
+import com.example.refereezyapp.data.services.LocalStorageService
 import com.example.refereezyapp.data.handlers.ConnectionViewModel
 import com.example.refereezyapp.data.handlers.MatchViewModel
 import com.example.refereezyapp.data.handlers.RefereeViewModel
 import com.example.refereezyapp.data.models.Referee
-import com.example.refereezyapp.data.managers.MatchManager
 import com.example.refereezyapp.data.managers.RefereeManager
 import com.example.refereezyapp.data.managers.ReportManager
 import com.example.refereezyapp.screens.user.LoginActivity
@@ -85,13 +84,13 @@ class MainActivity : AppCompatActivity() {
     fun loadData() {
 
         updateLoadingStatus("Loading local storage")
-        LocalStorageManager.initialize(this)
+        LocalStorageService.initialize(this)
 
         updateLoadingStatus("Loading referee session")
     
         // cargar arbitro de localStorage si hay.
-        val refereeId = LocalStorageManager.getRefereeId()
-        val refereePass = LocalStorageManager.getRefereeToken()
+        val refereeId = LocalStorageService.getRefereeId()
+        val refereePass = LocalStorageService.getRefereeToken()
 
         if (refereeId == null || refereePass == null) {
             updateLoadingStatus("No referee session found")
@@ -126,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     fun loadReport(referee: Referee) {
         updateLoadingStatus("Loading previous report")
         // buscar si hay un reporte pendiente
-        FirebaseManager.getReport(referee.id) { report ->
+        FirebaseService.getReport(referee.id) { report ->
             if (report != null) {
                 updateLoadingStatus("Report found with id: ${report.raw.id}")
 

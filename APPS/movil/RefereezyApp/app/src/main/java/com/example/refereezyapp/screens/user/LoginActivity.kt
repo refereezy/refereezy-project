@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.refereezyapp.R
-import com.example.refereezyapp.data.LocalStorageManager
+import com.example.refereezyapp.data.services.LocalStorageService
 import com.example.refereezyapp.data.handlers.RefereeViewModel
 import com.example.refereezyapp.data.models.RefereeLogin
 import com.example.refereezyapp.data.managers.RefereeManager
@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
             // guarda el referee
             RefereeManager.setCurrentReferee(referee)
             // guarda el referee en localStorage
-            LocalStorageManager.saveRefereeReference(referee.id.toString(), referee.token)
+            LocalStorageService.saveRefereeReference(referee.id.toString(), referee.token)
             println(referee.token)
             // redirige a la pantalla de matches
             val intent = Intent(this, MatchActivity::class.java)

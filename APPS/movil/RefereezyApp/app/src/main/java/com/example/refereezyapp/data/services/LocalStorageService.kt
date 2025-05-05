@@ -1,10 +1,10 @@
-package com.example.refereezyapp.data
+package com.example.refereezyapp.data.services
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 
-object LocalStorageManager {
+object LocalStorageService {
 
     private const val PREFS_NAME = "RefereezyPrefs"
     private const val KEY_REFEREE_ID = "refereeId"

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
-from models import Team
+from models import Team, Client
 from schemas import TeamCreate, TeamResponse
 from dependencies import get_db
 from typing import List
@@ -35,10 +35,10 @@ def get_team(team_id: int, db: Session = Depends(get_db)):
 
 @router.get("/client/{client_id}", response_model=List[TeamResponse])
 def get_teams_by_client(client_id: int, db: Session = Depends(get_db)):
-    teams = db.query(Team).filter(Team.client_id == client_id).all()
-    if not teams:
-        raise HTTPException(status_code=404, detail="No teams found for the given client")
-    return teams
+    client = db.query(Client).filter(Client.id == client_id).first()
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+    return client.teams
 
 # Post Team
 @router.post("/", response_model=TeamResponse)

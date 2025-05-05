@@ -351,6 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     selectedRefereeId = '';
                     selectedRefereeName = 'Sin árbitro';
                 } else {
+                    refereeSearchInput.value = '';
                     clearSelectedReferee();
                 }
                 

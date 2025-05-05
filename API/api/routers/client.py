@@ -5,6 +5,7 @@ from schemas import ClientCreate, ClientResponse, ClientLogin
 from dependencies import get_db
 from typing import List
 from utils import hash_password, verify_password
+from datetime import timedelta, datetime
 
 
 router = APIRouter(prefix="/clients", tags=["Clients"])
@@ -18,6 +19,8 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
     hashed_pwd = hash_password(client.password)
     new_client = Client(**client.dict())
     new_client.password = hashed_pwd
+    new_client.plan = "Eazy"
+    new_client.plan_expiration = datetime.now() + timedelta(days=30)
     db.add(new_client)
     db.commit()
     db.refresh(new_client)

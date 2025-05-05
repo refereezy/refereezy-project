@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.refereezyapp.data.LocalStorageManager
-import com.example.refereezyapp.data.RetrofitManager
+import com.example.refereezyapp.data.services.LocalStorageService
+import com.example.refereezyapp.data.services.RetrofitManager
 import com.example.refereezyapp.data.models.Clock
 import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.models.RefereeLogin
@@ -23,11 +23,11 @@ object RefereeService {
 
     fun login(referee: Referee) {
         RefereeManager.setCurrentReferee(referee)
-        LocalStorageManager.saveRefereeReference(referee.id.toString(), referee.token)
+        LocalStorageService.saveRefereeReference(referee.id.toString(), referee.token)
     }
 
     fun logout() {
-        LocalStorageManager.clearRefereeReference()
+        LocalStorageService.clearRefereeReference()
         RefereeManager.logout()
         ReportManager.setCurrentReport(null)
         MatchManager.clearMatches()

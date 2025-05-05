@@ -1,7 +1,7 @@
 package com.example.refereezyapp.data.handlers
 
 import android.util.Log
-import com.example.refereezyapp.data.FirebaseManager
+import com.example.refereezyapp.data.services.FirebaseService
 import com.example.refereezyapp.data.models.Incident
 import com.example.refereezyapp.data.models.PopulatedIncident
 import com.example.refereezyapp.data.models.PopulatedMatch
@@ -12,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 object ReportService {
 
     suspend fun initReport(match: PopulatedMatch): PopulatedReport {
-        val report = FirebaseManager.initReport(
+        val report = FirebaseService.initReport(
             match.raw.id, match.raw.referee_id)
 
         val populated = PopulatedReport(report, match)
@@ -22,7 +22,7 @@ object ReportService {
 
     suspend fun updateReportTimer(report: PopulatedReport, newTimer: List<Int>): Boolean {
         Log.d("ReportService", "Updating timer: $newTimer")
-        var res = FirebaseManager.updateReportTimer(report.raw.id, newTimer)
+        var res = FirebaseService.updateReportTimer(report.raw.id, newTimer)
         if (!res) {
             Log.e("ReportService", "Error updating timer")
         } else {
@@ -40,7 +40,7 @@ object ReportService {
     fun endReport(report: PopulatedReport, done: Boolean = true): Boolean  {
         var res = false
         runBlocking {
-            res = async { FirebaseManager.updateReportDone(report.raw.id, done) }.await()
+            res = async { FirebaseService.updateReportDone(report.raw.id, done) }.await()
             report.raw.done = true
         }
         return res
@@ -51,7 +51,7 @@ object ReportService {
         var res: PopulatedIncident? = null
 
         runBlocking {
-            val incident = async { FirebaseManager.addIncident(report.raw.id, incident) }.await()
+            val incident = async { FirebaseService.addIncident(report.raw.id, incident) }.await()
 
             if (incident == null) {
                 return@runBlocking
@@ -76,7 +76,7 @@ object ReportService {
 
         var success = false
         runBlocking {
-            success = async { FirebaseManager.removeIncident(report.raw.id, incident.id) }.await()
+            success = async { FirebaseService.removeIncident(report.raw.id, incident.id) }.await()
             if (success) {
                 report.incidents.removeIf { it.raw.id == incident.id }
             }

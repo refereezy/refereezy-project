@@ -1,15 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const clientId = getClientId(); // Obtener el ID del cliente desde localStorage
+    const clientId = getClientId();
     if (clientId) {
         window.location.href = "./dashboard.html";
     }
 
-    // Obtener referencias a los elementos del formulario
-    const loginForm = document.querySelector('.form-container');
-    const emailInput = document.querySelector('input[type="text"]');
-    const passwordInput = document.querySelector('input[type="password"]');
-    const loginButton = document.querySelector('.login-submit-button');
-    // API_URL ahora está disponible desde base.js
+    // Obtener referencia al formulario de login
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('loginEmail');
+    const passwordInput = document.getElementById('loginPassword');
+
+    // Función para validar email
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
 
     // Función para manejar el inicio de sesión
     async function handleLogin(event) {
@@ -18,21 +22,32 @@ document.addEventListener('DOMContentLoaded', function() {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
-        // Validación básica
+        // Validación mejorada
         if (!email || !password) {
             showNotification('Por favor, complete todos los campos', 'warning');
             return;
         }
 
-        // Preparar los datos de inicio de sesión
-        const loginData = {
-            email,
-            password
-        };
+        if (!isValidEmail(email)) {
+            showNotification('Por favor, ingrese un correo electrónico válido', 'warning');
+            return;
+        }
 
         try {
+            // Mostrar estado de carga
+            const submitButton = loginForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Iniciando...';
+            submitButton.disabled = true;
+
+            // Preparar los datos de inicio de sesión
+            const loginData = {
+                email,
+                password
+            };
+
             // Enviar los datos al backend para autenticar al usuario
-            const res = await fetch(`${API_URL}/clients/login`, {
+            const response = await fetch(`${API_URL}/clients/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -40,19 +55,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(loginData)
             });
 
-            if (!res.ok) {
-                const errorText = await res.text();
-                throw new Error(errorText || 'Error de autenticación');
+            // Restaurar el botón
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Credenciales inválidas');
             }
 
-            // Suponiendo que la respuesta es un token JWT o algo que identifique al usuario
-            const responseData = await res.json();
+            // Procesar la respuesta
+            const userData = await response.json();
             
-            // Guardar el token en localStorage
-            localStorage.setItem('client_id', responseData.id);
-            localStorage.setItem('token', responseData.token); // Si hay token
+            // Guardar información del usuario en localStorage
+            localStorage.setItem('client_id', userData.id);
             localStorage.setItem('user_type', 'client');
             
+            // Notificación de éxito
             showNotification('Inicio de sesión exitoso', 'success');
             
             // Redirigir al usuario al dashboard
@@ -60,21 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = './dashboard.html';
             }, 1000);
 
-        } catch (err) {
-            console.error(err);
-            showNotification('Error al iniciar sesión: ' + err.message, 'error');
+        } catch (error) {
+            console.error('Error de login:', error);
+            showNotification(`Error al iniciar sesión: ${error.message}`, 'error');
         }
     }
 
-    // Agregar event listener al botón de inicio de sesión
-    loginButton.addEventListener('click', handleLogin);
-
-    // También permitir envío con Enter en los inputs
-    [emailInput, passwordInput].forEach(input => {
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                handleLogin(e);
-            }
-        });
-    });
+    // Agregar event listener al formulario
+    loginForm.addEventListener('submit', handleLogin);
 });

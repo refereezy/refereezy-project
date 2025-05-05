@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from models import Referee
+from models import Referee, Client
 from schemas import RefereeCreate, RefereeResponse, RefereeUpdate, RefereeLogin, RefereeLoad, RefereeData, MatchResponse
 from dependencies import get_db
 from typing import List
@@ -24,11 +24,10 @@ def get_referee(referee_id: int, db: Session = Depends(get_db)):
 
 @router.get("/client/{client_id}", response_model=List[RefereeResponse])
 def get_referees_by_client(client_id: int, db: Session = Depends(get_db)):
-    referees = db.query(Referee).filter(Referee.client_id == client_id).all()
-    if not referees:
-        raise HTTPException(status_code=404, detail="No referees found for the given client ID")
-    return referees
-
+    client = db.query(Client).filter(Client.id == client_id).first()
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+    return client.referees
 
 
 @router.post("/", response_model=RefereeResponse)
