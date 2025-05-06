@@ -1,28 +1,50 @@
 package com.example.rellotgejais.screens.user
 
-import android.graphics.Bitmap
+import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
-import com.example.rellotgejais.data.services.LocalStorageService
+import com.example.rellotgejais.data.handlers.ReportHandler
+import com.example.rellotgejais.data.managers.RefereeManager
+import com.example.rellotgejais.data.managers.ReportManager
+import com.example.rellotgejais.data.services.SocketService
+import com.example.rellotgejais.screens.report.ActionsActivity
+import kotlinx.coroutines.runBlocking
 
 class WaitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_wait)
-/**
- * TODO: Requerimientos de emparejamiento con QR
- * - Registrar codigo QR en Socket.io
- * - Esperar a que el arbitro envie sus datos al emparejar el reloj
- * - NO almacenar los datos del arbitro en el reloj
- * - Cuando se tengan los datos del arbitro, hacer procedimiento de buscar reporte.
- * - Si no hay reporte, informar que no hay ningun reporte iniciado.
- * - Mostrar botón para volver a comprobar (tal vez cooldown de 5 segundos?)
- **/
 
+        SocketService.awaitReport()
+        SocketService.newReport.observe(this) {
+            if (it == 0) return@observe
+            loadReport()
+        }
+
+
+    }
+
+    fun loadReport() {
+        val referee = RefereeManager.getCurrentReferee()!!
+        runBlocking {
+            val report = ReportHandler.getReport(referee.id)
+            if (report == null) {
+                println("No report found")
+                return@runBlocking
+            }
+            println("Report found: ${report.raw.id}")
+            ReportManager.setCurrentReport(report)
+        }
+
+        val report = ReportManager.getCurrentReport()!!
+        val timerViewModel = (application as MyApp).timerViewModel
+        timerViewModel.initTimer(report.raw.timer[0], report.raw.timer[1])
+        val intent = Intent(this, ActionsActivity::class.java)
+        startActivity(intent)
 
     }
 }

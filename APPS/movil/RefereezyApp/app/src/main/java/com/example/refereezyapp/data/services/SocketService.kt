@@ -1,5 +1,6 @@
 package com.example.refereezyapp.data.services
 
+import com.example.refereezyapp.data.models.RefereeLoad
 import io.socket.client.IO
 
 object SocketService {
@@ -14,14 +15,12 @@ object SocketService {
         socket.disconnect()
     }
 
-    fun emit(event: String, data: Any) {
-        socket.emit(event, data)
+    fun pairCode(code: String, data: RefereeLoad) {
+        socket.emit("validate-code", code, data)
     }
 
-    fun on(event: String, listener: (Any) -> Unit) {
-        socket.on(event) { args ->
-            listener(args[0])
-        }
+    fun notifyNewReport(id: String) {
+        socket.emit("new-report", id)
     }
 
 

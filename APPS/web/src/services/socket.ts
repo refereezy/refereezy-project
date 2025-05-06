@@ -16,7 +16,7 @@ const clockSockets: { [key: string]: string } = {};
 io.on("connection", (socket) => {
   console.log(`New connection: ${socket.id}`);
 
-  setUpClockEvents(socket);
+  setUpPairingEvents(socket);
   setUpReportsEvents(socket);
 
   socket.on("disconnect", () => {
@@ -28,25 +28,38 @@ io.on("connection", (socket) => {
 
 
 
-function setUpClockEvents(socket: Socket) {
+function setUpPairingEvents(socket: Socket) {
 
   socket.on("register", (clockCode: string) => {
     console.log(`Clock code received: ${clockCode}`);
     clockSockets[clockCode] = socket.id; // storing clockCode and socket id
   });
 
-  socket.on("validate-clockCode", (pairingData: RefereePairing) => {
-    console.log(`Validating clock code: ${pairingData.clockCode}`);
-    const socketId = clockSockets[pairingData.clockCode];
+  socket.on("validate-code", (code: string, pairingData: RefereePairing) => {
+    console.log(`Validating clock code: ${code}`);
+    const socketId = clockSockets[code];
     if (socketId) {
       // emits to that clockSocket that its being paired with the referee
       io.to(socketId).emit("pair", pairingData);
+      socket.emit("pair-ok");
     } else {
       socket.emit("clock-not-online");
-      console.log(`Clock code is not registered: ${pairingData.clockCode}`);
+      console.log(`Clock code is not registered: ${code}`);
     }
 
   });
+
+  socket.on("unregister", (clockCode: string) => {
+    console.log(`Unregistering clock code: ${clockCode}`);
+    // checks if the socket id is in the clockCode dictionary and removes it
+    if (clockSockets[clockCode]) {
+      delete clockSockets[clockCode];
+      console.log(`Removed clock code: ${clockCode}`);
+    } else {
+      console.log(`Clock code not found: ${clockCode}`);
+    }
+  });
+
 
   socket.on("disonnnect", () => {
 
@@ -57,11 +70,10 @@ function setUpClockEvents(socket: Socket) {
       console.log(`Removed clock code: ${clockCode}`);
     }
 
-  })
+  });
 
 
 }
-
 
 function setUpReportsEvents(socket: Socket) {
   // Listen for a request to get a specific report with all incident details
@@ -72,6 +84,7 @@ function setUpReportsEvents(socket: Socket) {
       if (reportDetail) {
         // Send back the report with all incidents populated with player information
         io.emit("report-updated", reportDetail);
+        io.emit("new-report", reportDetail.id);
         console.log(`Sent report ${id} with ${reportDetail.incidents.length} incidents`);
       } else {
         console.log(`Report ${id} not found`);
@@ -82,8 +95,8 @@ function setUpReportsEvents(socket: Socket) {
   }); 
 
   // Handle adding a new incident to a report
-  socket.on("new-incident", async (data: { reportId: string, incident: Incident }) => {
-    console.log(`New incident for report ${data.reportId}`, data.incident);
+  socket.on("new-incident", async (reportId: string, incident: Incident) => {
+    console.log(`New incident for report ${reportId}`, incident);
     try {
       // Convert from socket incident type to firebase incident type
       /* const firestoreIncident: Incident = {
@@ -95,24 +108,24 @@ function setUpReportsEvents(socket: Socket) {
       }; */
       
       // Add incident to the report's incidents subcollection
-      const addedIncident = await addIncidentToReport(data.reportId, data.incident);
+      const addedIncident = await addIncidentToReport(reportId, incident);
       
       // Get the updated report with all incidents
-      const updatedReport = await getReportDetailById(data.reportId);
+      const updatedReport = await getReportDetailById(reportId);
       
       if (updatedReport) {
         // Broadcast to all clients that the report has been updated
         io.emit("report-updated", updatedReport);
         // Also emit the specific incident that was added
         io.emit("incident-added", {
-          reportId: data.reportId,
+          reportId: reportId,
           incident: addedIncident
         });
         
-        console.log(`Added incident ${addedIncident.id} to report ${data.reportId}`);
+        console.log(`Added incident ${addedIncident.id} to report ${reportId}`);
       }
     } catch (error) {
-      console.error(`Error adding incident to report ${data.reportId}:`, error);
+      console.error(`Error adding incident to report ${reportId}:`, error);
     }
   });
 }

@@ -18,12 +18,12 @@ import com.example.rellotgejais.data.handlers.ReportHandler
 import com.example.rellotgejais.data.managers.RefereeManager
 import com.example.rellotgejais.data.managers.ReportManager
 import com.example.rellotgejais.data.services.LocalStorageService
+import com.example.rellotgejais.data.services.SocketService
 import com.example.rellotgejais.screens.report.ActionsActivity
 import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
 
-    private val refereeViewModel: RefereeViewModel by viewModels()
     private val clockViewModel: ClockHandler by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +39,9 @@ class MainActivity : AppCompatActivity() {
             .load(R.raw.loading_football)
             .into(loadingGif)
 
-        LocalStorageService.initialize(this);
+        LocalStorageService.initialize(this)
+        SocketService.connect()
+
 
         if (LocalStorageService.getRefereeId()!=null && LocalStorageService.getRefereeToken()!=null) {
             val intent = Intent(this, WaitActivity::class.java)
@@ -70,12 +72,5 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    }
-
-
-    fun goToLogin() {
-        val intent = Intent(this, WaitActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 }

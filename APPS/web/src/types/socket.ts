@@ -1,9 +1,8 @@
 import { PlayerIncident } from "./firebase";
 
 export type RefereePairing = {
-  clockCode: string
-  refereeId: string
-  refereePass: string
+  id: string
+  token: string
 };
 
 export interface Incident {

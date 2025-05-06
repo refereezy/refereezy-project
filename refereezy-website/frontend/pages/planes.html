@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planes - RefereeZY</title>
+    <link rel="stylesheet" href="../style/base.css">
     <link rel="stylesheet" href="../style/planes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="min-h-screen">
@@ -37,49 +39,255 @@
                         <h1>Planes de Suscripción</h1>
                     </div>
 
+                    <!-- Billing Toggle -->
+                    <div class="billing-toggle-container">
+                        <span class="billing-option">Mensual</span>
+                        <label class="billing-switch">
+                            <input type="checkbox" id="billingToggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="billing-option active">Anual <span class="save-badge">Ahorra 20%</span></span>
+                    </div>
+
                     <!-- Planes Grid -->
                     <div class="plans-content">
                         <div class="plans-grid">
                             <!-- Plan Eazy -->
-                            <div class="plan-card eazy">
+                            <div class="plan-card eazy" data-plan="eazy">
                                 <h2>Plan Eazy</h2>
                                 <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Captura%20de%20pantalla%202025-02-23%20001742-wPFQ6qYgU4MBerSjpBbLvZy18iGHam.png" alt="Plan Eazy" class="plan-icon">
                                 <div class="plan-price">
                                     <span class="price">Gratis</span>
+                                    <span class="period">para siempre</span>
                                 </div>
+                                <div class="plan-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Prueba gratuita (1 partido)</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Incluye anuncios</span>
+                                    </div>
+                                    <div class="feature-item disabled">
+                                        <i class="fas fa-times-circle"></i>
+                                        <span>App Reloj</span>
+                                    </div>
+                                    <div class="feature-item disabled">
+                                        <i class="fas fa-times-circle"></i>
+                                        <span>App Móvil</span>
+                                    </div>
+                                    <div class="feature-item disabled">
+                                        <i class="fas fa-times-circle"></i>
+                                        <span>App Web completa</span>
+                                    </div>
+                                </div>
+                                <button class="plan-button">Registrarse Gratis</button>
                             </div>
 
                             <!-- Plan Exceptional -->
-                            <div class="plan-card exceptional">
+                            <div class="plan-card exceptional" data-plan="exceptional">
                                 <h2>Plan Exceptional</h2>
                                 <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Captura%20de%20pantalla%202025-02-23%20001734-CjvzZQEOSRMca1AVXkiU6OoldmpO1U.png" alt="Plan Exceptional" class="plan-icon">
                                 <div class="plan-price">
-                                    <span class="price">199'95€</span>
-                                    <span class="period">/mes</span>
-                                    <span class="annual">2.099'95€/anual</span>
+                                    <div class="monthly-price">
+                                        <span class="price">199'95€</span>
+                                        <span class="period">/mes</span>
+                                    </div>
+                                    <div class="annual-price active">
+                                        <span class="price">174'99€</span>
+                                        <span class="period">/mes</span>
+                                        <span class="annual-total">2.099'95€ facturados anualmente</span>
+                                    </div>
                                 </div>
+                                <div class="plan-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>App Reloj para arbitrar partidos</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>App Móvil para arbitrar partidos</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>App Web (crear partidos, monitorización)</span>
+                                    </div>
+                                    <div class="feature-item disabled">
+                                        <i class="fas fa-times-circle"></i>
+                                        <span>Servicio de integración (API)</span>
+                                    </div>
+                                </div>
+                                <button class="plan-button purchase-button" data-plan="exceptional">Comprar Plan</button>
                             </div>
 
                             <!-- Plan Enterprise -->
-                            <div class="plan-card enterprise">
+                            <div class="plan-card enterprise" data-plan="enterprise">
                                 <h2>Plan Enterprise</h2>
                                 <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Captura%20de%20pantalla%202025-02-21%20165721-6LseEbk6HibT1qaDBocmUN4SVC8LgS.png" alt="Plan Enterprise" class="plan-icon">
                                 <div class="plan-price">
-                                    <span class="price">1.499'95€</span>
-                                    <span class="period">/mes</span>
-                                    <span class="annual">13.499€/año</span>
+                                    <div class="monthly-price">
+                                        <span class="price">1.499'95€</span>
+                                        <span class="period">/mes</span>
+                                    </div>
+                                    <div class="annual-price active">
+                                        <span class="price">1.124'92€</span>
+                                        <span class="period">/mes</span>
+                                        <span class="annual-total">13.499€ facturados anualmente</span>
+                                    </div>
                                 </div>
+                                <div class="plan-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>App Reloj para arbitrar partidos</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>App Móvil para arbitrar partidos</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>App Web (crear partidos, monitorización)</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Servicio de integración (API)</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Soporte 24/7</span>
+                                    </div>
+                                </div>
+                                <button class="plan-button purchase-button" data-plan="enterprise">Comprar Plan</button>
                             </div>
-                        </div>
-
-                        <!-- Botón Crear Partido -->
-                        <div class="action-button">
-                            <a href="partidos.html" class="create-match-btn">Comprar</a>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Refereezy</h3>
+                    <ul>
+                        <li><a href="../../index.html">Inicio</a></li>
+                        <li><a href="planes.html">Planes</a></li>
+                        <li><a href="#">Sobre nosotros</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Recursos</h3>
+                    <ul>
+                        <li><a href="#">Centro de ayuda</a></li>
+                        <li><a href="#">Tutoriales</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Términos de servicio</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contáctanos</h3>
+                    <ul>
+                        <li><a href="mailto:info@refereezy.com">info@refereezy.com</a></li>
+                        <li><a href="tel:+34900123456">+34 900 123 456</a></li>
+                        <li><a href="#">Formulario de contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 Refereezy. Todos los derechos reservados.
+            </div>
+        </footer>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const billingToggle = document.getElementById('billingToggle');
+            const billingOptions = document.querySelectorAll('.billing-option');
+            const monthlyPrices = document.querySelectorAll('.monthly-price');
+            const annualPrices = document.querySelectorAll('.annual-price');
+            const purchaseButtons = document.querySelectorAll('.purchase-button');
+            
+            // URLs de pago (simuladas por ahora)
+            const paymentUrls = {
+                exceptional: {
+                    monthly: "https://ejemplo.com/pago/exceptional-mensual",
+                    annual: "https://ejemplo.com/pago/exceptional-anual"
+                },
+                enterprise: {
+                    monthly: "https://ejemplo.com/pago/enterprise-mensual",
+                    annual: "https://ejemplo.com/pago/enterprise-anual"
+                }
+            };
+            
+            // Al iniciar la página, establecemos el modo anual como predeterminado
+            billingToggle.checked = true;
+            updatePriceDisplay();
+            
+            // Gestionar cambio en el toggle
+            billingToggle.addEventListener('change', function() {
+                updatePriceDisplay();
+            });
+            
+            // Al hacer clic en los planes
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Solo seleccionamos el plan si no se hizo clic en el botón
+                    if (!e.target.classList.contains('plan-button')) {
+                        document.querySelectorAll('.plan-card').forEach(c => {
+                            c.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                    }
+                });
+            });
+            
+            // Manejar botones de compra
+            purchaseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const plan = this.getAttribute('data-plan');
+                    const isAnnual = billingToggle.checked;
+                    const billingType = isAnnual ? 'annual' : 'monthly';
+                    
+                    // Redirigir a la URL correspondiente
+                    if (paymentUrls[plan] && paymentUrls[plan][billingType]) {
+                        window.open(paymentUrls[plan][billingType], '_blank');
+                    }
+                });
+            });
+            
+            function updatePriceDisplay() {
+                const isAnnual = billingToggle.checked;
+                
+                // Actualizar estilos de las opciones
+                billingOptions.forEach((option, index) => {
+                    if ((index === 0 && !isAnnual) || (index === 1 && isAnnual)) {
+                        option.classList.add('active');
+                    } else {
+                        option.classList.remove('active');
+                    }
+                });
+                
+                // Mostrar precios correspondientes
+                monthlyPrices.forEach(price => {
+                    price.classList.toggle('active', !isAnnual);
+                });
+                annualPrices.forEach(price => {
+                    price.classList.toggle('active', isAnnual);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

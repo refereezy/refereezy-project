@@ -21,6 +21,7 @@ import com.example.refereezyapp.data.handlers.RefereeViewModel
 import com.example.refereezyapp.data.models.Referee
 import com.example.refereezyapp.data.managers.RefereeManager
 import com.example.refereezyapp.data.managers.ReportManager
+import com.example.refereezyapp.data.services.SocketService
 import com.example.refereezyapp.screens.user.LoginActivity
 import com.example.refereezyapp.screens.user.MatchActivity
 
@@ -85,6 +86,7 @@ class MainActivity : AppCompatActivity() {
 
         updateLoadingStatus("Loading local storage")
         LocalStorageService.initialize(this)
+        SocketService.connect()
 
         updateLoadingStatus("Loading referee session")
     

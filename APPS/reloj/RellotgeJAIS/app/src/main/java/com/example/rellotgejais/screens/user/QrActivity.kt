@@ -8,8 +8,6 @@ import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
 import com.example.rellotgejais.data.handlers.ClockHandler
@@ -18,26 +16,58 @@ import com.example.rellotgejais.data.handlers.ReportHandler
 import com.example.rellotgejais.data.managers.RefereeManager
 import com.example.rellotgejais.data.managers.ReportManager
 import com.example.rellotgejais.data.services.LocalStorageService
+import com.example.rellotgejais.data.services.SocketService
 import com.example.rellotgejais.screens.report.ActionsActivity
 import com.example.rellotgejais.utils.ConfirmationDialog
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.runBlocking
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.set
 
 class QrActivity : AppCompatActivity() {
     private val clockViewModel: ClockHandler by viewModels()
     private val refereeViewModel: RefereeViewModel by viewModels()
 
+    private lateinit var code: String
+    private lateinit var qrImageView: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_qr)
-        val codeclock = LocalStorageService.getClockQrCode()!!
-        val qrBitmap = generateQRCode(codeclock, 1000)
-        findViewById<ImageView>(R.id.qrImageView).setImageBitmap(qrBitmap)
-        val qrImageView = findViewById<ImageView>(R.id.qrImageView)
 
-        qrImageView.setOnLongClickListener { _ ->
+        qrImageView = findViewById(R.id.qrImageView)
+        code = LocalStorageService.getClockQrCode()!!
+
+        val qrBitmap = generateQRCode(code, 1000)
+        qrImageView.setImageBitmap(qrBitmap)
+
+        // Registra en el servidor este QR para escuchar el emparejamiento
+        SocketService.registerCode(code)
+        // Espera a que se invoque el código y se envien los datos del referee
+        SocketService.awaitPairing()
+        SocketService.refereeLoad.observe(this) {
+            if (it == null) return@observe
+            // Carga los datos del arbitro usando las credenciales obtenidas por el emparejamiento
+            val tempToken = it.token
+            val tempId = it.id
+            refereeViewModel.getReferee(tempId, tempToken)
+        }
+
+        // Cuando obtiene los datos completos del arbitro, lo guarda en el manager y carga el reporte
+        refereeViewModel.referee.observe(this) { referee ->
+            if (referee != null) {
+                RefereeManager.setCurrentReferee(referee)
+                SocketService.stopPairing() // Deja de escuchar emparejamientos
+                // Redirige a la WaitActivity para esperar la acción de usar reloj
+                val intent = Intent(this, WaitActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        qrImageView.setOnLongClickListener {
             ConfirmationDialog.showReportDialog(
                 this, "Are you sure you want to regenerate the QR code?",
                 onConfirm = { newCodeToQr() },
@@ -45,27 +75,8 @@ class QrActivity : AppCompatActivity() {
             )
             true
         }
-        val tempToken = "$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa."
-        val tempId = 1
-        refereeViewModel.getReferee(tempId, tempToken)
-
-        refereeViewModel.referee.observe(this) { referee ->
-            if (referee != null) {
-                RefereeManager.setCurrentReferee(referee)
-                loadReport()
-            }
-        }
-
 
     }
-
-    /**
-     * TODO: Requerimientos de emparejamiento con QR
-     * - Pedir QR a la api
-     * - Almacenar QR en el reloj
-     * - Mostrar QR en la api.
-     **/
-
 
     fun generateQRCode(text: String, size: Int): Bitmap? {
         val writer = QRCodeWriter()
@@ -73,11 +84,11 @@ class QrActivity : AppCompatActivity() {
             val bitMatrix = writer.encode(text, BarcodeFormat.QR_CODE, size, size)
             val width = bitMatrix.width
             val height = bitMatrix.height
-            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            val bitmap = createBitmap(width, height, Bitmap.Config.RGB_565)
 
             for (x in 0 until width) {
                 for (y in 0 until height) {
-                    bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE)
+                    bitmap[x, y] = if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE
                 }
             }
 
@@ -89,33 +100,18 @@ class QrActivity : AppCompatActivity() {
     }
 
     fun newCodeToQr() {
+        SocketService.unregisterCode(code)
         clockViewModel.generateCode();
-        clockViewModel.clock.observe(this) { code ->
-            if (code != null) {
-                val qrBitmap = generateQRCode(code.code, 1000)
-                findViewById<ImageView>(R.id.qrImageView).setImageBitmap(qrBitmap)
+        clockViewModel.clock.observe(this) { newCode ->
+            if (newCode != null) {
+                code = newCode.code
+
+                SocketService.registerCode(code)
+                SocketService.awaitPairing()
+                val qrBitmap = generateQRCode(code, 1000)
+                qrImageView.setImageBitmap(qrBitmap)
             }
         }
-    }
-    fun loadReport() {
-        val referee = RefereeManager.getCurrentReferee()!!
-        runBlocking {
-            val report = ReportHandler.getReport(referee.id)
-            if (report == null) {
-                println("No report found")
-                return@runBlocking
-            }
-            println("Report found: ${report.raw.id}")
-            ReportManager.setCurrentReport(report)
-
-        }
-
-        val report = ReportManager.getCurrentReport()!!
-        val timerViewModel = (application as MyApp).timerViewModel
-        timerViewModel.initTimer(report.raw.timer[0], report.raw.timer[1])
-        val intent = Intent(this@QrActivity, ActionsActivity::class.java)
-        startActivity(intent)
-
     }
 
 
