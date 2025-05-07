@@ -23,5 +23,5 @@
     <path android:fillColor="#00FFFFFF" android:pathData="M55.42,53.84L60.08,53.84A1.68,1.68 0,0 1,61.76 55.52L61.76,60.25A1.68,1.68 0,0 1,60.08 61.93L55.42,61.93A1.68,1.68 0,0 1,53.74 60.25L53.74,55.52A1.68,1.68 0,0 1,55.42 53.84z" android:strokeColor="#FFFFFF" android:strokeLineCap="round" android:strokeWidth="1"/>
       
     <path android:fillColor="#FFFFFF" android:pathData="M56.33,55.34L59.34,55.34A0.99,0.99 0,0 1,60.34 56.33L60.34,59.35A0.99,0.99 0,0 1,59.34 60.34L56.33,60.34A0.99,0.99 0,0 1,55.34 59.35L55.34,56.33A0.99,0.99 0,0 1,56.33 55.34z" android:strokeColor="#00000000" android:strokeLineCap="round" android:strokeWidth="1"/>
-    
+
 </vector>

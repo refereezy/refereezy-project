@@ -77,14 +77,30 @@ function setUpPairingEvents(socket: Socket) {
 
 function setUpReportsEvents(socket: Socket) {
   // Listen for a request to get a specific report with all incident details
-  socket.on("new-report", async (id: string) => {
+  socket.on("new-report", async (id: string, code: string | null = null) => {
+    
+
     console.log(`Fetching report ${id} details`);
     try {
       const reportDetail = await getReportDetailById(id);
       if (reportDetail) {
+        
+        if (code) {
+          console.log(`Clock code received: ${code}`);
+          const socketId = clockSockets[code]; // storing clockCode and socket id
+          if (socketId) {
+            // emits to that clockSocket that its being paired with the referee
+            
+            io.to(socketId).emit("new-report", reportDetail.id);
+            socket.emit("clock-notified");
+          } else {
+            socket.emit("clock-not-online");
+            console.log(`Clock code is not registered: ${code}`);
+          }
+        }
+
         // Send back the report with all incidents populated with player information
         io.emit("report-updated", reportDetail);
-        io.emit("new-report", reportDetail.id);
         console.log(`Sent report ${id} with ${reportDetail.incidents.length} incidents`);
       } else {
         console.log(`Report ${id} not found`);

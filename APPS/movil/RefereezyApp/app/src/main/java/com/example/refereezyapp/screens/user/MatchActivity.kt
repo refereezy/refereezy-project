@@ -37,6 +37,7 @@ import com.example.refereezyapp.utils.ConfirmationDialog
 import com.example.refereezyapp.utils.PopUp
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import java.net.Socket
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -65,6 +66,7 @@ class MatchActivity : AppCompatActivity() {
             insets
         }
 
+        referee = RefereeManager.getCurrentReferee()!!
 
         timerViewModel = (application as MyApp).timerViewModel
 
@@ -91,8 +93,8 @@ class MatchActivity : AppCompatActivity() {
             inflateMatchInfo(it, matchInfo)
         }
 
+        initSocketListeners()
 
-        referee = RefereeManager.getCurrentReferee()!!
     }
 
     override fun onResume() {
@@ -100,14 +102,26 @@ class MatchActivity : AppCompatActivity() {
         matchService.loadMatches(referee.id)
     }
 
+    private fun initSocketListeners() {
+        SocketService.socket.on("clock-notified") {
+            runOnUiThread {
+                PopUp.Companion.show(this, "Clock notified", PopUp.Type.OK)
+            }
+        }
+
+        SocketService.socket.on("clock-not-online") {
+            runOnUiThread {
+                PopUp.Companion.show(this, "Clock is not online", PopUp.Type.ERROR)
+            }
+        }
+    }
+
 
     fun drawMatches() {
 
         matches = MatchManager.getMatches()
 
-
         // limpiando la pantalla
-
         laterMatches.removeAllViews()
         laterMatchesTitle.visibility = View.GONE
         weekMatches.removeAllViews()
@@ -180,7 +194,7 @@ class MatchActivity : AppCompatActivity() {
             else {
                 prepareReport(match)
                 val reportId = ReportManager.getCurrentReport()!!.raw.id
-                SocketService.notifyNewReport(reportId)
+                SocketService.notifyNewReport(reportId, referee.clock_code)
             }
         }
 

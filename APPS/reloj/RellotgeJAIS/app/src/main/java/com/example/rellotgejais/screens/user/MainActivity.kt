@@ -46,13 +46,16 @@ class MainActivity : AppCompatActivity() {
         if (LocalStorageService.getRefereeId()!=null && LocalStorageService.getRefereeToken()!=null) {
             val intent = Intent(this, WaitActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-        /**
-         * TODO: Requerimientos de emparejamiento con QR
-         * Cargar datos de si esta vinculado
-         * pedir a la api el referee
-         */
+        val qrCode = LocalStorageService.getClockQrCode()
+
+        if (qrCode != null) {
+            val intent = Intent(this, QrActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         //API QR
         clockViewModel.generateCode()

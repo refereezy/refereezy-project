@@ -6,7 +6,7 @@ import io.socket.client.Socket
 
 object SocketService {
 
-    private val _socket = IO.socket("http://10.0.2.2:3000")
+    private val _socket = IO.socket("http://refereezy.smcardona.tech:3000")
     val socket: Socket get() = _socket
 
     fun connect() {
@@ -21,8 +21,8 @@ object SocketService {
         _socket.emit("validate-code", code, data)
     }
 
-    fun notifyNewReport(id: String) {
-        _socket.emit("new-report", id)
+    fun notifyNewReport(id: String, code: String? = null) {
+        _socket.emit("new-report", id, code)
     }
 
 

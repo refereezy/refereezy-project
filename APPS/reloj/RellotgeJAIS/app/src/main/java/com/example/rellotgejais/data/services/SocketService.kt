@@ -17,7 +17,7 @@ object SocketService: ViewModel() {
     private val _newReport: MutableLiveData<Int> = MutableLiveData(0)
     val newReport: LiveData<Int> get() = _newReport
 
-    private val socket = IO.socket("http://10.0.2.2:3000")
+    private val socket = IO.socket("http://refereezy.smcardona.tech:3000")
 
     fun connect() {
         socket.connect()
