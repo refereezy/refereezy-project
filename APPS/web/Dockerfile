@@ -23,6 +23,6 @@ RUN npm run build
 # Expose port
 EXPOSE 3000
 
-# Start the application
-ENTRYPOINT ["npm", "run", "dev"]
+# Start the application - changing from ENTRYPOINT to CMD
+CMD ["npm", "run", "dev"]
 
