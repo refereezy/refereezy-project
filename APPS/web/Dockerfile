@@ -10,6 +10,8 @@ COPY package*.json ./
 RUN npm install --include=dev
 # Install ts-node-dev globally to ensure it's in PATH
 RUN npm install -g ts-node-dev
+# Install necessary type definitions
+RUN npm install --save-dev @types/node @types/express @types/cors
 
 # Copy tsconfig
 COPY tsconfig.json ./
@@ -23,6 +25,6 @@ RUN npm run build
 # Expose port
 EXPOSE 3000
 
-# Start the application - changing from ENTRYPOINT to CMD
+# Start the application
 CMD ["npm", "run", "dev"]
 

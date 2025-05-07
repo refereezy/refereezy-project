@@ -19,6 +19,7 @@
   "dependencies": {
     "@firebase/app-types": "^0.9.3",
     "@types/axios": "^0.9.36",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
     "@types/socket.io": "^3.0.1",

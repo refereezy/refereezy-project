@@ -2,13 +2,13 @@ version: '3.8'
 
 services:
   web:
-    build: .
+    image: socket-server:latest
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
       - PORT=3000
-      - NODE_ENV=development # Changed to development to match the dev script
+      - NODE_ENV=production
       - FIREBASE_KEY=${FIREBASE_KEY}
       - FIREBASE_AUTH_DOMAIN=${FIREBASE_AUTH_DOMAIN}
       - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
@@ -19,5 +19,4 @@ services:
       - REFEREEZY_API_URL=${REFEREEZY_API_URL}
     volumes:
       - ./src:/app/src
-      - ./node_modules:/app/node_modules # To prevent conflicts between container and host node_modules
 
