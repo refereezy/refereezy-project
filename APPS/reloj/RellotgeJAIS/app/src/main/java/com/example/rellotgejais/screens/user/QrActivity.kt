@@ -8,21 +8,16 @@ import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
 import com.example.rellotgejais.data.handlers.ClockHandler
 import com.example.rellotgejais.data.handlers.RefereeViewModel
-import com.example.rellotgejais.data.handlers.ReportHandler
 import com.example.rellotgejais.data.managers.RefereeManager
-import com.example.rellotgejais.data.managers.ReportManager
 import com.example.rellotgejais.data.services.LocalStorageService
 import com.example.rellotgejais.data.services.SocketService
-import com.example.rellotgejais.screens.report.ActionsActivity
 import com.example.rellotgejais.utils.ConfirmationDialog
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
-import kotlinx.coroutines.runBlocking
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.set
 

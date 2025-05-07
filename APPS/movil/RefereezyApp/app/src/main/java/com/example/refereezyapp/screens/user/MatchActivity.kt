@@ -31,6 +31,7 @@ import com.example.refereezyapp.data.models.Team
 import com.example.refereezyapp.data.managers.MatchManager
 import com.example.refereezyapp.data.managers.RefereeManager
 import com.example.refereezyapp.data.managers.ReportManager
+import com.example.refereezyapp.data.services.SocketService
 import com.example.refereezyapp.screens.report.ActionActivity
 import com.example.refereezyapp.utils.ConfirmationDialog
 import com.example.refereezyapp.utils.PopUp
@@ -178,6 +179,8 @@ class MatchActivity : AppCompatActivity() {
             }
             else {
                 prepareReport(match)
+                val reportId = ReportManager.getCurrentReport()!!.raw.id
+                SocketService.notifyNewReport(reportId)
             }
         }
 

@@ -24,6 +24,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.refereezyapp.R
 import com.example.refereezyapp.data.handlers.RefereeViewModel
 import com.example.refereezyapp.data.managers.RefereeManager
+import com.example.refereezyapp.data.models.RefereeLoad
+import com.example.refereezyapp.data.services.SocketService
 import com.example.refereezyapp.utils.PopUp
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -58,6 +60,7 @@ class PairingClockActivity : AppCompatActivity() {
         }
 
         checkCameraPermission()
+        initPairingEvents()
     }
 
     private fun checkCameraPermission() {
@@ -71,6 +74,22 @@ class PairingClockActivity : AppCompatActivity() {
             )
         } else {
             initializeCamera()
+        }
+    }
+
+    private fun initPairingEvents() {
+        SocketService.socket.on("pair-ok") {
+            runOnUiThread {
+                PopUp.show(this, "Clock paired correctly", PopUp.Type.OK)
+                SocketService.socket.off("pair-ok")
+                finish()
+            }
+        }
+
+        SocketService.socket.on("clock-not-online") {
+            runOnUiThread {
+                PopUp.show(this, "Clock is not online", PopUp.Type.ERROR)
+            }
         }
     }
 
@@ -163,7 +182,9 @@ class PairingClockActivity : AppCompatActivity() {
 
             if (referee.clock_code != null) {
                 PopUp.show(this, "Clock paired correctly", PopUp.Type.OK)
-                finish()
+                SocketService.pairCode(
+                    referee.clock_code!!,
+                    RefereeLoad(referee.id, referee.token))
             } else {
                 PopUp.show(this, "Invalid clock QR, not registered", PopUp.Type.ERROR)
                 // La cámara sigue activa, no hacemos `finish()`
