@@ -33,26 +33,6 @@ object RefereeService {
         MatchManager.clearMatches()
     }
 
-    fun getReferee(id: Int, token: String): Referee? {
-        var res: Referee? = null
-
-        runBlocking {
-            try {
-                val creds = RefereeLoad(id, token)
-                val response = async { RetrofitManager.instance.loadReferee(creds) }.await()
-                if (response.isSuccessful) {
-                    res = response.body()
-                } else {
-                    Log.e("Retrofit (getReferee)", "Error de conexión: ${response.errorBody()}")
-                }
-            } catch (e: Exception) {
-                Log.e("Retrofit (getReferee)", "Error de conexión: ${e.message}")
-            }
-        }
-
-        return res
-    }
-
 }
 
 class RefereeViewModel : ViewModel() {
@@ -89,7 +69,9 @@ class RefereeViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 RetrofitManager.instance.revokeClock(id)
-                _referee.value = RefereeManager.getCurrentReferee()
+                val ref = RefereeManager.getCurrentReferee()
+                ref?.clock_code = null
+                _referee.value = ref
             } catch (e: Exception) {
                 Log.e("Retrofit (revokeClock)", "Error de conexión: ${e.message}")
             }

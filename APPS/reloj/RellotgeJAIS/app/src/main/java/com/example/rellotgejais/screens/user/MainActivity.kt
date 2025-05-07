@@ -42,8 +42,11 @@ class MainActivity : AppCompatActivity() {
         LocalStorageService.initialize(this)
         SocketService.connect()
 
+        val refereeId = LocalStorageService.getRefereeId()
+        val token = LocalStorageService.getRefereeToken()
 
-        if (LocalStorageService.getRefereeId()!=null && LocalStorageService.getRefereeToken()!=null) {
+
+        if (refereeId != null && token != null) {
             val intent = Intent(this, WaitActivity::class.java)
             startActivity(intent)
             finish()
@@ -64,16 +67,10 @@ class MainActivity : AppCompatActivity() {
                 nextActivity.setOnClickListener { v: View? ->
                     val intent = Intent(this, QrActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
             }
         }
-
-//        //refereeViewModel.getReferee(tempId, tempToken)
-//        val tempToken = "$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa."
-//        val tempId = 1
-
-
-
 
     }
 }

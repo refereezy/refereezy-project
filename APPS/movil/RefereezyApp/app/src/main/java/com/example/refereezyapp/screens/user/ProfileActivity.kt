@@ -47,7 +47,9 @@ class ProfileActivity : AppCompatActivity() {
 
         userField.text = referee.name
         dniField.text = referee.dni
-        clockCodeField.setText(referee.clock_code?: "None")
+        clockCodeField.setText(
+            if (referee.clock_code != null) referee.clock_code!!.substring(0, 10)+"..." else "None"
+        )
 
 
         // behaviour
@@ -58,7 +60,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         matchBtn.setOnClickListener {
-            openActivity(MatchActivity::class.java)
+            openActivity(MatchActivity::class.java, true)
         }
 
         editPasswordBtn.setOnClickListener {
@@ -106,14 +108,17 @@ class ProfileActivity : AppCompatActivity() {
             PopUp.Companion.show(this, "Something went wrong", PopUp.Type.ERROR)
         }
 
+        refereeViewModel.getReferee(referee.id, referee.token)
+
     }
 
     fun isValidPassword(password: String): Boolean {
         return password.isNotBlank() && password.length >= 8
     }
 
-    fun openActivity(activity: Class<*>) {
+    fun openActivity(activity: Class<*>, end: Boolean = false) {
         val intent = Intent(this, activity)
         startActivity(intent)
+        if (end) finish()
     }
 }

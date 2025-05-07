@@ -183,7 +183,9 @@ class MatchActivity : AppCompatActivity() {
         val clockBtn = matchInfo.findViewById<View>(R.id.clockBtn)
 
         whistleBtn.setOnClickListener {
-            prepareReport(match)
+            prepareReport(match) {
+                goToReport()
+            }
         }
 
         clockBtn.setOnClickListener {
@@ -192,16 +194,18 @@ class MatchActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             else {
-                prepareReport(match)
-                val reportId = ReportManager.getCurrentReport()!!.raw.id
-                SocketService.notifyNewReport(reportId, referee.clock_code)
+                prepareReport(match){
+                    val reportId = ReportManager.getCurrentReport()!!.raw.id
+                    SocketService.notifyNewReport(reportId, referee.clock_code)
+                }
+
             }
         }
 
 
     }
 
-    fun prepareReport(match: Match) {
+    fun prepareReport(match: Match, toDo: () -> Unit) {
         // Check if there is a current report for the match locally
         var report = ReportManager.getCurrentReport()
 
@@ -228,7 +232,7 @@ class MatchActivity : AppCompatActivity() {
                     "You have to finish the current report before starting a new one",
                     onConfirm = {
                         ReportManager.setCurrentReport(report)
-                        goToReport()
+                        toDo()
                     },
                     onCancel = {
                         // do nothing
@@ -238,7 +242,7 @@ class MatchActivity : AppCompatActivity() {
             }
             else {
                 ReportManager.setCurrentReport(report)
-                goToReport()
+                toDo()
             }
 
         }

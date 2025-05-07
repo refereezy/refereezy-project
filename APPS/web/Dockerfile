@@ -20,7 +20,8 @@ COPY tsconfig.json ./
 COPY . .
 
 # Build TypeScript code
-RUN npm run build
+# No need to build if using ts-node-dev, but uncomment if you want to build
+# RUN npm run build
 
 # Expose port
 EXPOSE 3000

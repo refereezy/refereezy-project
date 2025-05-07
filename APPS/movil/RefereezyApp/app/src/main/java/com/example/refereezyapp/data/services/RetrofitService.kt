@@ -1,5 +1,6 @@
 package com.example.refereezyapp.data.services
 
+import com.example.refereezyapp.Config
 import com.example.refereezyapp.data.models.Clock
 import com.example.refereezyapp.data.models.Match
 import com.example.refereezyapp.data.models.PopulatedMatch
@@ -47,7 +48,7 @@ interface RetrofitService {
     suspend fun changePassword(@Path("id") id: Int, @Body update: RefereeUpdate): Response<Referee>
 
     // to pair a clock
-    @GET("/assignTo/{id}")
+    @POST("/assignTo/{id}")
     suspend fun assignClock(@Path("id") id: Int, @Body clock: Clock)
 
     // cancel clock pairing
@@ -65,7 +66,7 @@ interface RetrofitService {
 }
 
 object RetrofitManager {
-    private const val BASE_URL = "http://refereezy.smcardona.tech:8080"
+    private const val BASE_URL = "http://${Config.API_URL}:8080"
 
     //Desde aqui es posible colocar timeouts a las respuestas o asignar un Token si la app necesita uno
     private val client = getUnsafeOkHttpClient()

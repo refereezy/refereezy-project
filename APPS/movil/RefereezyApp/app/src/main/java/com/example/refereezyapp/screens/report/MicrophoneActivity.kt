@@ -88,6 +88,7 @@ class MicrophoneActivity : _BaseReportActivity() {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 if (matches != null) {
                     micTextBoard.text = matches[0] // Mostrar el texto reconocido
+                    description = matches[0]
                 }
             }
 

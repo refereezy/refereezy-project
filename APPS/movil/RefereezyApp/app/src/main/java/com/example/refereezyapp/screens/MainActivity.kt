@@ -3,10 +3,12 @@ package com.example.refereezyapp.screens
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -32,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private val apiConnection: ConnectionViewModel by viewModels()
 
     private lateinit var statusTextContainer: LinearLayout
+    private lateinit var progressBar: ProgressBar
+    private lateinit var actionBtn: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +50,8 @@ class MainActivity : AppCompatActivity() {
 
         // components
         statusTextContainer = findViewById(R.id.splash_status_container)
+        progressBar = findViewById(R.id.splash_progress_bar)
+        actionBtn = findViewById(R.id.actionBtn)
         val loadingGif = findViewById<ImageView>(R.id.splash_logo)
 
         Glide.with(this)
@@ -67,6 +73,15 @@ class MainActivity : AppCompatActivity() {
 
                 if (attempts >= maxAttempts) {
                     updateLoadingStatus("Connection to API failed. Please try again later")
+                    progressBar.isIndeterminate = false
+                    progressBar.progress = 100
+                    actionBtn.text = "Retry"
+                    actionBtn.visibility = View.VISIBLE
+                    actionBtn.setOnClickListener {
+                        startActivity(Intent(intent))
+                    }
+
+
                     return@observe
                 }
 
@@ -92,9 +107,9 @@ class MainActivity : AppCompatActivity() {
     
         // cargar arbitro de localStorage si hay.
         val refereeId = LocalStorageService.getRefereeId()
-        val refereePass = LocalStorageService.getRefereeToken()
+        val refereeToken = LocalStorageService.getRefereeToken()
 
-        if (refereeId == null || refereePass == null) {
+        if (refereeId == null || refereeToken == null) {
             updateLoadingStatus("No referee session found")
             goToLogin()
             return
@@ -103,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         updateLoadingStatus("Fetching referee data")
 
 
-        refereeViewModel.getReferee(refereeId.toInt(), refereePass)
+        refereeViewModel.getReferee(refereeId.toInt(), refereeToken)
 
         refereeViewModel.referee.observe(this) { referee ->
             if (referee == null) {
@@ -138,16 +153,19 @@ class MainActivity : AppCompatActivity() {
             }
 
             updateLoadingStatus("Starting app")
+            progressBar.isIndeterminate = false
+            progressBar.progress = 100
 
             // add button to redirect to match activity
-            val button = Button(this)
-            button.text = "Start"
-            button.setOnClickListener {
+
+            actionBtn.text = "Start"
+            actionBtn.visibility = View.VISIBLE
+            actionBtn.setOnClickListener {
                 val intent = Intent(this, MatchActivity::class.java)
                 startActivity(intent)
                 finish()
             }
-            statusTextContainer.addView(button)
+
         }
 
 

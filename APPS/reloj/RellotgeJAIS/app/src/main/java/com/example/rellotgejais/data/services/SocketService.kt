@@ -4,20 +4,22 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.rellotgejais.Config
 import com.example.rellotgejais.models.RefereeLoad
+import com.google.gson.JsonSyntaxException
 import io.socket.client.IO
 
 object SocketService: ViewModel() {
 
     private var pairing = false
 
-    private val _refereeLoad: MutableLiveData<RefereeLoad> = MutableLiveData()
-    val refereeLoad: LiveData<RefereeLoad> get() = _refereeLoad
+    private val _refereeLoad: MutableLiveData<RefereeLoad?> = MutableLiveData()
+    val refereeLoad: LiveData<RefereeLoad?> get() = _refereeLoad
 
     private val _newReport: MutableLiveData<Int> = MutableLiveData(0)
     val newReport: LiveData<Int> get() = _newReport
 
-    private val socket = IO.socket("http://refereezy.smcardona.tech:3000")
+    private val socket = IO.socket("http://${Config.API_URL}:3000")
 
     fun connect() {
         socket.connect()
@@ -41,25 +43,40 @@ object SocketService: ViewModel() {
 
     fun awaitPairing() {
         if (pairing) return
+        Log.d("SocketService", "Waiting for pairing")
 
         pairing = true
         socket.on("pair") { args ->
-            val data = args[0] as RefereeLoad
-            Log.d("SocketService", "Emparejando Referee ID: ${data.id}")
-            _refereeLoad.value = data
+            val rawData = args[0].toString()
+            try {
+                val id = rawData.substringAfter("id=").substringBefore(",").toInt()
+                val token = rawData.substringAfter("token=").substringBefore(")")
+
+                val data = RefereeLoad(id, token)
+
+                Log.d("SocketService", "Emparejando Referee ID: ${data.id}")
+
+                _refereeLoad.postValue(data)
+            } catch (e: JsonSyntaxException) {
+                Log.e("SocketService", "Error al parsear el JSON: ${e.message}")
+            }
         }
+
     }
 
     fun stopPairing() {
         pairing = false
         socket.off("pair")
+        _refereeLoad.postValue(null)
         Log.d("SocketService", "Pareado detenido")
     }
 
     fun awaitReport() {
+        _newReport.postValue(0)
         socket.on("new-report") { args ->
             Log.d("SocketService", "Nuevo reporte recibido, id: ${args[0]}")
-            _newReport.value = _newReport.value!! + 1
+            val currentValue = _newReport.value ?: 0
+            _newReport.postValue(currentValue + 1)
         }
     }
 

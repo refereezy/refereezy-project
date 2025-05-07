@@ -59,7 +59,16 @@ class PairingClockActivity : AppCompatActivity() {
             insets
         }
 
+        val cancelButton = findViewById<Button>(R.id.cancelBtn)
+        cancelButton.setOnClickListener {
+            finish()
+        }
+
         checkCameraPermission()
+    }
+
+    override fun onResume() {
+        super.onResume()
         initPairingEvents()
     }
 
@@ -78,15 +87,21 @@ class PairingClockActivity : AppCompatActivity() {
     }
 
     private fun initPairingEvents() {
+        SocketService.socket.off("pair-ok")
+        SocketService.socket.off("clock-not-online")
+
         SocketService.socket.on("pair-ok") {
             runOnUiThread {
-                PopUp.show(this, "Clock paired correctly", PopUp.Type.OK)
                 SocketService.socket.off("pair-ok")
+                SocketService.socket.off("clock-not-online")
+                isCheckingCode = false
+                PopUp.show(this, "Clock paired correctly", PopUp.Type.OK)
                 finish()
             }
         }
 
         SocketService.socket.on("clock-not-online") {
+            isCheckingCode = false
             runOnUiThread {
                 PopUp.show(this, "Clock is not online", PopUp.Type.ERROR)
             }
@@ -168,6 +183,7 @@ class PairingClockActivity : AppCompatActivity() {
 
     private fun checkClockCode(code: String) {
         isCheckingCode = true
+        Log.d("QRScanner", "Checking clock code: $code")
 
         val referee = RefereeManager.getCurrentReferee() ?: run {
             PopUp.show(this, "No referee session found", PopUp.Type.ERROR)
@@ -178,10 +194,8 @@ class PairingClockActivity : AppCompatActivity() {
         refereeViewModel.pairClock(referee, code)
 
         refereeViewModel.referee.observe(this) { referee ->
-            isCheckingCode = false
-
             if (referee.clock_code != null) {
-                PopUp.show(this, "Clock paired correctly", PopUp.Type.OK)
+                Log.d("QRScanner", "Correct code format set to referee")
                 SocketService.pairCode(
                     referee.clock_code!!,
                     RefereeLoad(referee.id, referee.token))

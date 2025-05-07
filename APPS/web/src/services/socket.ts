@@ -21,6 +21,14 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`Disconnected: ${socket.id}`);
+
+    // checks if the socket id is in the clockCode dictionary and removes it
+    const clockCode = Object.keys(clockSockets).find(key => clockSockets[key] === socket.id);
+    if (clockCode) {
+      delete clockSockets[clockCode];
+      console.log(`Removed clock code: ${clockCode}`);
+    }
+
   });
 
 
@@ -61,16 +69,7 @@ function setUpPairingEvents(socket: Socket) {
   });
 
 
-  socket.on("disonnnect", () => {
-
-    // checks if the socket id is in the clockCode dictionary and removes it
-    const clockCode = Object.keys(clockSockets).find(key => clockSockets[key] === socket.id);
-    if (clockCode) {
-      delete clockSockets[clockCode];
-      console.log(`Removed clock code: ${clockCode}`);
-    }
-
-  });
+  
 
 
 }

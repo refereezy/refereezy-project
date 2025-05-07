@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
+import com.example.rellotgejais.data.handlers.RefereeViewModel
 import com.example.rellotgejais.data.handlers.ReportHandler
 import com.example.rellotgejais.data.managers.RefereeManager
 import com.example.rellotgejais.data.managers.ReportManager
@@ -17,10 +19,15 @@ import com.example.rellotgejais.utils.ConfirmationDialog
 import kotlinx.coroutines.runBlocking
 
 class WaitActivity : AppCompatActivity() {
+
+    private val refereeViewModel: RefereeViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_wait)
+
+        val ref = RefereeManager.getCurrentReferee()!!
 
         SocketService.awaitReport()
         SocketService.newReport.observe(this) {
@@ -34,7 +41,11 @@ class WaitActivity : AppCompatActivity() {
                 this,
                 "Unpair referee with DNI: ${RefereeManager.getCurrentReferee()?.dni}",
                 onConfirm = {
+                    refereeViewModel.revokeClock(ref.id)
+
                     LocalStorageService.clearRefereeReference()
+                    RefereeManager.logout()
+                    ReportManager.setCurrentReport(null)
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
