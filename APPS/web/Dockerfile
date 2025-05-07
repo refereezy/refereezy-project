@@ -15,9 +15,6 @@ COPY tsconfig.json ./
 # Copy source code
 COPY . .
 
-# Fix tsconfig to properly build from src directory
-RUN sed -i 's/"rootDir": "."/"rootDir": "src"/g' tsconfig.json
-
 # Build TypeScript code
 RUN npm run build
 
@@ -25,5 +22,5 @@ RUN npm run build
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "start"]
+ENTRYPOINT ["npm", "run", "dev"]
 
