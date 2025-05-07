@@ -19,5 +19,4 @@ services:
       - REFEREEZY_API_URL=${REFEREEZY_API_URL}
     volumes:
       - ./src:/app/src
-      - ./node_modules:/app/node_modules
 

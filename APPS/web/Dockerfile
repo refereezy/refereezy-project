@@ -8,6 +8,8 @@ COPY package*.json ./
 
 # Install dependencies (including dev dependencies)
 RUN npm install --include=dev
+# Install ts-node-dev globally to ensure it's in PATH
+RUN npm install -g ts-node-dev
 
 # Copy tsconfig
 COPY tsconfig.json ./
