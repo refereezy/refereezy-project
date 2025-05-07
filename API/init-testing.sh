@@ -1,11 +1,11 @@
 #!/bin/bash
 
 cd test-db &&
-docker compose down &&
-docker image prune -a &&
-docker volume prune &&
-docker build . -t test-db:latest &&
+sudo docker-compose down &&
+sudo docker image prune -a &&
+sudo docker volume prune &&
+sudo docker build . -t test-db:latest &&
 cd .. &&
-docker build . -t api-app:test &&
+sudo docker build . -t api-app:test &&
 cd test-db &&
-docker compose up -d
+sudo docker-compose up -d
