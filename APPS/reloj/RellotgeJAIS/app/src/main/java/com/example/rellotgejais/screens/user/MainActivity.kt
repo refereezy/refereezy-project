@@ -45,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         val refereeId = LocalStorageService.getRefereeId()
         val token = LocalStorageService.getRefereeToken()
 
+        println("refereeId: $refereeId")
+        println("token: $token")
+
 
         if (refereeId != null && token != null) {
             val intent = Intent(this, WaitActivity::class.java)

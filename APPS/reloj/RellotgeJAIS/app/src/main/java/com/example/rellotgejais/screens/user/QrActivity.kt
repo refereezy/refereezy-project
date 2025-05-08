@@ -20,10 +20,12 @@ import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.set
+import com.example.rellotgejais.data.handlers.SocketHandler
 
 class QrActivity : AppCompatActivity() {
     private val clockViewModel: ClockHandler by viewModels()
     private val refereeViewModel: RefereeViewModel by viewModels()
+    private val socketHandler: SocketHandler by viewModels()
 
     private lateinit var code: String
     private lateinit var qrImageView: ImageView
@@ -41,8 +43,9 @@ class QrActivity : AppCompatActivity() {
 
         // Espera a que se invoque el código y se envien los datos del referee
 
-        SocketService.refereeLoad.observe(this) {
+        socketHandler.refereeLoad.observe(this) {
             if (it == null) return@observe
+            if (RefereeManager.getCurrentReferee() != null) return@observe
             // Carga los datos del arbitro usando las credenciales obtenidas por el emparejamiento
             val tempToken = it.token
             val tempId = it.id
@@ -54,7 +57,7 @@ class QrActivity : AppCompatActivity() {
             if (referee != null) {
                 LocalStorageService.saveRefereeReference(referee.id.toString(), referee.token)
                 RefereeManager.setCurrentReferee(referee)
-                SocketService.stopPairing() // Deja de escuchar emparejamientos
+                socketHandler.stopPairing() // Deja de escuchar emparejamientos
                 // Redirige a la WaitActivity para esperar la acción de usar reloj
                 val intent = Intent(this, WaitActivity::class.java)
                 startActivity(intent)
@@ -67,8 +70,8 @@ class QrActivity : AppCompatActivity() {
             if (newCode != null) {
                 code = newCode.code
 
-                SocketService.registerCode(code)
-                SocketService.awaitPairing()
+                socketHandler.registerCode(code)
+                socketHandler.awaitPairing()
                 val qrBitmap = generateQRCode(code, 1000)
                 qrImageView.setImageBitmap(qrBitmap)
             }
@@ -88,8 +91,8 @@ class QrActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Registra en el servidor este QR para escuchar el emparejamiento
-        SocketService.registerCode(code)
-        SocketService.awaitPairing()
+        socketHandler.registerCode(code)
+        socketHandler.awaitPairing()
     }
 
     fun generateQRCode(text: String, size: Int): Bitmap? {
@@ -114,9 +117,8 @@ class QrActivity : AppCompatActivity() {
     }
 
     fun newCodeToQr() {
-        SocketService.unregisterCode(code)
+        socketHandler.unregisterCode(code)
         clockViewModel.generateCode();
-
     }
 
 

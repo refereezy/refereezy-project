@@ -37,6 +37,7 @@
         <activity
             android:name=".screens.report.PlayerPickActivity"
             android:exported="false"
+            android:launchMode="singleTop"
             android:taskAffinity="" />
         <activity
             android:name=".screens.report.CardPickActivity"
@@ -49,6 +50,7 @@
         <activity
             android:name=".screens.report.ActionsActivity"
             android:exported="false"
+            android:launchMode="singleTop"
             android:taskAffinity="" />
         <activity
             android:name=".screens.user.MainActivity"

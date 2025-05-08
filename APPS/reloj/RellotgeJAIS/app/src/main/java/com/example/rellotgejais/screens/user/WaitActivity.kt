@@ -10,6 +10,7 @@ import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
 import com.example.rellotgejais.data.handlers.RefereeViewModel
 import com.example.rellotgejais.data.handlers.ReportHandler
+import com.example.rellotgejais.data.handlers.SocketHandler
 import com.example.rellotgejais.data.managers.RefereeManager
 import com.example.rellotgejais.data.managers.ReportManager
 import com.example.rellotgejais.data.services.LocalStorageService
@@ -20,6 +21,7 @@ import kotlinx.coroutines.runBlocking
 
 class WaitActivity : AppCompatActivity() {
 
+    private val socketHandler: SocketHandler by viewModels()
     private val refereeViewModel: RefereeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +31,8 @@ class WaitActivity : AppCompatActivity() {
 
         val ref = RefereeManager.getCurrentReferee()!!
 
-        SocketService.awaitReport()
-        SocketService.newReport.observe(this) {
+        socketHandler.awaitReport()
+        socketHandler.newReport.observe(this) {
             if (it == 0) return@observe
             loadReport()
         }

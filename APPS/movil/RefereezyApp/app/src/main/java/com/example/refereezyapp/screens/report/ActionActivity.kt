@@ -1,5 +1,6 @@
 package com.example.refereezyapp.screens.report
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -93,7 +94,9 @@ class ActionActivity : _BaseReportActivity() {
             )
         }
         else {
-            moveTo(MatchActivity::class.java)
+            val intent = Intent(this, MatchActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
     }

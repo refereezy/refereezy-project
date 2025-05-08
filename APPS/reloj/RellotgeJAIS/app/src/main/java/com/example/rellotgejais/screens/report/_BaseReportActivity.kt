@@ -14,7 +14,6 @@ import com.example.rellotgejais.models.Team
 import com.example.rellotgejais.models.TeamType
 import com.example.rellotgejais.models.TimerViewModel
 import com.example.rellotgejais.screens.fragments.ScoreFragment
-import com.example.rellotgejais.screens.user.MainActivity
 
 open class _BaseReportActivity : AppCompatActivity() {
 
@@ -65,7 +64,9 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     // normal move to, stacks if needed
     fun moveTo(activity: Class<*>, stack: Boolean = false) {
-        val intent = Intent(this, activity)
+        val intent = Intent(this, activity).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
         if (stack) {
             intent.putExtras(this.intent.extras ?: Bundle())
         }
@@ -74,7 +75,9 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     // move to with description, always stacks
     fun moveTo(activity: Class<*>, description: String?) {
-        val intent = Intent(this, activity)
+        val intent = Intent(this, activity).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
         intent.putExtras(this.intent.extras ?: Bundle()) // siempre stackea
         intent.putExtra("description", description)
         startActivity(intent)
@@ -82,7 +85,9 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     // move to with type, stacks if needed
     fun moveTo(activity: Class<*>, type: IncidentType, stack: Boolean = false) {
-        val intent = Intent(this, activity)
+        val intent = Intent(this, activity).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
         if (stack) {
             intent.putExtras(this.intent.extras ?: Bundle())
         }
@@ -92,7 +97,9 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     // move to with team, stacks if needed
     fun moveTo(activity: Class<*>, team: TeamType) {
-        val intent = Intent(this, activity)
+        val intent = Intent(this, activity).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
         intent.putExtras(this.intent.extras ?: Bundle()) // siempre stackea
         intent.putExtra("team", team)
         startActivity(intent)
@@ -110,6 +117,10 @@ open class _BaseReportActivity : AppCompatActivity() {
         timer.stop()
         ReportHandler.endReport(report)
         ReportManager.clearReport()
-        moveTo(MainActivity::class.java)
+        val intent = Intent(this, ActionsActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        startActivity(intent)
+        finish()
     }
 }
