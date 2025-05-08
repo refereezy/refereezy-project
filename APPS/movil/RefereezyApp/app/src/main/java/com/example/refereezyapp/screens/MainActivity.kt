@@ -78,7 +78,8 @@ class MainActivity : AppCompatActivity() {
                     actionBtn.text = "Retry"
                     actionBtn.visibility = View.VISIBLE
                     actionBtn.setOnClickListener {
-                        startActivity(Intent(intent))
+                        finishAffinity()
+                        startActivity(Intent(this, MainActivity::class.java))
                     }
 
 

@@ -73,7 +73,7 @@ object SocketService: ViewModel() {
 
     fun awaitReport() {
         _newReport.postValue(0)
-        socket.on("new-report") { args ->
+        socket.once("new-report") { args ->
             Log.d("SocketService", "Nuevo reporte recibido, id: ${args[0]}")
             val currentValue = _newReport.value ?: 0
             _newReport.postValue(currentValue + 1)

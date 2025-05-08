@@ -1,5 +1,5 @@
 package com.example.rellotgejais
 
 object Config {
-    const val API_URL = "10.0.2.2"
+    const val API_URL = "172.20.10.3"
 }
