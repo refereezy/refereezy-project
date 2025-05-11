@@ -2,8 +2,6 @@ package com.example.rellotgejais.data.services
 
 import android.util.Log
 import com.example.rellotgejais.Config
-import com.example.rellotgejais.models.RefereeLoad
-import com.google.gson.JsonSyntaxException
 import io.socket.client.IO
 import io.socket.client.Socket
 

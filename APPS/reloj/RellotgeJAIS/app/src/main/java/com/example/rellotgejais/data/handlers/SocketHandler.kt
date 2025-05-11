@@ -6,9 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rellotgejais.data.services.SocketService
 import com.example.rellotgejais.models.RefereeLoad
-import com.google.gson.JsonSyntaxException
+import com.google.gson.Gson
 
 class SocketHandler: ViewModel() {
+
+    companion object {
+        private val gson = Gson()
+    }
 
     private val socket = SocketService.socket
 
@@ -38,18 +42,14 @@ class SocketHandler: ViewModel() {
 
         pairing = true
         socket.on("pair") { args ->
-            val rawData = args[0].toString()
             try {
-                val id = rawData.substringAfter("id=").substringBefore(",").toInt()
-                val token = rawData.substringAfter("token=").substringBefore(")")
-
-                val data = RefereeLoad(id, token)
+                val data = gson.fromJson(args[0].toString(), RefereeLoad::class.java)
 
                 Log.d("SocketService", "Emparejando Referee ID: ${data.id}")
 
                 _refereeLoad.postValue(data)
-            } catch (e: JsonSyntaxException) {
-                Log.e("SocketService", "Error al parsear el JSON: ${e.message}")
+            } catch (e: Exception) {
+                Log.e("SocketService", "Error al parsear el JSON: ${args[0]}",)
             }
         }
 

@@ -19,6 +19,7 @@ object SocketService {
     }
 
     fun pairCode(code: String, data: RefereeLoad) {
+
         _socket.emit("validate-code", code, data)
     }
 

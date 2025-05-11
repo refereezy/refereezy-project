@@ -190,15 +190,44 @@ function createReportElement(report) {
   // Set score
   const scoreHome = template.querySelector('.score-home');
   const scoreAway = template.querySelector('.score-away');
+    // Calculate score from incidents (goals)
+  const homeGoals = report.incidents.filter(i => {
+    // Verify if it's a goal incident and determine if it belongs to the local team
+    const isGoal = i.type === 'goal' || i.type === 'GOAL';
+    if (!isGoal) return false;
+    
+    // If incident has player information, check the team_local flag
+    if (i.player && i.player.team_local !== undefined) {
+      return i.player.team_local === true;
+    }
+    
+    // If we have team info in the incident, use that
+    if (i.team && i.team.local !== undefined) {
+      return i.team.local === true;
+    }
+    
+    // Default: assume it's not a goal for this team if we can't determine
+    return false;
+  }).length;
   
-  // Calculate score from incidents (goals)
-  const homeGoals = report.incidents.filter(i => 
-    i.type === 'goal' && i.player && i.player.team_local === true
-  ).length;
-  
-  const awayGoals = report.incidents.filter(i => 
-    i.type === 'goal' && i.player && i.player.team_local === false
-  ).length;
+  const awayGoals = report.incidents.filter(i => {
+    // Verify if it's a goal incident and determine if it belongs to the away team
+    const isGoal = i.type === 'goal' || i.type === 'GOAL';
+    if (!isGoal) return false;
+    
+    // If incident has player information, check the team_local flag
+    if (i.player && i.player.team_local !== undefined) {
+      return i.player.team_local === false;
+    }
+    
+    // If we have team info in the incident, use that
+    if (i.team && i.team.local !== undefined) {
+      return i.team.local === false;
+    }
+    
+    // Default: assume it's not a goal for this team if we can't determine
+    return false;
+  }).length;
   
   scoreHome.textContent = homeGoals;
   scoreAway.textContent = awayGoals;
@@ -265,15 +294,44 @@ function displayReportDetail(report) {
   // Set score
   const scoreHomeLarge = template.querySelector('.score-home-large');
   const scoreAwayLarge = template.querySelector('.score-away-large');
+    // Calculate score from incidents (goals)
+  const homeGoals = report.incidents.filter(i => {
+    // Verify if it's a goal incident and determine if it belongs to the local team
+    const isGoal = i.type === 'goal' || i.type === 'GOAL';
+    if (!isGoal) return false;
+    
+    // If incident has player information, check the team_local flag
+    if (i.player && i.player.team_local !== undefined) {
+      return i.player.team_local === true;
+    }
+    
+    // If we have team info in the incident, use that
+    if (i.team && i.team.local !== undefined) {
+      return i.team.local === true;
+    }
+    
+    // Default: assume it's not a goal for this team if we can't determine
+    return false;
+  }).length;
   
-  // Calculate score from incidents (goals)
-  const homeGoals = report.incidents.filter(i => 
-    i.type === 'goal' && i.player && i.player.team_local === true
-  ).length;
-  
-  const awayGoals = report.incidents.filter(i => 
-    i.type === 'goal' && i.player && i.player.team_local === false
-  ).length;
+  const awayGoals = report.incidents.filter(i => {
+    // Verify if it's a goal incident and determine if it belongs to the away team
+    const isGoal = i.type === 'goal' || i.type === 'GOAL';
+    if (!isGoal) return false;
+    
+    // If incident has player information, check the team_local flag
+    if (i.player && i.player.team_local !== undefined) {
+      return i.player.team_local === false;
+    }
+    
+    // If we have team info in the incident, use that
+    if (i.team && i.team.local !== undefined) {
+      return i.team.local === false;
+    }
+    
+    // Default: assume it's not a goal for this team if we can't determine
+    return false;
+  }).length;
   
   scoreHomeLarge.textContent = homeGoals;
   scoreAwayLarge.textContent = awayGoals;

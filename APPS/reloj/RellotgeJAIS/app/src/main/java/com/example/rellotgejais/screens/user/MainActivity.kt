@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.R
 import com.example.rellotgejais.data.handlers.ClockHandler
+import com.example.rellotgejais.data.handlers.RefereeService
 import com.example.rellotgejais.data.handlers.RefereeViewModel
 import com.example.rellotgejais.data.handlers.ReportHandler
 import com.example.rellotgejais.data.managers.RefereeManager
@@ -25,15 +26,18 @@ import kotlinx.coroutines.runBlocking
 class MainActivity : AppCompatActivity() {
 
     private val clockViewModel: ClockHandler by viewModels()
+    private val refereeViewModel: RefereeViewModel by viewModels()
+
+    private lateinit var nextActivity: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        val nextActivity = findViewById<TextView>(R.id.nextActivity)
 
 
         // components
+        nextActivity = findViewById<TextView>(R.id.nextActivity)
         val loadingGif = findViewById<ImageView>(R.id.splash_logo)
         Glide.with(this)
             .load(R.raw.loading_football)
@@ -50,23 +54,30 @@ class MainActivity : AppCompatActivity() {
 
 
         if (refereeId != null && token != null) {
+            refereeViewModel.getReferee(refereeId.toInt(), token)
+        }
+        else {
+            checkQrCode()
+        }
+
+        refereeViewModel.referee.observe(this) { referee ->
+            if (referee == null) {
+                checkQrCode()
+                return@observe
+            }
+            RefereeManager.setCurrentReferee(referee)
+
             val intent = Intent(this, WaitActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        val qrCode = LocalStorageService.getClockQrCode()
 
-        if (qrCode != null) {
-            val intent = Intent(this, QrActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
 
         //API QR
-        clockViewModel.generateCode()
         clockViewModel.clock.observe(this) { code ->
             if (code != null) {
+                nextActivity.visibility = View.VISIBLE
                 nextActivity.setOnClickListener { v: View? ->
                     val intent = Intent(this, QrActivity::class.java)
                     startActivity(intent)
@@ -75,5 +86,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun checkQrCode() {
+        val qrCode = LocalStorageService.getClockQrCode()
+
+        if (qrCode != null) {
+            println("QR code found: $qrCode")
+            nextActivity.visibility = View.VISIBLE
+            nextActivity.setOnClickListener { v: View? ->
+                val intent = Intent(this, QrActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+        else {
+            clockViewModel.generateCode()
+        }
     }
 }

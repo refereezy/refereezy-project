@@ -22,6 +22,7 @@
 
     <TextView
         android:id="@+id/nextActivity"
+        android:visibility="gone"
         android:layout_width="110dp"
         android:layout_height="30dp"
         android:background="@drawable/roundlarge_button"
