@@ -34,19 +34,57 @@
         tools:layout="@layout/fragment_score" />
 
 
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.6" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.333" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_33_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.666" />
+
+    <ImageButton
+        android:id="@+id/micBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/round_button"
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/mic"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_33"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_33"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal" />
+
+    <ImageButton
+        android:id="@+id/continueBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/round_button"
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_check"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_33_2"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_33_2"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal"
+        app:layout_constraintVertical_bias="0.7" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
