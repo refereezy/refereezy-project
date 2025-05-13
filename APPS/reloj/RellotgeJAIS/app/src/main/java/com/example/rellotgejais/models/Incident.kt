@@ -4,8 +4,8 @@ data class Incident(
     val id: String = "",
     val description: String = "",
     val minute: Int = 0,
-    val player: PlayerIncident? = null,
-    val type: IncidentType = IncidentType.OTHER
+    val type: IncidentType = IncidentType.OTHER,
+    val player: PlayerIncident? = null
 ) {
 
     override fun toString(): String {

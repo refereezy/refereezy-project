@@ -4,7 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.rellotgejais.data.managers.ReportManager
+import com.example.rellotgejais.data.services.LocalStorageService
 import com.example.rellotgejais.data.services.SocketService
+import com.example.rellotgejais.models.Incident
 import com.example.rellotgejais.models.RefereeLoad
 import com.google.gson.Gson
 
@@ -36,6 +39,15 @@ class SocketHandler: ViewModel() {
         Log.d("SocketService", "Código desregistrado: $code")
     }
 
+    fun receivedReport(code: String, reportId: String) {
+        socket.emit("report-received", code, reportId)
+    }
+
+    fun unlinkReport(code: String, reportId: String) {
+        socket.emit("report-done", code, reportId)
+        ReportManager.setCurrentReport(null)
+    }
+
     fun awaitPairing() {
         if (pairing) return
         Log.d("SocketService", "Waiting for pairing")
@@ -55,6 +67,10 @@ class SocketHandler: ViewModel() {
 
     }
 
+    fun confirmPair(code: String) {
+        socket.emit("pair-confirmed", code)
+    }
+
     fun stopPairing() {
         pairing = false
         socket.off("pair")
@@ -64,12 +80,17 @@ class SocketHandler: ViewModel() {
 
     fun awaitReport() {
         _newReport.postValue(0)
-        socket.once("new-report") { args ->
+        socket.on("new-report") { args ->
             Log.d("SocketService", "Nuevo reporte recibido, id: ${args[0]}")
+            val qr = LocalStorageService.getClockQrCode()!!
+            receivedReport(qr, args[0].toString())
             val currentValue = _newReport.value ?: 0
             _newReport.postValue(currentValue + 1)
         }
     }
 
+    fun notifyNewIncident(reportId: String, incident: Incident) {
+        socket.emit("new-incident", reportId, gson.toJson(incident))
+    }
 
 }

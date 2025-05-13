@@ -1,10 +1,15 @@
 package com.example.rellotgejais.screens.report
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import com.example.rellotgejais.R
+import com.example.rellotgejais.data.handlers.SocketHandler
+import com.example.rellotgejais.data.services.LocalStorageService
 import com.example.rellotgejais.models.IncidentType
 import com.example.rellotgejais.utils.ConfirmationDialog
 
@@ -14,12 +19,12 @@ class ActionsActivity : _BaseReportActivity() {
     private lateinit var pauseBtn: ImageButton
     private lateinit var goalBtn: ImageButton
     private lateinit var incidentButton: ImageButton
+    private val socketHandler: SocketHandler by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_accions)
-
 
         //! this class extends BaseReportActivity, which initializes the basic values
 
@@ -45,7 +50,30 @@ class ActionsActivity : _BaseReportActivity() {
         pauseBtn.setOnClickListener(this::toggleTimerState)
         pauseBtn.setOnLongClickListener { tryCloseReport(); true}
 
+        // Disable back button
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                isEnabled = true
+                Log.d("ActionsActivity", "Back button pressed")
+                onBackPress()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
 
+    }
+
+    fun onBackPress() {
+        ConfirmationDialog.showReportDialog(
+            this,
+            "Are you sure you wanna leave this report unfinished?",
+            onConfirm = {
+                val qr = LocalStorageService.getClockQrCode()!!
+                socketHandler.unlinkReport(qr, report.raw.id)
+                timer.resetTimer()
+                finish()
+            },
+            onCancel = {}
+        )
     }
 
     override fun onResume() {

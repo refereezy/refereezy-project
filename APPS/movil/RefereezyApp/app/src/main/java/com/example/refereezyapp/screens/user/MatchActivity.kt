@@ -31,6 +31,7 @@ import com.example.refereezyapp.data.models.Team
 import com.example.refereezyapp.data.managers.MatchManager
 import com.example.refereezyapp.data.managers.RefereeManager
 import com.example.refereezyapp.data.managers.ReportManager
+import com.example.refereezyapp.data.models.PopulatedReport
 import com.example.refereezyapp.data.services.SocketService
 import com.example.refereezyapp.screens.report.ActionActivity
 import com.example.refereezyapp.utils.ConfirmationDialog
@@ -109,9 +110,15 @@ class MatchActivity : AppCompatActivity() {
             }
         }
 
+        SocketService.socket.on("clock-busy") {
+            runOnUiThread {
+                PopUp.Companion.show(this, "Clock is already in use", PopUp.Type.ERROR)
+            }
+        }
+
         SocketService.socket.on("clock-not-online") {
             runOnUiThread {
-                PopUp.Companion.show(this, "Clock is not online", PopUp.Type.ERROR)
+                PopUp.Companion.show(this, "Clock is not online, try pairing again", PopUp.Type.ERROR)
             }
         }
     }
@@ -133,7 +140,6 @@ class MatchActivity : AppCompatActivity() {
 
 
     }
-
 
 
     fun inflateMatchInfo(match: PopulatedMatch, matchInfo: View) {
@@ -167,7 +173,7 @@ class MatchActivity : AppCompatActivity() {
             timeField.text = matchHour
 
             val dayName = matchDate.dayOfWeek.getDisplayName(
-                TextStyle.FULL, Locale.getDefault())
+                TextStyle.FULL, Locale.ENGLISH)
 
             val matchDayText = matchInfo.findViewById<TextView>(R.id.matchDayText)
             matchDayText.text = "$dayName $matchDay"
@@ -183,7 +189,9 @@ class MatchActivity : AppCompatActivity() {
         val clockBtn = matchInfo.findViewById<View>(R.id.clockBtn)
 
         whistleBtn.setOnClickListener {
-            prepareReport(match) {
+            prepareReport(match) { report ->
+                // inicia reporte localmente
+                ReportManager.setCurrentReport(report)
                 goToReport()
             }
         }
@@ -194,9 +202,9 @@ class MatchActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             else {
-                prepareReport(match){
-                    val reportId = ReportManager.getCurrentReport()!!.raw.id
-                    SocketService.notifyNewReport(reportId, referee.clock_code)
+                prepareReport(match){ report ->
+                    // notifica a reloj de reporte
+                    SocketService.notifyNewReport(report.raw.id, referee.clock_code)
                 }
 
             }
@@ -205,7 +213,7 @@ class MatchActivity : AppCompatActivity() {
 
     }
 
-    fun prepareReport(match: Match, toDo: () -> Unit) {
+    fun prepareReport(match: Match, toDo: (PopulatedReport) -> Unit) {
         // Check if there is a current report for the match locally
         var report = ReportManager.getCurrentReport()
 
@@ -231,8 +239,7 @@ class MatchActivity : AppCompatActivity() {
                     "Another report already started",
                     "You have to finish the current report before starting a new one",
                     onConfirm = {
-                        ReportManager.setCurrentReport(report)
-                        toDo()
+                        toDo(report)
                     },
                     onCancel = {
                         // do nothing
@@ -241,8 +248,7 @@ class MatchActivity : AppCompatActivity() {
                 )
             }
             else {
-                ReportManager.setCurrentReport(report)
-                toDo()
+                toDo(report)
             }
 
         }

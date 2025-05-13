@@ -49,8 +49,8 @@ class TimerViewModel: ViewModel() {
         timer = object : CountDownTimer(Long.MAX_VALUE, TIMER_UPDATE_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
                 //Calcula el startTime para poder reanudar desde donde se quedó si estaba pausado.
-                val seconds = (System.currentTimeMillis() - startTime) / 1000
-                _elapsedTime.postValue(seconds.toInt())
+                val seconds = _elapsedTime.value!! + 1
+                _elapsedTime.postValue(seconds)
 
             }
 

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getAllReportsShort, getReportDetailById } from './firebase';
+import { clockSockets } from './socket'; 
 
 const router = Router();
 
@@ -33,6 +34,14 @@ router.get('/api/reports/:id', async (req, res): Promise<any> => {
     console.error(`Error fetching detailed report ${req.params.id}:`, error);
     res.status(500).json({ error: 'Failed to fetch report' });
   }
+});
+
+router.get('/api/report/status/:id', async (req, res): Promise<any> => {
+
+  const result = Object.values(clockSockets).find(clock => clock.reportId === req.params.id);
+  console.log('Clock status:', result);
+  res.json(result ? 'Report in use' : 'Report available');
+
 });
 
 export default router;

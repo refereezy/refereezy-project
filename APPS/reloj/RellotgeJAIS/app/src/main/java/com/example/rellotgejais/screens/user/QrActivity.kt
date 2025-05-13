@@ -57,6 +57,7 @@ class QrActivity : AppCompatActivity() {
             if (referee != null) {
                 LocalStorageService.saveRefereeReference(referee.id.toString(), referee.token)
                 RefereeManager.setCurrentReferee(referee)
+                socketHandler.confirmPair(code)
                 socketHandler.stopPairing() // Deja de escuchar emparejamientos
                 // Redirige a la WaitActivity para esperar la acción de usar reloj
                 val intent = Intent(this, WaitActivity::class.java)

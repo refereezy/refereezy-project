@@ -33,7 +33,7 @@ class PopUp {
             text.text = displayMessage
 
             val toast = Toast(activity)
-            toast.duration = Toast.LENGTH_LONG
+            toast.duration = Toast.LENGTH_SHORT
             toast.view = view
             toast.show()
         }

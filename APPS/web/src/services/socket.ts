@@ -56,12 +56,14 @@ interface ClockRegistry {
 }
 
 const clockSockets: { [key: string]: ClockRegistry } = {};
+export { clockSockets }
 
 io.on("connection", (socket) => {
   console.log(`New connection: ${socket.id}`);
 
   setUpPairingEvents(socket);
   setUpReportsEvents(socket);
+
   socket.on("disconnect", () => {
     console.log(`Disconnected: ${socket.id}`);
 
@@ -89,52 +91,72 @@ io.on("connection", (socket) => {
 
 
 function setUpPairingEvents(socket: Socket) {
+  //* REGISTER
   socket.on("register", (clockCode: unknown) => {
     // Validate clock code
-    const validCode = validateClockCode(clockCode);
-    if (!validCode) {
+    if (!validateClockCode(clockCode)) {
       console.log(`Invalid clock code format: ${clockCode}`);
       socket.emit("register-error", "Invalid clock code format");
       return;
     }
     
-    console.log(`Clock code received: ${validCode}`);
+    console.log(`Clock code received: ${clockCode}`);
     
     // Check if clock is already registered
-    if (clockSockets[validCode] && clockSockets[validCode].socketId !== socket.id) {
-      console.log(`Clock with code ${validCode} is already registered with different socket`);
+    if (clockSockets[clockCode] && clockSockets[clockCode].socketId !== socket.id) {
+      console.log(`Clock with code ${clockCode} is already registered with different socket`);
       socket.emit("register-error", "This code is already in use");
       return;
     }
     
     // Register or update clock
-    clockSockets[validCode] = {
+    clockSockets[clockCode] = {
       socketId: socket.id,
       status: 'available'
     };
     
-    socket.emit("register-success", validCode);
-    console.log(`Clock ${validCode} registered successfully with socket ${socket.id}`);
+    socket.emit("register-success", clockCode);
+    console.log(`Clock ${clockCode} registered successfully with socket ${socket.id}`);
   });
-  socket.on("validate-code", (code: unknown, pairingData: unknown) => {
+  //* PAIR CODE (FROM MOBILE)
+  socket.on("pair-code", (code: unknown, rawPairingData: unknown) => {
     // Validate clock code
-    const validCode = validateClockCode(code);
-    if (!validCode) {
-      console.log(`Invalid clock code format: ${code}`);
-      socket.emit("clock-not-online");
+    if (!validateClockCode(code)) {
+      console.log(`Invalid clock code: ${code}`);
+      socket.emit("pair-error", "Invalid clock code");
       return;
     }
-    // Parse pairing data if it's in string format like "RefereeLoad(id=1, token=xxx)"
-    let validPairingData: RefereePairing;
     
-    if (typeof pairingData === 'string') {
+    let pairingData: unknown;
+    //let validPairingData: RefereePairing;
+
+    // if raw is string, parse it as JSON
+    if (typeof rawPairingData === 'string') {
+      // parse json
+      try {
+        pairingData = JSON.parse(rawPairingData);
+      } catch (error) {
+        console.log(`Error parsing pairing data: ${error}`);
+        socket.emit("pair-error", "Invalid pairing data");
+        return;
+      }
+    }
+
+
+    if (!validatePairingData(pairingData)) {
+      console.log(`Invalid pairing data format: ${pairingData}`);
+      socket.emit("pair-error", "Invalid pairing data");
+      return;
+    }
+
+    /* if (typeof pairingData === 'string') {
       const match = pairingData.match(/[a-zA-Z]+\(id=(\d+), token=([^)]+)\)/);
       if (match) {
-      validPairingData = {
-        id: parseInt(match[1], 10),
-        token: match[2]
-      };
-      console.log(`Parsed pairing data from string: id=${validPairingData.id}`);
+        validPairingData = {
+          id: parseInt(match[1], 10),
+          token: match[2]
+        };
+        console.log(`Parsed pairing data from string: id=${validPairingData.id}`);
       } else {
         console.log(`Invalid pairing data string format: ${pairingData}`);
         socket.emit("pair-error", "Invalid pairing data format");
@@ -149,20 +171,20 @@ function setUpPairingEvents(socket: Socket) {
       console.log(`Invalid pairing data format: ${pairingData}`);
       socket.emit("pair-error", "Invalid pairing data");
       return;
-    }
+    } */
     
-    console.log(`Validating clock code: ${validCode}`);
-    const clockRegistry = clockSockets[validCode];
+    console.log(`Validating clock code: ${code}`);
+    const clockRegistry = clockSockets[code];
     
     if (!clockRegistry) {
-      socket.emit("clock-not-online");
-      console.log(`Clock code is not registered: ${validCode}`);
+      socket.emit("pair-error", "Clock not online");
+      console.log(`Clock code is not registered: ${code}`);
       return;
     }
     
     if (clockRegistry.status !== 'available') {
-      socket.emit("clock-busy");
-      console.log(`Clock ${validCode} is busy with status: ${clockRegistry.status}`);
+      socket.emit("pair-error", `Clock is already paired`);
+      console.log(`Clock ${code} is busy with status: ${clockRegistry.status}`);
       return;
     }
     
@@ -171,128 +193,64 @@ function setUpPairingEvents(socket: Socket) {
     clockRegistry.linkedDeviceId = socket.id;
     
     // Emit to clock
-    io.to(clockRegistry.socketId).emit("pair", validPairingData);
-    console.log(`Pairing data sent to clock ${validCode}`);
+    io.to(clockRegistry.socketId).emit("pair", pairingData);
+    console.log(`Pairing data sent to clock ${code}`);
     
-    socket.emit("pair-ok");
   });
-    // Handle clock confirmation of pairing
+
+  //* PAIR CONFIRMATION (FROM CLOCK)
   socket.on("pair-confirmed", (code: unknown) => {
-    const validCode = validateClockCode(code);
-    if (!validCode) {
+    if (!validateClockCode(code)) {
       console.log(`Invalid clock code format: ${code}`);
       return;
     }
     
-    console.log(`Clock ${validCode} confirmed pairing`);
-    if (clockSockets[validCode] && clockSockets[validCode].socketId === socket.id) {
+    console.log(`Clock ${code} confirmed pairing`);
+    const clockRegistry = clockSockets[code];
+    if (clockRegistry && clockRegistry.socketId === socket.id) {
       // Notify the linked device that the clock has confirmed pairing
-      if (clockSockets[validCode].linkedDeviceId) {
-        io.to(clockSockets[validCode].linkedDeviceId).emit("clock-confirmed-pairing", { clockCode: validCode });
-        console.log(`Notified device ${clockSockets[validCode].linkedDeviceId} that clock ${validCode} confirmed pairing`);
+      if (clockRegistry.linkedDeviceId) {
+        io.to(clockRegistry.linkedDeviceId).emit("pair-ok");
+        console.log(`Notified device ${clockRegistry.linkedDeviceId} that clock ${code} confirmed pairing`);
       }
     }
   });
-
+  //* UNREGISTER CLOCK AND UNPAIR
   socket.on("unregister", (code: unknown) => {
-    const validCode = validateClockCode(code);
-    if (!validCode) {
+
+    if (!validateClockCode(code)) {
       console.log(`Invalid clock code format: ${code}`);
       socket.emit("unregister-error", "Invalid clock code format");
       return;
     }
     
-    console.log(`Unregistering clock code: ${validCode}`);
+    console.log(`Unregistering clock code: ${code}`);
     // Check if clock exists and the request is from the registered socket
-    if (clockSockets[validCode]) {
-      if (clockSockets[validCode].socketId !== socket.id) {
-        console.log(`Unauthorized unregister attempt for clock ${validCode}`);
+    if (clockSockets[code]) {
+      if (clockSockets[code].socketId !== socket.id) {
+        console.log(`Unauthorized unregister attempt for clock ${code}`);
         socket.emit("unregister-error", "Not authorized");
         return;
       }
       
       // Notify linked device if any
-      if (clockSockets[validCode].linkedDeviceId) {
-        io.to(clockSockets[validCode].linkedDeviceId).emit("clock-unregistered", { clockCode: validCode });
+      if (clockSockets[code].linkedDeviceId) {
+        io.to(clockSockets[code].linkedDeviceId).emit("clock-not-online");
       }
       
-      delete clockSockets[validCode];
+      delete clockSockets[code];
       socket.emit("unregister-success");
-      console.log(`Removed clock code: ${validCode}`);
+      console.log(`Removed clock code: ${code}`);
+
     } else {
-      console.log(`Clock code not found: ${validCode}`);
+      console.log(`Clock code not found: ${code}`);
       socket.emit("unregister-error", "Clock not found");
     }
   });
 
-  socket.on("report-received", (code: unknown, reportId: unknown) => {
-    const validCode = validateClockCode(code);
-    if (!validCode) {
-      console.log(`Invalid clock code format: ${code}`);
-      return;
-    }
-    
-    const validReportId = validateReportId(reportId);
-    if (!validReportId) {
-      console.log(`Invalid report ID format: ${reportId}`);
-      return;
-    }
-    
-    console.log(`Clock ${validCode} confirmed receipt of report ${validReportId}`);
-    if (clockSockets[validCode] && clockSockets[validCode].socketId === socket.id) {
-      // Update status
-      clockSockets[validCode].status = 'working';
-      
-      // Notify the linked device that the clock has received the report
-      if (clockSockets[validCode].linkedDeviceId) {
-        io.to(clockSockets[validCode].linkedDeviceId).emit("clock-confirmed-report", { 
-          clockCode: validCode, 
-          reportId: validReportId,
-          status: 'working'
-        });
-        console.log(`Notified device ${clockSockets[validCode].linkedDeviceId} that clock ${validCode} is working on report ${validReportId}`);
-      }
-    }
-  });
-  
-  socket.on("work-completed", (code: unknown, reportId: unknown) => {
-    const validCode = validateClockCode(code);
-    if (!validCode) {
-      console.log(`Invalid clock code format: ${code}`);
-      return;
-    }
-    
-    const validReportId = validateReportId(reportId);
-    if (!validReportId) {
-      console.log(`Invalid report ID format: ${reportId}`);
-      return;
-    }
-    
-    console.log(`Clock ${validCode} completed work on report ${validReportId}`);
-    if (clockSockets[validCode] && clockSockets[validCode].socketId === socket.id) {
-      // Update status
-      clockSockets[validCode].status = 'available';
-      const linkedDeviceId = clockSockets[validCode].linkedDeviceId;
-      
-      // Clear report and linked device
-      clockSockets[validCode].reportId = undefined;
-      clockSockets[validCode].linkedDeviceId = undefined;
-      
-      // Notify the previously linked device that the clock has finished work
-      if (linkedDeviceId) {
-        io.to(linkedDeviceId).emit("clock-work-completed", { 
-          clockCode: validCode, 
-          reportId: validReportId,
-          status: 'available'
-        });
-        console.log(`Notified device ${linkedDeviceId} that clock ${validCode} has finished work on report ${validReportId}`);
-      }
-    }
-  });
-
   socket.on("check-clock-status", (code: unknown) => {
-    const validCode = validateClockCode(code);
-    if (!validCode) {
+
+    if (!validateClockCode(code)) {
       console.log(`Invalid clock code format: ${code}`);
       socket.emit("clock-status", {
         clockCode: typeof code === 'string' ? code : 'unknown',
@@ -302,12 +260,12 @@ function setUpPairingEvents(socket: Socket) {
       return;
     }
     
-    console.log(`Checking status for clock code: ${validCode}`);
-    const clockRegistry = clockSockets[validCode];
+    console.log(`Checking status for clock code: ${code}`);
+    const clockRegistry = clockSockets[code];
     
     if (!clockRegistry) {
       socket.emit("clock-status", { 
-        clockCode: validCode,
+        clockCode: code,
         online: false,
         message: "Clock is not registered"
       });
@@ -315,7 +273,7 @@ function setUpPairingEvents(socket: Socket) {
     }
     
     socket.emit("clock-status", { 
-      clockCode: validCode,
+      clockCode: code,
       online: true,
       status: clockRegistry.status,
       reportId: clockRegistry.reportId,
@@ -325,14 +283,9 @@ function setUpPairingEvents(socket: Socket) {
 }
 
 function setUpReportsEvents(socket: Socket) {
-  // Listen for a request to get a specific report with all incident details
-  socket.on("new-report", async (id: unknown, code: unknown = null) => {
-    // Validate report ID
-    if (typeof id !== 'string') {
-      console.log(`Invalid report ID: ${id}`);
-      socket.emit("report-error", { message: "Invalid report ID" });
-      return;
-    }
+
+  //* REPORT CREATED (FROM MOBILE)
+  socket.on("new-report", async (id: string, code: string) => {
     
     console.log(`Fetching report ${id} details`);
     try {
@@ -342,45 +295,26 @@ function setUpReportsEvents(socket: Socket) {
         socket.emit("report-error", { message: "Report not found" });
         return;
       }
-        // Handle clock notification if code is provided
-      if (code !== null) {
-        const validCode = validateClockCode(code);
-        if (!validCode) {
-          console.log(`Invalid clock code format: ${code}`);
-          socket.emit("report-error", { message: "Invalid clock code format" });
-          return;
-        }
-        
-        console.log(`Clock code received: ${validCode}`);
-        const clockRegistry = clockSockets[validCode];
-        
-        if (!clockRegistry) {
-          socket.emit("clock-not-online");
-          console.log(`Clock code is not registered: ${validCode}`);
-          return;
-        }
-          if (clockRegistry.status !== 'available' && clockRegistry.status !== 'paired') {
-          socket.emit("clock-busy");
-          console.log(`Clock ${validCode} is busy with status: ${clockRegistry.status}`);
-          return;
-        }
-        
-        // Update clock registry with working status and link to this device
-        clockRegistry.status = 'working';
-        clockRegistry.linkedDeviceId = socket.id;
-        clockRegistry.reportId = id;
-        
-        // Emit to clock
-        io.to(clockRegistry.socketId).emit("new-report", reportDetail.id);
-        console.log(`Sent new report ${id} to clock ${validCode}`);
-          
-        // Inform the requesting device that clock has been notified
-        socket.emit("clock-notified", { 
-          clockCode: validCode, 
-          status: 'working',
-          reportId: id
-        });
+      
+      const clockRegistry = clockSockets[code];
+      
+      if (!clockRegistry) {
+        socket.emit("clock-not-online");
+        console.log(`Clock code is not registered: ${code}`);
+        return;
       }
+        if (clockRegistry.status !== 'available' && clockRegistry.status !== 'paired') {
+        socket.emit("clock-busy");
+        console.log(`Clock ${code} is busy with status: ${clockRegistry.status}`);
+        return;
+      }
+      
+      // Update clock registry with working status and link to this device
+      clockRegistry.linkedDeviceId = socket.id;
+      
+      // Emit to clock
+      io.to(clockRegistry.socketId).emit("new-report", reportDetail.id);
+      console.log(`Sent new report ${id} to clock ${code}`);
 
       // Send back the report with all incidents populated with player information
       io.emit("report-updated", reportDetail);
@@ -390,25 +324,77 @@ function setUpReportsEvents(socket: Socket) {
       socket.emit("report-error", { message: "Error fetching report" });
     }
   }); 
-  // Handle adding a new incident to a report
-  socket.on("new-incident", async (reportId: unknown, incidentData: unknown) => {
+
+  //* REPORT RECEIVED (FROM CLOCK)
+  socket.on("report-received", (code: string, reportId: string) => {
+        
+    console.log(`Clock ${code} confirmed receipt of report ${reportId}`);
+    if (clockSockets[code] && clockSockets[code].socketId === socket.id) {
+      // Update status
+      clockSockets[code].status = 'working';
+      clockSockets[code].reportId = reportId;
+      
+      // Notify the linked device that the clock has received the report
+      if (clockSockets[code].linkedDeviceId) {
+        io.to(clockSockets[code].linkedDeviceId).emit("clock-notified");
+        console.log(`Notified device ${clockSockets[code].linkedDeviceId} that clock ${code} is working on report ${reportId}`);
+      }
+    }
+  });
+
+  //* REPORT DONE (FROM CLOCK)
+  socket.on("report-done", (code: string, reportId: string) => {
+        
+    console.log(`Clock ${code} completed work on report ${reportId}`);
+    if (clockSockets[code] && clockSockets[code].socketId === socket.id) {
+      // Update status
+      clockSockets[code].status = 'paired';
+      const linkedDeviceId = clockSockets[code].linkedDeviceId;
+      
+      // Clear report and linked device
+      clockSockets[code].reportId = undefined;
+      clockSockets[code].linkedDeviceId = undefined;
+      
+      // Notify the previously linked device that the clock has finished work
+      if (linkedDeviceId) {
+        io.to(linkedDeviceId).emit("clock-work-done");
+        console.log(`Notified device ${linkedDeviceId} that clock ${code} has finished work on report ${reportId}`);
+      }
+    }
+  });
+
+  //* NEW INCIDENT (FROM DEVICE TO LIVE WEB)
+  socket.on("new-incident", async (reportId: unknown, rawIncidentData: unknown) => {
     // Validate report ID
     const validReportId = validateReportId(reportId);
     if (!validReportId) {
       console.log(`Invalid report ID format: ${reportId}`);
-      socket.emit("report-error", { message: "Invalid report ID format" });
+      socket.emit("report-error", "Invalid report ID format");
       return;
     }
-    
+
+    let incidentData : unknown;
+
+    // Parse raw incident data
+    if (typeof rawIncidentData === 'string') {
+      try {
+        incidentData = JSON.parse(rawIncidentData);
+      } catch (error) {
+        console.error(`Error parsing incident data for report ${validReportId}:`, error);
+        socket.emit("report-error", "Error parsing incident data");
+        return;
+      }
+  }
+
+
     // Validate incident data
-    const incident = validateIncident(incidentData);
-    if (!incident) {
+    if (!validateIncident(incidentData)) {
       console.log(`Invalid incident data`, incidentData);
-      socket.emit("report-error", { message: "Invalid incident data" });
+      socket.emit("report-error", "Invalid incident data");
       return;
     }
     
-    console.log(`New incident notification for report ${validReportId}`, incident);
+    console.log(`New incident notification for report ${validReportId}`, incidentData);
     try {
       // Get the updated report with all incidents
       const updatedReport = await getReportDetailById(validReportId);
@@ -419,7 +405,7 @@ function setUpReportsEvents(socket: Socket) {
           // Also emit the specific incident that was added
         io.emit("incident-added", {
           reportId: validReportId,
-          incident: incident
+          incident: incidentData
         });
         
         // Find any clocks working on this report and notify them
@@ -429,30 +415,28 @@ function setUpReportsEvents(socket: Socket) {
         for (const [clockCode, registry] of clocksWorkingOnThisReport) {
           io.to(registry.socketId).emit("report-incident-added", {
             reportId: validReportId,
-            incident
+            incident: incidentData
           });
-          console.log(`Notified clock ${clockCode} about new incident ${incident.id} for report ${validReportId}`);
+          console.log(`Notified clock ${clockCode} about new incident ${incidentData.id} for report ${validReportId}`);
         }
         
-        console.log(`Notified about new incident ${incident.id} for report ${validReportId}`);
+        console.log(`Notified about new incident ${incidentData.id} for report ${validReportId}`);
       } else {
-        socket.emit("report-error", { message: "Report not found" });
-      }    } catch (error) {
+        socket.emit("report-error", "Report not found");
+      }
+    } catch (error) {
       console.error(`Error notifying about incident for report ${validReportId}:`, error);
-      socket.emit("report-error", { message: "Error processing incident" });
+      socket.emit("report-error", "Error processing incident");
     }
   });
 }
 
 // Validation functions to ensure data integrity
-function validateClockCode(code: unknown): string | null {
-  if (typeof code !== 'string') {
-    return null;
-  }
-
+function validateClockCode(code: unknown): code is string {
   // Enforce clock code format (alphanumeric, 50 chars)
   const validCodePattern = /^[a-zA-Z0-9]{50}$/;
-  return validCodePattern.test(code) ? code : null;
+  return typeof code === 'string' && 
+          validCodePattern.test(code);
 }
 
 function validateReportId(id: unknown): string | null {
@@ -465,9 +449,9 @@ function validateReportId(id: unknown): string | null {
   return validIdPattern.test(id) ? id : null;
 }
 
-function validateIncident(incident: unknown): Incident | null {
+function validateIncident(incident: unknown): incident is Incident {
   if (!incident || typeof incident !== 'object') {
-    return null;
+    return false;
   }
   
   // Type casting to access properties
@@ -476,22 +460,22 @@ function validateIncident(incident: unknown): Incident | null {
   // Basic validation for required fields
   if (
     inc.id === undefined || 
-    typeof inc.reportId !== 'string' || 
     typeof inc.description !== 'string' || 
     typeof inc.minute !== 'number' ||
     typeof inc.type !== 'string'
   ) {
-    return null;
+    return false;
   }
+
+  return true;
   
-  // Convert from SocketIncident to Incident (firebase type)
-  return {
-    id: inc.id,
-    description: inc.description,
-    minute: inc.minute,
-    type: inc.type,
-    player: inc.player
-  } as Incident;
+}
+
+function validatePairingData(pairingData: unknown): pairingData is RefereePairing {
+  return (pairingData !== null && typeof pairingData === 'object' && 
+          'id' in pairingData && 'token' in pairingData &&
+          typeof (pairingData as RefereePairing).id === 'number' &&
+          typeof (pairingData as RefereePairing).token === 'string');
 }
 
 export default io;

@@ -30,7 +30,6 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 interface RetrofitService {
-
     // test
     @GET("/")
     suspend fun testConnection(): Response<String>
@@ -65,8 +64,16 @@ interface RetrofitService {
 
 }
 
+interface RetrofitSecondaryService {
+
+    @GET("/api/report/status/{id}")
+    suspend fun getReportStatus(@Path("id") id: String): Response<String>
+
+}
+
 object RetrofitManager {
-    private const val BASE_URL = "http://${Config.API_URL}:8080"
+    private const val API_URL = "http://${Config.API_URL}:8080"
+    private const val SOCKET_API_URL = "http://${Config.API_URL}:3000"
 
     //Desde aqui es posible colocar timeouts a las respuestas o asignar un Token si la app necesita uno
     private val client = getUnsafeOkHttpClient()
@@ -78,11 +85,20 @@ object RetrofitManager {
     //El retrofitService se inicia a partir de la instancia en ViewModels
     val instance: RetrofitService by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
             .create(RetrofitService::class.java)
+    }
+
+    val secondaryInstance: RetrofitSecondaryService by lazy {
+        Retrofit.Builder()
+            .baseUrl(SOCKET_API_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(client)
+            .build()
+            .create(RetrofitSecondaryService::class.java)
     }
 }
 

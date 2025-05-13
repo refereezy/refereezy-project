@@ -58,9 +58,17 @@ function connectSocket() {
   });
   
   // Listen for report updates
-  socket.on("report-updated", (updatedReport) => {
-    console.log("Report updated:", updatedReport);
-    updateReportInList(updatedReport);
+  socket.on("report-updated", async (updatedReport) => {
+    console.log("Report updated:", updatedReport.id);
+
+    const response = await fetch(`/api/reports/${updatedReport.id}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching report detail: ${response.statusText}`);
+    }
+    
+    const report = await response.json();
+
+    updateReportInList(report);
     
     // If the updated report is currently being viewed, update the detail view
     if (appState.currentReport && appState.currentReport.id === updatedReport.id) {
@@ -69,13 +77,13 @@ function connectSocket() {
   });
   
   // Listen for new incidents
-  socket.on("incident-added", (data) => {
+  /* socket.on("incident-added", (data) => {
     console.log("New incident:", data);
     if (appState.currentReport && appState.currentReport.id === data.reportId) {
       // Refresh the current report detail
       fetchReportDetail(data.reportId);
     }
-  });
+  }); */
 }
 
 // Setup UI event listeners
@@ -525,11 +533,18 @@ function clearAllFilters() {
 }
 
 // Update a report in the list without re-fetching all reports
-function updateReportInList(updatedReport) {
+async function updateReportInList(updatedReport) {
   const index = appState.reports.findIndex(report => report.id === updatedReport.id);
-  
+
+  const response = await fetch(`/api/reports/${updatedReport.id}`);
+  if (!response.ok) {
+    throw new Error(`Error fetching report detail: ${response.statusText}`);
+  }
+
+  const report = await response.json();
+
   if (index !== -1) {
-    appState.reports[index] = updatedReport;
+    appState.reports[index] = report;
     renderReportsList();
   }
 }

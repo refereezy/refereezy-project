@@ -17,8 +17,16 @@ object SocketService {
 
     fun disconnect() {
         _socket.disconnect()
-        Log.d("SocketService", "Desconectado del servidor socket")
     }
 
+    fun isConnected(): Boolean {
+        return _socket.connected()
+    }
+
+    init {
+        _socket.on("disconnect") {
+            Log.d("SocketService", "Desconectado del servidor socket")
+        }
+    }
 
 }

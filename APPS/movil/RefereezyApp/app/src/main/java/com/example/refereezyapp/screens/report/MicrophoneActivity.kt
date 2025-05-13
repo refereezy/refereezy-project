@@ -134,7 +134,6 @@ class MicrophoneActivity : _BaseReportActivity() {
 
                 if (type == SUSPEND) {
                     endMatchReport()
-                    finish()
                     return@setOnClickListener
                 }
 

@@ -78,6 +78,12 @@ class ActionActivity : _BaseReportActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.scoreboard, scoreboard)
             .commit()
+
+        if (timer.isRunning) {
+            pauseBtn.setImageResource(android.R.drawable.ic_media_pause)
+        } else {
+            pauseBtn.setImageResource(android.R.drawable.ic_media_play)
+        }
     }
 
     fun onBackPress() {
@@ -86,9 +92,11 @@ class ActionActivity : _BaseReportActivity() {
             ConfirmationDialog.showReportDialog(
                 this,
                 "Match in progress",
-                "You are not supossed to return while the match is in progress",
+                "Are you sure you want to leave this match unfinished",
                 onConfirm = {
-                    PopUp.show(this, "Back to the match", PopUp.Type.INFO)
+                    PopUp.show(this, "Match ignored", PopUp.Type.INFO)
+                    timer.resetTimer()
+                    finish()
                 },
                 onCancel = {}
             )

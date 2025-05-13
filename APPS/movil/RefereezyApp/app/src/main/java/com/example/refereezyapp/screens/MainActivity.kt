@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                 if (attempts >= maxAttempts) {
                     updateLoadingStatus("Connection to API failed. Please try again later")
                     progressBar.isIndeterminate = false
-                    progressBar.progress = 100
+                    progressBar.progress = 2
                     actionBtn.text = "Retry"
                     actionBtn.visibility = View.VISIBLE
                     actionBtn.setOnClickListener {

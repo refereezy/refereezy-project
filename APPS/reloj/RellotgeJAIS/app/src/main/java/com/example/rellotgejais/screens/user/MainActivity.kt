@@ -16,6 +16,7 @@ import com.example.rellotgejais.data.handlers.ClockHandler
 import com.example.rellotgejais.data.handlers.RefereeService
 import com.example.rellotgejais.data.handlers.RefereeViewModel
 import com.example.rellotgejais.data.handlers.ReportHandler
+import com.example.rellotgejais.data.handlers.SocketHandler
 import com.example.rellotgejais.data.managers.RefereeManager
 import com.example.rellotgejais.data.managers.ReportManager
 import com.example.rellotgejais.data.services.LocalStorageService
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     private val clockViewModel: ClockHandler by viewModels()
     private val refereeViewModel: RefereeViewModel by viewModels()
+    private val socketHandler: SocketHandler by viewModels()
 
     private lateinit var nextActivity: TextView
 
@@ -48,13 +50,16 @@ class MainActivity : AppCompatActivity() {
 
         val refereeId = LocalStorageService.getRefereeId()
         val token = LocalStorageService.getRefereeToken()
+        val qr = LocalStorageService.getClockQrCode()
 
         println("refereeId: $refereeId")
         println("token: $token")
+        println("qr: $qr")
 
 
-        if (refereeId != null && token != null) {
+        if (refereeId != null && token != null && qr != null) {
             refereeViewModel.getReferee(refereeId.toInt(), token)
+            socketHandler.registerCode(qr)
         }
         else {
             checkQrCode()

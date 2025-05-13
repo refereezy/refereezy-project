@@ -7,14 +7,19 @@ import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.graphics.toColorInt
 import com.example.rellotgejais.R
 import com.example.rellotgejais.data.handlers.ReportHandler
+import com.example.rellotgejais.data.handlers.SocketHandler
 import com.example.rellotgejais.models.Incident
 import com.example.rellotgejais.models.IncidentType
 import com.example.rellotgejais.models.TeamType
 
 class PlayerPickActivity : _BaseReportActivity() {
+
+    private val socketHandler: SocketHandler by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
@@ -49,6 +54,9 @@ class PlayerPickActivity : _BaseReportActivity() {
                     minute = timer.getElapsedMinutes(),
                     player = player.toPlayerIncident(report.match)
                 )
+
+                // notifica al socket del cambio
+                socketHandler.notifyNewIncident(report.raw.id, incident)
 
                 // this automatically modifies the report and saves into database
                 ReportHandler.addIncident(report, incident)

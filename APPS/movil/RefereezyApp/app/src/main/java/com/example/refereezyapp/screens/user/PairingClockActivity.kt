@@ -1,6 +1,7 @@
 package com.example.refereezyapp.screens.user
 
 import android.Manifest
+import android.os.Handler
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -88,10 +89,12 @@ class PairingClockActivity : AppCompatActivity() {
 
     private fun initPairingEvents() {
         SocketService.socket.off("pair-ok")
+        SocketService.socket.off("pari-error")
         SocketService.socket.off("clock-not-online")
 
         SocketService.socket.on("pair-ok") {
             runOnUiThread {
+                SocketService.socket.off("pair-error")
                 SocketService.socket.off("pair-ok")
                 SocketService.socket.off("clock-not-online")
                 isCheckingCode = false
@@ -100,10 +103,21 @@ class PairingClockActivity : AppCompatActivity() {
             }
         }
 
-        SocketService.socket.on("clock-not-online") {
-            isCheckingCode = false
+        SocketService.socket.on("pair-error") { args ->
             runOnUiThread {
-                PopUp.show(this, "Clock is not online", PopUp.Type.ERROR)
+                PopUp.show(this, "Error: ${args[0]}", PopUp.Type.ERROR)
+                Handler().postDelayed({
+                    isCheckingCode = false
+                }, 3000)
+            }
+        }
+
+        SocketService.socket.on("clock-not-online") {
+            runOnUiThread {
+                PopUp.show(this, "QR Code from clock not online", PopUp.Type.ERROR)
+                Handler().postDelayed({
+                    isCheckingCode = false
+                }, 3000)
             }
         }
     }

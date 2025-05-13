@@ -74,14 +74,18 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     // normal move to, stacks if needed
     fun moveTo(activity: Class<*>, stack: Boolean = false) {
-        val intent = Intent(this, activity)
+        val intent = Intent(this, activity).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
         if (stack) { intent.putExtras(this.intent.extras?: Bundle()) }
         startActivity(intent)
     }
 
     // move to with description, always stacks
     fun moveTo(activity: Class<*>, description: String?) {
-        val intent = Intent(this, activity)
+        val intent = Intent(this, activity).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
         intent.putExtras(this.intent.extras?: Bundle()) // siempre stackea
         intent.putExtra("description", description)
         startActivity(intent)
@@ -89,7 +93,9 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     // move to with type, stacks if needed
     fun moveTo(activity: Class<*>, type: IncidentType, stack: Boolean = false) {
-        val intent = Intent(this, activity)
+        val intent = Intent(this, activity).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
         if (stack) { intent.putExtras(this.intent.extras?: Bundle()) }
         intent.putExtra("type", type)
         startActivity(intent)
@@ -97,7 +103,9 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     // move to with team, stacks if needed
     fun moveTo(activity: Class<*>, team: TeamType) {
-        val intent = Intent(this, activity)
+        val intent = Intent(this, activity).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
         intent.putExtras(this.intent.extras?: Bundle()) // siempre stackea
         intent.putExtra("team", team)
         startActivity(intent)
@@ -117,6 +125,7 @@ open class _BaseReportActivity : AppCompatActivity() {
         ReportManager.clearReport()
         MatchManager.removeMatch(report.match.raw.id) // esto no hace mucho efecto pues la MatchActivity vuelve a cargarlas
         moveTo(MatchActivity::class.java)
+        finish()
     }
 
 
