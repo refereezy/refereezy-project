@@ -15,8 +15,8 @@ INSERT INTO TEAM (name, logo_url, primary_color, secondary_color, client_id) VAL
 ('Milan', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_of_AC_Milan.svg/1306px-Logo_of_AC_Milan.svg.png', '#00ff00', '#ffff00', 2);
 
 INSERT INTO REFEREE (name, password, dni, clock_code, client_id, token) VALUES
-('Mike Ref', 'password123', '12345678A', 'CLK123', 1, '$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa.'),
-('Sarah Ref', 'password456', '87654321B', 'CLK456', 2, '$2b$12$Airxgu62eyAsXRhwqp7ejujxdkdKR6c.t8lCXBdVdqWFr2OZdkuZe');
+('Mike Ref', 'password123', '12345678A', NULL, 1, '$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa.'),
+('Sarah Ref', 'password456', '87654321B', NULL, 2, '$2b$12$Airxgu62eyAsXRhwqp7ejujxdkdKR6c.t8lCXBdVdqWFr2OZdkuZe');
 
 INSERT INTO MATCHES (date, matchgroup_id, client_id, local_team_id, visitor_team_id, referee_id) VALUES
 ('2025-05-15 15:00:00', NULL, 1, 1, 2, 1),

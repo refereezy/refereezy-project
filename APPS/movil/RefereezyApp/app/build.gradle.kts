@@ -52,7 +52,7 @@ dependencies {
 
     // UI
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("net.orandja.shadowlayout:shadowlayout:1.0.1")
+    implementation(libs.shadowlayout)
     implementation("androidx.gridlayout:gridlayout:1.0.0")
 
     // API
@@ -69,14 +69,14 @@ dependencies {
     }
 
     // Camara X
-    implementation("com.google.guava:guava:32.1.3-android")
-    implementation("androidx.camera:camera-core:1.3.1")
-    implementation("androidx.camera:camera-camera2:1.3.1")
-    implementation("androidx.camera:camera-lifecycle:1.3.1")
-    implementation("androidx.camera:camera-view:1.3.1")
+    implementation(libs.guava)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
 
     // ML Kit Barcode Scanning
-    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation(libs.barcode.scanning)
 
     // tests
     testImplementation(libs.junit)

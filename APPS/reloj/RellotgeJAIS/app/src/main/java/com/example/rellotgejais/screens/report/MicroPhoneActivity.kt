@@ -26,7 +26,6 @@ class MicroPhoneActivity : _BaseReportActivity() {
     private var description: String? = null
     private var micState: Boolean = false
     private val REQUEST_AUDIO_PERMISSION = 1
-    private lateinit var speechRecognizer: SpeechRecognizer;
     private lateinit var speechRecognitionLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,11 +54,6 @@ class MicroPhoneActivity : _BaseReportActivity() {
 
         // behaviour
 
-        // logica para manejar microfono
-        // todo: el microfono debe setear la propiedad description
-
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
-
         // Initialize the ActivityResultLauncher
         speechRecognitionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -69,45 +63,6 @@ class MicroPhoneActivity : _BaseReportActivity() {
                 }
             }
         }
-
-        // Crear intent de reconocimiento de voz
-        val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-        }
-
-        // Configurar el reconocimiento de voz
-        speechRecognizer.setRecognitionListener(object : RecognitionListener {
-            override fun onReadyForSpeech(params: Bundle?) {
-                Toast.makeText(this@MicroPhoneActivity, "Escuchando...", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onBeginningOfSpeech() {}
-            override fun onRmsChanged(rmsdB: Float) {}
-            override fun onBufferReceived(buffer: ByteArray?) {}
-            override fun onEndOfSpeech() {}
-
-            override fun onError(error: Int) {
-                Toast.makeText(
-                    this@MicroPhoneActivity,
-                    "Error en reconocimiento: $error",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            override fun onResults(results: Bundle?) {
-                val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                if (matches != null) {
-                    description = matches[0]
-                }
-            }
-
-            override fun onPartialResults(partialResults: Bundle?) {}
-            override fun onEvent(eventType: Int, params: Bundle?) {}
-        })
 
         micbtn.setOnClickListener { view ->
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
@@ -205,6 +160,6 @@ class MicroPhoneActivity : _BaseReportActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        speechRecognizer.destroy()
     }
+
 }

@@ -1,5 +1,5 @@
 package com.example.refereezyapp
 
 object Config {
-    const val API_URL = "192.168.145.201"
+    const val API_URL = "smcardona.tech"
 }
