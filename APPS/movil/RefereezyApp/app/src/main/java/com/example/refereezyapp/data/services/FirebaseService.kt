@@ -22,6 +22,48 @@ object FirebaseService {
 
     private val db by lazy { Firebase.firestore }
 
+    suspend fun getDoneReports(refereeId: Int, onResults: (List<PopulatedReport>) -> Unit)  {
+        val reportQuery = db.collection(REPORT_COLLECTION)
+            .whereEqualTo("referee_id", refereeId)
+            .whereEqualTo("done", true)
+
+        val result = reportQuery.get().await()
+        val reports = mutableListOf<PopulatedReport>()
+
+        if (result.isEmpty) {
+            Log.e("Firebase", "No reports found")
+            return onResults(reports)
+        }
+
+
+        result.documents.forEach { reportRef ->
+
+
+            val matchReport = reportRef.toObject(MatchReport::class.java)!!.copy(id = reportRef.id)
+
+            val incidents = getIncidents(reportRef)
+            matchReport.incidents = incidents
+
+
+            val populatedMatch = MatchService.getMatch(matchReport.match_id!!)
+
+            if (populatedMatch == null) {
+                Log.e("Firebase", "Match not found with id: ${matchReport.match_id} for report: ${matchReport.id}")
+                return onResults(reports)
+            }
+
+            val populatedInicents = incidents.map { incident ->incident.populateWith(populatedMatch) }.toMutableList()
+
+            val populated = PopulatedReport(matchReport, populatedMatch, populatedInicents)
+
+            reports.add(populated)
+
+        }
+
+        return onResults(reports)
+
+    }
+
 
     suspend fun getReport(refereeId: Int): PopulatedReport? {
 

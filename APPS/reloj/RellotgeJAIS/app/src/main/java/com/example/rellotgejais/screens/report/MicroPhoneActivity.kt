@@ -1,6 +1,7 @@
 package com.example.rellotgejais.screens.report
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -8,14 +9,12 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.rellotgejais.R
 import com.example.rellotgejais.data.handlers.ReportHandler
 import com.example.rellotgejais.models.Incident
@@ -25,9 +24,10 @@ import java.util.Locale
 
 class MicroPhoneActivity : _BaseReportActivity() {
     private var description: String? = null
-    private var miceStatse: Boolean = false
+    private var micState: Boolean = false
     private val REQUEST_AUDIO_PERMISSION = 1
     private lateinit var speechRecognizer: SpeechRecognizer;
+    private lateinit var speechRecognitionLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +59,16 @@ class MicroPhoneActivity : _BaseReportActivity() {
         // todo: el microfono debe setear la propiedad description
 
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
+
+        // Initialize the ActivityResultLauncher
+        speechRecognitionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val matches = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                if (matches != null) {
+                    description = matches[0]
+                }
+            }
+        }
 
         // Crear intent de reconocimiento de voz
         val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
@@ -103,13 +113,23 @@ class MicroPhoneActivity : _BaseReportActivity() {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                if (!miceStatse) {
+                if (!micState) {
                     micbtn.setImageResource(R.drawable.micred)
-                    miceStatse = true
-                    speechRecognizer.startListening(speechIntent)
+                    micState = true
+                    val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                        putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                        putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+                    }
+
+                    try {
+                        speechRecognitionLauncher.launch(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        Toast.makeText(this, "No speech recognition service found", Toast.LENGTH_SHORT).show()
+                    }
+                    //speechRecognizer.startListening(speechIntent)
                 } else {
                     micbtn.setImageResource(R.drawable.mic)
-                    miceStatse = false
+                    micState = false
                 }
             } else {
                 pedirPermiso() // Si no hay permisos, pedirlos de nuevo
