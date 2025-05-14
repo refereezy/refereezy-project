@@ -78,7 +78,7 @@
                 android:backgroundTint="@color/black">
 
                 <ImageView
-                    android:id="@+id/whistleBtn"
+                    android:id="@+id/pdfgenerate"
                     android:padding="3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

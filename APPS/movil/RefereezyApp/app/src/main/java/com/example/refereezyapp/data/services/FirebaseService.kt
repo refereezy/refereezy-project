@@ -30,7 +30,7 @@ object FirebaseService {
         val result = reportQuery.get().await()
         val reports = mutableListOf<PopulatedReport>()
 
-        if (result.isEmpty) {
+        if (result.size() == 0) {
             Log.e("Firebase", "No reports found")
             return onResults(reports)
         }

@@ -304,6 +304,10 @@ class MatchActivity : AppCompatActivity() {
                     Toast.makeText(this, "Configuración", Toast.LENGTH_SHORT).show()
                     // startActivity(Intent(this, SettingsActivity::class.java))
                 }
+                R.id.nav_certificates -> {
+                    val intent = Intent(this, ActaActivity::class.java)
+                    startActivity(intent)
+                }
             }
             drawerLayout.closeDrawer(GravityCompat.START)
             true
