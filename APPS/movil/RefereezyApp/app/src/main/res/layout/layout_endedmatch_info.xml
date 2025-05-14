@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <TextView
+        style="@style/MatchDayTitle"
+        android:id="@+id/matchDayText"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:padding="15dp">
+
+        <!-- Circle 1 -->
+        <ImageView
+            android:id="@+id/localLogo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/circle_shape"
+            android:layout_marginHorizontal="20dp" />
+
+        <!-- Diagonal Bar -->
+        <View
+            android:layout_width="5dp"
+            android:layout_height="90dp"
+            android:background="#D3D3D3"
+            android:rotation="25"
+            android:layout_marginHorizontal="5dp" />
+
+        <!-- Circle 2 -->
+        <ImageView
+            android:id="@+id/visitorLogo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/circle_shape" />
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginStart="15dp"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content">
+
+            <!-- Text -->
+            <TextView
+                android:id="@+id/matchStartingTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/k2d_bold"
+                android:gravity="center"
+                android:text="Ended"
+                android:textColor="@color/red"
+                android:textSize="30sp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+            <!-- PDF Icon -->
+            <androidx.cardview.widget.CardView
+                app:layout_constraintTop_toBottomOf="@id/matchStartingTime"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:cardCornerRadius="8dp"
+                android:backgroundTint="@color/black">
+
+                <ImageView
+                    android:id="@+id/whistleBtn"
+                    android:padding="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/pdf"/>
+
+            </androidx.cardview.widget.CardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</LinearLayout>
+
