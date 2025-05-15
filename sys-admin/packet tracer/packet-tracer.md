@@ -22,7 +22,7 @@ This document provides the steps and commands to configure a network in Cisco Pa
    enable
    configure terminal
    interface gigabitEthernet 0/0
-   ip address 192.168.1.1 255.255.255.0
+   ip address 192.168.51.1 255.255.255.0
    no shutdown
    exit
    ```
@@ -52,7 +52,41 @@ This document provides the steps and commands to configure a network in Cisco Pa
    - Server1: `192.168.1.11`
    - Server2: `192.168.1.12`
 
-2. **Configure Services**:
+   ```bash
+   enable
+   configure terminal
+   interface gigabitEthernet 0/0
+   ip address 192.168.1.11 255.255.255.0
+   no shutdown
+   exit
+
+   interface gigabitEthernet 0/1
+   ip address 192.168.1.12 255.255.255.0
+   no shutdown
+   exit
+   ```
+   2. **Configure Services**:
+      - On Server1, enable HTTP and FTP services:
+        ```bash
+        enable
+        configure terminal
+        ip http server
+        ip ftp server
+        exit
+        ```
+      - On Server2, enable DNS and SMTP services:
+        ```bash
+        enable
+        configure terminal
+        ip dns server
+        ip smtp server
+        exit
+        ```
+      - Verify that the services are running and accessible from the client:
+        ```bash
+        ping 192.168.1.11
+        ping 192.168.1.12
+        ```
    - Enable HTTP, FTP, or any required services on the servers.
 
 ### 3. Client Configuration

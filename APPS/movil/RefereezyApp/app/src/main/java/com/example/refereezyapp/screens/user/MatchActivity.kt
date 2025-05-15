@@ -8,13 +8,16 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.refereezyapp.MyApp
@@ -36,6 +39,7 @@ import com.example.refereezyapp.data.services.SocketService
 import com.example.refereezyapp.screens.report.ActionActivity
 import com.example.refereezyapp.utils.ConfirmationDialog
 import com.example.refereezyapp.utils.PopUp
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import java.net.Socket
@@ -57,6 +61,11 @@ class MatchActivity : AppCompatActivity() {
     lateinit var laterMatches: LinearLayout
     lateinit var laterMatchesTitle: TextView
 
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var menuBtn: ImageButton
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -66,6 +75,10 @@ class MatchActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        drawerLayout = findViewById(R.id.drawer_layout)
+        menuBtn = findViewById(R.id.menuBtn)
+        setupDrawer()
+
 
         referee = RefereeManager.getCurrentReferee()!!
 
@@ -276,6 +289,33 @@ class MatchActivity : AppCompatActivity() {
             .into(imageView)
             .onLoadFailed(ResourcesCompat.getDrawable(resources, R.drawable.circle_shape, null))
     }
+
+    private fun setupDrawer() {
+        menuBtn.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        val navView = findViewById<NavigationView>(R.id.nav_view)
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
+                    // startActivity(Intent(this, HomeActivity::class.java))
+                }
+                R.id.nav_settings -> {
+                    Toast.makeText(this, "Configuración", Toast.LENGTH_SHORT).show()
+                    // startActivity(Intent(this, SettingsActivity::class.java))
+                }
+                R.id.nav_certificates -> {
+                    val intent = Intent(this, ActaActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+    }
+
 
 
 }

@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/weekMatches"
+                    android:id="@+id/closestMatches"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -75,7 +75,7 @@
                     android:layout_width="match_parent"
                     style="@style/MatchDayTitle"
                     android:visibility="gone"
-                    android:text="Future matches"
+                    android:text="Ended matches"
                     android:layout_height="wrap_content"/>
 
                 <LinearLayout
