@@ -32,7 +32,26 @@ sudo usermod -aG docker ${USER}
 
 ```bash
 sudo apt install apache2
+
+sudo apt update
+sudo apt install certbot python3-certbot-apache -y
+
+sudo certbot --apache
+
 ```
+![alt text](image.png)
+
+
+```bash
+
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo systemctl restart apache2
+
+
+```
+
+
 
 ## WireGuard
 
