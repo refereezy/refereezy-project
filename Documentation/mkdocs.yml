@@ -1,9 +1,124 @@
-site_name: sys-admin
+docs_dir: docs
+
+# Project information
+site_name: Refereezy Documentation
+site_url: https://refereezy.smcardona.tech/docs/
+site_description: Refereezy Digitalitzem l'esport, automatitzem actes, proporcionem seguiment en directe.
+site_author: Refereezy
+
+# Repository
+repo_url: https://github.com/refereezy/refereezy-project/Documentation 
+repo_name: Refereezy
+edit_uri: edit/main/docs/
+
+# Copyright
+copyright: Copyright &copy; 2024-2025 <a href="https://refereezy.smcardona.tech">Refereezy</a>.
+
+# Documentation and theme
 theme:
-  name: material
+  name: 'material'
+  logo: 'images/logo.svg'
+  features:
+    - toc.integrate
+    - toc.follow
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - content.action.edit
+    - content.tabs.link
+    - content.code.copy
+  palette:
+    ## Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+# Options
+extra:
+  palette:
+    primary: 'indigo'
+    accent: 'indigo'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  icon:
+    logo: 'material/robot-happy'
+    repo: 'fontawesome/brands/gitlab'
+
+extra_css:
+  - css/hide_lang_links.css
+
+# Google Analytics
+#google_analytics:
+#  - 'UA-XXXXXXXX-X'
+#  - 'auto'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.details
+  - pymdownx.keys
+  - pymdownx.tabbed:
+      alternate_style: true 
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          # format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      # emoji_index: !!python/name:materialx.emoji.twemoji
+      # emoji_generator: !!python/name:materialx.emoji.to_svg
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+    #  - enumerate-headings
+  - glightbox
+  - minify:
+      minify_html: true
+  - git-revision-date-localized
+
+# TOC
 nav:
-  - Router: router.md
-  - Server Principal: server1.md
-    - server2.md
-  - Server Secundario: server2.md
+  # Introduction
+  - index.md
+  - index.ca.md
+  - index.es.md
+
+  # Empresa
+  - Empresa:
+    - empresa/empresa.md
+
+  - Aplicació Rellotge:
+    - app-rellotge/aplicacio-rellotge.md
+
+  - Aplicació Mòbil:
+    - app-rellotge/aplicacio-rellotge.md
+
+  - Aplicació Web:
+    - app-rellotge/aplicacio-rellotge.md
+
+  - Sistemes:
+    - sistemes/sistemes.md
+
+
 
