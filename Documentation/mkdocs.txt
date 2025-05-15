@@ -1,9 +1,0 @@
-site_name: sys-admin
-theme:
-  name: material
-nav:
-  - Router: router.md
-  - Server Principal: server1.md
-    - server2.md
-  - Server Secundario: server2.md
-

@@ -1,14 +1,3 @@
-# Instal·lem python
-## sudo apt install python3.10-venv -y
-
-# Crear entorn virtual 
-python3 -m venv venv
-
-# Activar entorn virtual
-source venv/bin/activate
-
-# Instal·lar dependències
-pip install -r requirements.txt
-
-# Generar la documentació
-mkdocs serve
+sudo docker build -t mi-mkdocs .
+sudo docker run -p 8000:8000 -v $(pwd):/docs mi-mkdocs
+sudo docker-compose up -d
