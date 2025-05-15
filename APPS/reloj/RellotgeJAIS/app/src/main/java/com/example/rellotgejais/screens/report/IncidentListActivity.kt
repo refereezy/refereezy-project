@@ -30,13 +30,4 @@ class IncidentListActivity : _BaseReportActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        // re dibuja la puntuacion incluso cuando se cambia de activity
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.scoreboard, scoreboard)
-            .commit()
-    }
-
 }

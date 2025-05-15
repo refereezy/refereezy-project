@@ -228,15 +228,15 @@ class MatchActivity : AppCompatActivity() {
 
     fun prepareReport(match: Match, toDo: (PopulatedReport) -> Unit) {
         // Check if there is a current report for the match locally
-        var report = ReportManager.getCurrentReport()
+        var report: PopulatedReport? = ReportManager.getCurrentReport()
 
-        if (report == null || report.raw.done) {
-            runBlocking {
-                report = FirebaseService.getReport(referee.id)
-            }
+        runBlocking {
+            report = FirebaseService.getReport(referee.id)
         }
 
+
         if (report == null || report.raw.done) {
+            Log.d("PrepareReport", "Creando nuevo reporte")
             runBlocking {
                 val populatedMatch = MatchService.getMatch(match.id)
                 report = async { reportService.initReport(populatedMatch!!) }.await()
@@ -247,6 +247,8 @@ class MatchActivity : AppCompatActivity() {
         try {
 
             if (report!!.raw.match_id != match.id) {
+                Log.d("PrepareReport", "Report ${report.raw.id} already started while asked for ${match.id}")
+
                 ConfirmationDialog.Companion.showReportDialog(
                     this,
                     "Another report already started",

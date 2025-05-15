@@ -18,8 +18,6 @@ import com.example.rellotgejais.models.TeamType
 
 class PlayerPickActivity : _BaseReportActivity() {
 
-    private val socketHandler: SocketHandler by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
@@ -55,11 +53,11 @@ class PlayerPickActivity : _BaseReportActivity() {
                     player = player.toPlayerIncident(report.match)
                 )
 
-                // notifica al socket del cambio
-                socketHandler.notifyNewIncident(report.raw.id, incident)
 
                 // this automatically modifies the report and saves into database
                 ReportHandler.addIncident(report, incident)
+                socketHandler.notifyNewIncident(report.raw.id, incident.id)
+
                 moveTo(ActionsActivity::class.java)
                 finish()
             }

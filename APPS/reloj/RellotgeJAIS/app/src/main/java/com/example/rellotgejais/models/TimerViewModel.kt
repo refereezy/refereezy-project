@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rellotgejais.data.handlers.ReportHandler
 import com.example.rellotgejais.data.managers.ReportManager
+import com.example.rellotgejais.data.services.SocketService
 import kotlinx.coroutines.launch
 
 class TimerViewModel: ViewModel() {
@@ -61,6 +62,7 @@ class TimerViewModel: ViewModel() {
             override fun onTick(millisUntilFinished: Long) {
                 val report = ReportManager.getCurrentReport()!!
                 viewModelScope.launch {
+                    SocketService.notifyTimerChange(report.raw.id, _elapsedTime.value!! / 60, _elapsedTime.value!! % 60)
                     ReportHandler.updateReportTimer(report, _elapsedTime.value!!)
                 }
             }

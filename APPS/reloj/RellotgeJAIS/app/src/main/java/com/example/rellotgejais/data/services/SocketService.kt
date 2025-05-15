@@ -23,6 +23,10 @@ object SocketService {
         return _socket.connected()
     }
 
+    fun notifyTimerChange(id: String, min: Int, sec: Int) {
+        _socket.emit("timer-updated", id, min, sec)
+    }
+
     init {
         _socket.on("disconnect") {
             Log.d("SocketService", "Desconectado del servidor socket")

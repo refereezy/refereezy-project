@@ -354,6 +354,8 @@ function setUpReportsEvents(socket: Socket) {
       // Clear report and linked device
       clockSockets[code].reportId = undefined;
       clockSockets[code].linkedDeviceId = undefined;
+
+      io.emit("report-updated", reportId)
       
       // Notify the previously linked device that the clock has finished work
       if (linkedDeviceId) {
@@ -363,69 +365,52 @@ function setUpReportsEvents(socket: Socket) {
     }
   });
 
-  //* NEW INCIDENT (FROM DEVICE TO LIVE WEB)
-  socket.on("new-incident", async (reportId: unknown, rawIncidentData: unknown) => {
-    // Validate report ID
-    const validReportId = validateReportId(reportId);
-    if (!validReportId) {
-      console.log(`Invalid report ID format: ${reportId}`);
-      socket.emit("report-error", "Invalid report ID format");
-      return;
-    }
-
-    let incidentData : unknown;
-
-    // Parse raw incident data
-    if (typeof rawIncidentData === 'string') {
-      try {
-        incidentData = JSON.parse(rawIncidentData);
-      } catch (error) {
-        console.error(`Error parsing incident data for report ${validReportId}:`, error);
-        socket.emit("report-error", "Error parsing incident data");
-        return;
-      }
-  }
-
-
-    // Validate incident data
-    if (!validateIncident(incidentData)) {
-      console.log(`Invalid incident data`, incidentData);
-      socket.emit("report-error", "Invalid incident data");
-      return;
-    }
+  //* REPORT UPDATED (FROM ANY DEVICE)
+  socket.on("report-updated", async (reportId: string) => {
     
-    console.log(`New incident notification for report ${validReportId}`, incidentData);
+    console.log(`Report ${reportId} updated`);
+    io.emit("report-updated", reportId);
+
+  });
+
+  //* REPORT TIMER CHANGE
+  socket.on("timer-updated", (reportId: string, min: number, sec: number) => {
+    
+    console.log(`Report ${reportId} timer changed to ${min}:${sec}`);
+    io.emit("timer-updated", reportId, min, sec);
+
+  });
+
+  //* NEW INCIDENT (FROM DEVICE TO LIVE WEB)
+  socket.on("new-incident", async (reportId: string, incidentId: string) => {
+    
+    console.log(`New incident notification for report ${reportId}`, incidentId);
     try {
-      // Get the updated report with all incidents
-      const updatedReport = await getReportDetailById(validReportId);
       
-      if (updatedReport) {
-        // Broadcast to all clients that the report has been updated
-        io.emit("report-updated", updatedReport);
-          // Also emit the specific incident that was added
-        io.emit("incident-added", {
-          reportId: validReportId,
-          incident: incidentData
+      // Broadcast to all clients that the report has been updated
+      io.emit("report-updated", reportId);
+        // Also emit the specific incident that was added
+      io.emit("incident-added", {
+        reportId: reportId,
+        incidentId: incidentId
+      });
+      
+      // Find any clocks working on this report and notify them
+      const clocksWorkingOnThisReport = Object.entries(clockSockets)
+        .filter(([_, registry]) => registry.reportId === reportId && registry.status === 'working');
+      
+      for (const [clockCode, registry] of clocksWorkingOnThisReport) {
+        io.to(registry.socketId).emit("report-incident-added", {
+          reportId: reportId,
+          incidentId: incidentId
         });
-        
-        // Find any clocks working on this report and notify them
-        const clocksWorkingOnThisReport = Object.entries(clockSockets)
-          .filter(([_, registry]) => registry.reportId === validReportId && registry.status === 'working');
-        
-        for (const [clockCode, registry] of clocksWorkingOnThisReport) {
-          io.to(registry.socketId).emit("report-incident-added", {
-            reportId: validReportId,
-            incident: incidentData
-          });
-          console.log(`Notified clock ${clockCode} about new incident ${incidentData.id} for report ${validReportId}`);
-        }
-        
-        console.log(`Notified about new incident ${incidentData.id} for report ${validReportId}`);
-      } else {
-        socket.emit("report-error", "Report not found");
+        console.log(`Notified clock ${clockCode} about new incident ${incidentId} for report ${reportId}`);
       }
+
+      console.log(`Notified about new incident ${incidentId} for report ${reportId}`);
+
     } catch (error) {
-      console.error(`Error notifying about incident for report ${validReportId}:`, error);
+      console.error(`Error notifying about incident for report ${reportId}:`, error);
       socket.emit("report-error", "Error processing incident");
     }
   });

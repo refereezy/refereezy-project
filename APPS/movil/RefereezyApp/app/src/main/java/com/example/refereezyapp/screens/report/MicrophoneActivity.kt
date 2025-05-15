@@ -20,6 +20,7 @@ import com.example.refereezyapp.data.handlers.ReportService
 import com.example.refereezyapp.data.models.Incident
 import com.example.refereezyapp.data.models.IncidentType
 import com.example.refereezyapp.data.models.IncidentType.*
+import com.example.refereezyapp.data.services.SocketService
 import com.example.refereezyapp.utils.PopUp
 import java.util.Locale
 
@@ -131,6 +132,7 @@ class MicrophoneActivity : _BaseReportActivity() {
 
                 // this automatically modifies the report and saves into database
                 ReportService.addIncident(report, incident)
+                SocketService.notifyReportChange(report.raw.id)
 
                 if (type == SUSPEND) {
                     endMatchReport()

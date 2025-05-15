@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.activity.OnBackPressedCallback
 import com.example.refereezyapp.R
+import com.example.refereezyapp.data.managers.ReportManager
 import com.example.refereezyapp.data.models.IncidentType
 import com.example.refereezyapp.screens.user.MatchActivity
 import com.example.refereezyapp.utils.ConfirmationDialog
@@ -95,6 +96,7 @@ class ActionActivity : _BaseReportActivity() {
                 "Are you sure you want to leave this match unfinished",
                 onConfirm = {
                     PopUp.show(this, "Match ignored", PopUp.Type.INFO)
+                    ReportManager.clearReport()
                     timer.resetTimer()
                     finish()
                 },

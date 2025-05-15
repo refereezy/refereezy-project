@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Connect to the socket.io server
 function connectSocket() {
-  socket = io("http://localhost:3000", {
+  socket = io("http://smcardona.tech:3000", {
     autoConnect: false,
     transports: ["websocket"],
   });
@@ -58,10 +58,10 @@ function connectSocket() {
   });
   
   // Listen for report updates
-  socket.on("report-updated", async (updatedReport) => {
-    console.log("Report updated:", updatedReport.id);
+  socket.on("report-updated", async (updatedReportId) => {
+    console.log("Report updated:", updatedReportId);
 
-    const response = await fetch(`/api/reports/${updatedReport.id}`);
+    const response = await fetch(`/api/reports/${updatedReportId}`);
     if (!response.ok) {
       throw new Error(`Error fetching report detail: ${response.statusText}`);
     }
@@ -71,10 +71,28 @@ function connectSocket() {
     updateReportInList(report);
     
     // If the updated report is currently being viewed, update the detail view
-    if (appState.currentReport && appState.currentReport.id === updatedReport.id) {
-      fetchReportDetail(updatedReport.id);
+    if (appState.currentReport && appState.currentReport.id === updatedReportId) {
+      fetchReportDetail(updatedReportId);
     }
   });
+
+  socket.on("timer-updated", async (reportId, min, sec) => {
+    console.log("Timer updated:", reportId, min, sec);
+    
+    
+    
+    const report = appState.reports.find(r => r.id === reportId);
+    if (report) {
+      report.timer = [min, sec];
+      updateReportInList(report);
+    }
+    
+    // Update the timer in the report detail
+    if (appState.currentReport && appState.currentReport.id === reportId) {
+      appState.currentReport.timer = [min, sec];
+      displayReportDetail(appState.currentReport);
+    }
+  })
   
   // Listen for new incidents
   /* socket.on("incident-added", (data) => {
@@ -84,7 +102,7 @@ function connectSocket() {
       fetchReportDetail(data.reportId);
     }
   }); */
-}
+};
 
 // Setup UI event listeners
 function setupEventListeners() {
@@ -536,15 +554,8 @@ function clearAllFilters() {
 async function updateReportInList(updatedReport) {
   const index = appState.reports.findIndex(report => report.id === updatedReport.id);
 
-  const response = await fetch(`/api/reports/${updatedReport.id}`);
-  if (!response.ok) {
-    throw new Error(`Error fetching report detail: ${response.statusText}`);
-  }
-
-  const report = await response.json();
-
   if (index !== -1) {
-    appState.reports[index] = report;
+    appState.reports[index] = updatedReport;
     renderReportsList();
   }
 }
