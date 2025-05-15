@@ -7,7 +7,7 @@ site_description: Refereezy Digitalitzem l'esport, automatitzem actes, proporcio
 site_author: Refereezy
 
 # Repository
-repo_url: https://github.com/refereezy/refereezy-project/Documentation 
+repo_url: https://github.com/refereezy/refereezy-project/
 repo_name: Refereezy
 edit_uri: edit/main/docs/
 
@@ -93,8 +93,6 @@ plugins:
   - search
     #  - enumerate-headings
   - glightbox
-  - minify:
-      minify_html: true
   - git-revision-date-localized
 
 # TOC
