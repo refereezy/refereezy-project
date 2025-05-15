@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Connect to the socket.io server
 function connectSocket() {
-  socket = io("http://localhost:3000", {
+  socket = io("http://smcardona.tech:3000", {
     autoConnect: false,
     transports: ["websocket"],
   });
