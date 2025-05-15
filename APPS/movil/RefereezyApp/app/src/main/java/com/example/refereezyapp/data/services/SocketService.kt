@@ -28,6 +28,16 @@ object SocketService {
         _socket.emit("new-report", id, code)
     }
 
+    fun notifyReportChange(id: String) {
+        _socket.emit("report-updated", id)
+    }
+
+    fun notifyTimerChange(id: String, min: Int, sec: Int) {
+        _socket.emit("timer-updated", id, min, sec)
+    }
+
+
+
 
 
 }

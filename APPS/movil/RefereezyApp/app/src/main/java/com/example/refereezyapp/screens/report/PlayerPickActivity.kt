@@ -15,6 +15,7 @@ import com.example.refereezyapp.data.models.Incident
 import com.example.refereezyapp.data.models.IncidentType
 import com.example.refereezyapp.data.models.TeamType
 import androidx.core.graphics.toColorInt
+import com.example.refereezyapp.data.services.SocketService
 
 
 class PlayerPickActivity : _BaseReportActivity() {
@@ -62,6 +63,7 @@ class PlayerPickActivity : _BaseReportActivity() {
 
                 // this automatically modifies the report and saves into database
                 ReportService.addIncident(report, incident)
+                SocketService.notifyReportChange(report.raw.id)
                 moveTo(ActionActivity::class.java)
                 finish()
             }

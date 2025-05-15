@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.example.rellotgejais.R
 import com.example.rellotgejais.data.handlers.SocketHandler
+import com.example.rellotgejais.data.managers.ReportManager
 import com.example.rellotgejais.data.services.LocalStorageService
 import com.example.rellotgejais.models.IncidentType
 import com.example.rellotgejais.utils.ConfirmationDialog
@@ -19,7 +20,6 @@ class ActionsActivity : _BaseReportActivity() {
     private lateinit var pauseBtn: ImageButton
     private lateinit var goalBtn: ImageButton
     private lateinit var incidentButton: ImageButton
-    private val socketHandler: SocketHandler by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,14 +66,17 @@ class ActionsActivity : _BaseReportActivity() {
         ConfirmationDialog.showReportDialog(
             this,
             "Are you sure you wanna leave this report unfinished?",
-            onConfirm = {
-                val qr = LocalStorageService.getClockQrCode()!!
-                socketHandler.unlinkReport(qr, report.raw.id)
-                timer.resetTimer()
-                finish()
-            },
+            onConfirm = this::finish,
             onCancel = {}
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ReportManager.clearReport()
+        timer.resetTimer()
+        val qr = LocalStorageService.getClockQrCode()?: run { return }
+        socketHandler.unlinkReport(qr, report.raw.id)
     }
 
     override fun onResume() {

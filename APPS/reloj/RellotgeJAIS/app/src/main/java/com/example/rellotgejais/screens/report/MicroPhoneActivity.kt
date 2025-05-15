@@ -110,6 +110,7 @@ class MicroPhoneActivity : _BaseReportActivity() {
                 )
 
                 ReportHandler.addIncident(report, incident)
+                socketHandler.notifyNewIncident(report.raw.id, incident.id)
 
                 if (type == SUSPEND) {
                     endMatchReport()

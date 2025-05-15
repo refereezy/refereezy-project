@@ -89,8 +89,8 @@ class SocketHandler: ViewModel() {
         }
     }
 
-    fun notifyNewIncident(reportId: String, incident: Incident) {
-        socket.emit("new-incident", reportId, gson.toJson(incident))
+    fun notifyNewIncident(reportId: String, incidentId: String) {
+        socket.emit("new-incident", reportId, incidentId)
     }
 
 }

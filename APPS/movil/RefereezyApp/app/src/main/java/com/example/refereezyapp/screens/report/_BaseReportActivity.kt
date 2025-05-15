@@ -16,6 +16,8 @@ import com.example.refereezyapp.data.models.PopulatedReport
 import com.example.refereezyapp.data.models.Team
 import com.example.refereezyapp.data.models.TeamType
 import com.example.refereezyapp.data.managers.ReportManager
+import com.example.refereezyapp.data.services.LocalStorageService
+import com.example.refereezyapp.data.services.SocketService
 import com.example.refereezyapp.screens.fragments.ScoreFragment
 import com.example.refereezyapp.screens.user.MatchActivity
 import kotlin.collections.forEach
@@ -120,9 +122,11 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     // ends the report and moves to MatchActivity
     fun endMatchReport() {
-        timer.stop()
+        timer.resetTimer()
         ReportService.endReport(report)
         ReportManager.clearReport()
+        SocketService.notifyReportChange(report.raw.id)
+        SocketService.notifyTimerChange(report.raw.id, timer.getElapsedMinutes(), timer.elapsedTime.value!! % 60)
         MatchManager.removeMatch(report.match.raw.id) // esto no hace mucho efecto pues la MatchActivity vuelve a cargarlas
         moveTo(MatchActivity::class.java)
         finish()

@@ -3,10 +3,13 @@ package com.example.rellotgejais.screens.report
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rellotgejais.MyApp
 import com.example.rellotgejais.data.handlers.ReportHandler
+import com.example.rellotgejais.data.handlers.SocketHandler
 import com.example.rellotgejais.data.managers.ReportManager
+import com.example.rellotgejais.data.services.LocalStorageService
 import com.example.rellotgejais.models.IncidentType
 import com.example.rellotgejais.models.PopulatedIncident
 import com.example.rellotgejais.models.PopulatedReport
@@ -17,6 +20,7 @@ import com.example.rellotgejais.screens.fragments.ScoreFragment
 
 open class _BaseReportActivity : AppCompatActivity() {
 
+    protected val socketHandler: SocketHandler by viewModels()
     // data
     protected lateinit var report: PopulatedReport
     protected var localPoints: Int = 0
@@ -114,13 +118,11 @@ open class _BaseReportActivity : AppCompatActivity() {
 
     // ends the report and moves to MatchActivity
     fun endMatchReport() {
-        timer.stop()
         ReportHandler.endReport(report)
         ReportManager.clearReport()
-        val intent = Intent(this, ActionsActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        }
-        startActivity(intent)
+        val qr = LocalStorageService.getClockQrCode()!!
+        socketHandler.unlinkReport(qr, report.raw.id)
+        timer.resetTimer()
         finish()
     }
 }
