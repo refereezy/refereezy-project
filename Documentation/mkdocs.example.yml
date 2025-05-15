@@ -2,7 +2,7 @@ docs_dir: docs
 
 # Project information
 site_name: IsardVDI Documentation
-site_url: http://www.isardvdi.com
+site_url: https://refereezy.smcardona.tech/docs/
 site_description: IsardVDI Escriptoris Virtuals amb programari lliure.
 site_author: IsardVDI
 
