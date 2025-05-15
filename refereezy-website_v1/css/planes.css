@@ -1,0 +1,12 @@
+#planes {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .plan {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  

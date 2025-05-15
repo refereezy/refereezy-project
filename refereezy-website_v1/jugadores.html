@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refereezy - Jugadores</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/jugadores.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main>
+        <section id="jugadores">
+            <h2>Gestión de Jugadores</h2>
+            <form id="form-jugador">
+                <select id="equipo-jugador" required>
+                    <option value="">Seleccione un equipo</option>
+                </select>
+                <input type="text" id="nombre-jugador" placeholder="Nombre del jugador" required>
+                <input type="number" id="numero-jugador" placeholder="Número del jugador" required>
+                <input type="number" id="edad-jugador" placeholder="Edad del jugador" required>
+                <input type="text" id="nacionalidad-jugador" placeholder="Nacionalidad del jugador" required>
+                <button type="submit">Agregar Jugador</button>
+            </form>
+            <button id="agregar-mas-jugadores">+ Agregar más jugadores</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Refereezy. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/jugadores.js"></script>
+</body>
+</html>
+
