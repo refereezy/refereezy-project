@@ -1,20 +1,23 @@
 # Usa la imagen oficial de Python
-FROM python:3.11-slim
+FROM python:3.11
+
+# Instala git y dependencias básicas
+RUN apt-get update && apt-get install -y git && apt-get clean
 
 # Establece el directorio de trabajo
 WORKDIR /docs
 
-# Copia el archivo de requerimientos (en este caso solo mkdocs)
+# Copia los requisitos de Python
 COPY requirements.txt .
 
-# Instala MkDocs
-RUN pip install -r requirements.txt
+# Instala las dependencias de Python
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia todo el contenido del proyecto (docs, mkdocs.yml, etc)
+# Copia todo el proyecto
 COPY . .
 
-# Expone el puerto donde corre MkDocs (por defecto 8000)
-EXPOSE 8000
+# Expone el puerto
+EXPOSE 80
 
-# Comando para iniciar el servidor de MkDocs en modo no interactivo y sin recarga automática
+# Comando por defecto
 CMD ["mkdocs", "serve", "-a", "0.0.0.0:8000"]
