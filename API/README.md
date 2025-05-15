@@ -1,6 +1,7 @@
-Para usarlo se debe usar el init-testing.sh
+Para usar la API se puede ejecutar el script **init-testing.sh**
 
 ---
+
 PERO ANTES: Se deben modificar las credenciales de conexion en el archivo .env dentro de: `/api/.env`<br>
 
 asi:
@@ -11,3 +12,4 @@ DB_PORT=5432
 DB_NAME=refereezy
 DB_HOST=test-db
 ```
+2
