@@ -109,13 +109,13 @@ nav:
     - empresa/empresa.md
 
   - Aplicació Rellotge:
-    - app-rellotge/aplicacio-rellotge.md
+    - app-rellotge/app-rellotge.md
 
   - Aplicació Mòbil:
-    - app-rellotge/aplicacio-rellotge.md
+    - app-mobile/app-mobile.md
 
   - Aplicació Web:
-    - app-rellotge/aplicacio-rellotge.md
+    - app-web/app-web.md
 
   - Sistemes:
     - sistemes/sistemes.md
