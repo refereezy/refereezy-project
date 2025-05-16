@@ -10,68 +10,166 @@ import com.example.refereezyapp.data.models.PopulatedReport
 import java.io.File
 import java.io.FileOutputStream
 
-object PDFUtils { // Usamos un objeto singleton en lugar de una clase
+object PDFUtils {
+
     fun generateActaPdf(context: Context, report: PopulatedReport): File {
         val pdf = PdfDocument()
-        val pageInfo = PdfDocument.PageInfo.Builder(843, 595, 1).create()
-        val page = pdf.startPage(pageInfo)
-        val canvas = page.canvas
+
         val paint = Paint().apply {
             color = Color.BLACK
             textSize = 16f
         }
 
-        var y = 40f
-        canvas.drawText("Acta de Partido", 230f, y, paint)
-        y += 30f
-        var date = report.match.raw.date
-        canvas.drawText("Fecha del Partido: ${date.dayOfMonth}/${date.monthValue}/${date.year}  ${date.hour}:${date.minute}",  40f, y, paint)
-        y += 25f
-        var nameRefere = report.match.referee.name
-        canvas.drawText("Árbitro: ${nameRefere}", 40f, y, paint)
-        y += 25f
-
-        /*var estado = if (report.raw.timer[0]>90) "Finalizado" else "Suspendido( ${report.raw.timer[0]}:${report.raw.timer[1]})"
-        canvas.drawText("Duración: ${report.raw.timer[0]}:${report.raw.timer[1]}", 40f, y, paint)
-        y += 30f*/
-
-        val minutes = report.raw.timer[0].toInt()
-        val seconds = report.raw.timer[1].toInt()
-
-        val estado = if (minutes > 90) "Finalizado" else "Suspendido ($minutes:$seconds'')"
-
-        canvas.drawText("Estado: ${estado} ", 40f, y, paint)
-        y += 25f
-
-        canvas.drawText("Incidencias:", 40f, y, paint)
-        y += 25f
-
-        // Define un Paint para el borde del recuadro
         val borderPaint = Paint().apply {
             color = Color.BLACK
-            style = Paint.Style.STROKE  // Borde, no relleno
+            style = Paint.Style.STROKE
             strokeWidth = 2f
         }
 
-        // Dibuja un recuadro alrededor del área de incidencias
-        val left = 35f
-        val top = y - 20f // un poco antes del título "Incidencias"
-        val right = 800f
-        val initialY = y
+        val pageWidth = 843
+        val pageHeight = 595
+        val marginX = 40f
+        val totalWidth = pageWidth - marginX * 2
+        val goalBoxWidth = totalWidth * 1f / 3f
+        val otherBoxWidth = totalWidth * 2f / 3f
+        val incidentSpacing = 20f
 
-        // Aquí accedemos a report.raw.incidents directamente
-        report.raw.incidents.forEach { incident ->
-            // Accedemos a los campos de Incident (que está dentro de raw)
-            canvas.drawText("- ${incident.minute}': ${incident.description}", 50f, y, paint)
-            y += 20f
-            if (y > 800) return@forEach
+        fun drawTeamPage(
+            teamName: String,
+            report: PopulatedReport,
+            teamId: Int,
+            canvas: android.graphics.Canvas,
+            includeHeader: Boolean
+        ) {
+            val incidents = report.incidents.filter {
+                it.player?.team?.id == teamId
+            }
+
+            val goles = incidents.filter {
+                it.raw.description.equals("GOAL", ignoreCase = true)
+            }
+
+            val otras = incidents.filter {
+                !it.raw.description.equals("GOAL", ignoreCase = true)
+            }
+
+            var y = 40f
+            var headerTop = y
+            var headerBottom = y
+
+            if (includeHeader) {
+                canvas.drawText("ACTA DE PARTIDO", marginX, y+10f, paint)
+                y += 30f
+
+                val date = report.match.raw.date
+                canvas.drawText(
+                    "Fecha del Partido: ${date.dayOfMonth}/${date.monthValue}/${date.year}  ${date.hour}:${date.minute}",
+                    marginX, y, paint
+                )
+                y += 25f
+
+                val refereeName = report.match.referee.name
+                canvas.drawText("Árbitro: $refereeName", marginX, y, paint)
+                y += 25f
+
+                canvas.drawText("Encunetro: ${report.match.local_team.name} vs ${report.match.visitor_team.name} "  , marginX, y, paint)
+                y += 25f
+
+                val minutes = report.raw.timer[0].toInt()
+                val seconds = report.raw.timer[1].toInt()
+                val estado = if (minutes > 90) "Finalizado" else "Suspendido ($minutes:$seconds'')"
+
+
+                canvas.drawText("Estado: $estado", marginX, y, paint)
+                y += 10f
+
+                headerBottom = y
+                // Dibujar rectángulo de cabecera (sin incluir el nombre del equipo)
+                canvas.drawRect(
+                    marginX - 10f,
+                    headerTop - 10f,
+                    pageWidth - marginX + 10f,
+                    headerBottom + 10f,
+                    borderPaint
+                )
+
+                y += 25f // Espacio después del recuadro
+            }
+
+            // Nombre del equipo (fuera del recuadro de cabecera)
+            canvas.drawText("Equipo: $teamName", marginX, y, paint)
+            y += 25f
+
+            val boxTop = y
+            var yGoles = y - 5f
+            var yOtras = y - 5f
+
+            // Título GOLES (ahora dentro del cuadro de goles)
+            canvas.drawText("GOLES", marginX , yGoles, paint)
+            yGoles += 20f
+
+            goles.forEach {
+                val desc = if (it.raw.type.name == it.raw.description) "${it.raw.description}" else "${it.raw.type.name}: ${it.raw.description}"
+
+                canvas.drawText(
+                    "- ${it.raw.minute}' ${it.raw.player?.name}[${it.raw.player?.dorsal}]: $desc",
+                    marginX + 10f,
+                    yGoles+5f,
+                    paint
+                )
+                yGoles += incidentSpacing
+            }
+
+            // Título OTRAS INCIDENCIAS (también ajustado)
+            canvas.drawText("INCIDENCIAS", marginX + goalBoxWidth + 10f, yOtras, paint)
+            yOtras += 20f
+
+            otras.forEach {
+                val desc = if (it.raw.type.name == it.raw.description) "${it.raw.description}"
+                else "${it.raw.type.name}: ${it.raw.description}"
+
+                canvas.drawText(
+                    "- ${it.raw.minute}' ${it.raw.player?.name}[${it.raw.player?.dorsal}]: $desc",
+                    marginX + goalBoxWidth + 10f,
+                    yOtras,
+                    paint
+                )
+                yOtras += incidentSpacing
+            }
+
+            // Dibujar recuadro de goles
+            canvas.drawRect(
+                marginX,
+                boxTop,
+                marginX + goalBoxWidth,
+                yGoles + 10f,
+                borderPaint
+            )
+
+            // Dibujar recuadro de otras incidencias
+            canvas.drawRect(
+                marginX + goalBoxWidth,
+                boxTop,
+                marginX + goalBoxWidth + otherBoxWidth,
+                yOtras + 10f,
+                borderPaint
+            )
         }
-        // Una vez añadidas, dibuja el borde alrededor
-        canvas.drawRect(left, top, right, y + 10f, borderPaint)
 
-        pdf.finishPage(page)
+        // Página 1 – Equipo Local
+        val pageLocal = pdf.startPage(PdfDocument.PageInfo.Builder(pageWidth, pageHeight, 1).create())
+        val canvasLocal = pageLocal.canvas
+        drawTeamPage(report.match.local_team.name, report, report.match.local_team.id, canvasLocal, includeHeader = true)
+        pdf.finishPage(pageLocal)
 
-        val file = File(context.getExternalFilesDir(null), "acta_${report.raw.id}.pdf")
+        // Página 2 – Equipo Visitante
+        val pageVisitor = pdf.startPage(PdfDocument.PageInfo.Builder(pageWidth, pageHeight, 2).create())
+        val canvasVisitor = pageVisitor.canvas
+        drawTeamPage(report.match.visitor_team.name, report, report.match.visitor_team.id, canvasVisitor, includeHeader = false)
+        pdf.finishPage(pageVisitor)
+
+        // Guardar PDF
+        val file = File(context.getExternalFilesDir(null), "acta_${report.raw.match_id}.pdf")
         pdf.writeTo(FileOutputStream(file))
         pdf.close()
 

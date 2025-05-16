@@ -300,13 +300,22 @@ class MatchActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.nav_home -> {
                     Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
-                    // startActivity(Intent(this, HomeActivity::class.java))
+                    // Si ya estoy en HomeActivity, no la cargo de nuevo
+                    if (this !is MatchActivity) {
+                        val intent = Intent(this, MatchActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
                 R.id.nav_settings -> {
                     Toast.makeText(this, "Configuración", Toast.LENGTH_SHORT).show()
-                    // startActivity(Intent(this, SettingsActivity::class.java))
+                    // Si ya estoy en SettingsActivity, no la cargo de nuevo
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
+
                 }
                 R.id.nav_certificates -> {
+                    Toast.makeText(this, "Certificados", Toast.LENGTH_SHORT).show()
+                    // Si ya estoy en ActaActivity, no la cargo de nuevo
                     val intent = Intent(this, ActaActivity::class.java)
                     startActivity(intent)
                 }
@@ -315,6 +324,7 @@ class MatchActivity : AppCompatActivity() {
             true
         }
     }
+
 
 
 
