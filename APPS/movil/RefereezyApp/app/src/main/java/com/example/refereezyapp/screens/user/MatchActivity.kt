@@ -299,12 +299,15 @@ class MatchActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
-                    // startActivity(Intent(this, HomeActivity::class.java))
+                    if (this !is MatchActivity) {
+                        val intent = Intent(this, MatchActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
                 R.id.nav_settings -> {
-                    Toast.makeText(this, "Configuración", Toast.LENGTH_SHORT).show()
-                    // startActivity(Intent(this, SettingsActivity::class.java))
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
+
                 }
                 R.id.nav_certificates -> {
                     val intent = Intent(this, ActaActivity::class.java)
@@ -315,6 +318,7 @@ class MatchActivity : AppCompatActivity() {
             true
         }
     }
+
 
 
 
