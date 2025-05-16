@@ -1,6 +1,5 @@
 version: "3.8"
 
-name: refereezy
 services:
   # mkdocs - Dockerfile ubicado en: ../Documentation/Dockerfile
   mkdocs:
