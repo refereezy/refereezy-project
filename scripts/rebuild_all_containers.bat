@@ -73,6 +73,10 @@ REM Eliminar imagenes no utilizadas
 echo Limpiando imagenes no utilizadas...
 docker image prune -f
 
+REM Creando redes si no existen
+echo Creando redes si no existen...
+docker network create internal 2>nul
+
 REM Reiniciar contenedores
 echo === Reiniciando contenedores ===
 cd /d "%~dp0"

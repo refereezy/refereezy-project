@@ -76,6 +76,10 @@ fi
 echo "Limpiando imagenes no utilizadas..."
 sudo docker image prune -f
 
+# Creando redes si no existen
+echo "=== Creando redes si no existen ==="
+sudo docker network create internal 2>/dev/null || true
+
 # Reiniciar contenedores
 echo "=== Reiniciando contenedores ==="
 cd "$SCRIPT_DIR"
