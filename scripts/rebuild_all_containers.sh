@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script para reconstruir todas las imágenes Docker y reiniciar los contenedores
+# Script para reconstruir todas las imagenes Docker y reiniciar los contenedores
 # para el proyecto Refereezy
 
 # Directorio base del proyecto (relativo al directorio del script)
@@ -17,7 +17,12 @@ echo "=== Deteniendo los contenedores actuales ==="
 cd "$SCRIPT_DIR"
 sudo docker-compose down
 
-echo "=== Reconstruyendo las imágenes ==="
+# Eliminar contenedores existentes para evitar conflictos de nombres
+echo "=== Eliminando contenedores existentes que puedan causar conflictos ==="
+sudo docker rm -f docu sockets testdb testapi api 2>/dev/null || true
+echo "Contenedores eliminados o no existentes"
+
+echo "=== Reconstruyendo las imagenes ==="
 
 # Reconstruir imagen para mkdocs (Documentation/Dockerfile)
 echo "Reconstruyendo mi-mkdocs..."
@@ -29,7 +34,7 @@ echo "Reconstruyendo socket-server:latest..."
 cd "$BASE_DIR/APPS/web"
 sudo docker build -t socket-server:latest .
 
-# Determinar qué imágenes construir según el perfil
+# Determinar qué imagenes construir según el perfil
 if [ "$PROFILE" = "all" ]; then
     BUILD_TEST=yes
     BUILD_PROD=yes
@@ -40,7 +45,7 @@ elif [ "$PROFILE" = "prod" ]; then
     BUILD_TEST=no
     BUILD_PROD=yes
 else
-    echo "Perfil no reconocido. Opciones válidas: all, test, prod"
+    echo "Perfil no reconocido. Opciones validas: all, test, prod"
     exit 1
 fi
 
@@ -55,7 +60,7 @@ if [ "$BUILD_TEST" = "yes" ]; then
     cd "$BASE_DIR/API"
     sudo docker build -t api-app:test .
 else
-    echo "Omitiendo la construcción de imágenes de prueba..."
+    echo "Omitiendo la construcción de imagenes de prueba..."
 fi
 
 if [ "$BUILD_PROD" = "yes" ]; then
@@ -64,11 +69,11 @@ if [ "$BUILD_PROD" = "yes" ]; then
     cd "$BASE_DIR/API"
     sudo docker build -t api-app:latest .
 else
-    echo "Omitiendo la construcción de imágenes de producción..."
+    echo "Omitiendo la construcción de imagenes de producción..."
 fi
 
-# Eliminar imágenes no utilizadas
-echo "Limpiando imágenes no utilizadas..."
+# Eliminar imagenes no utilizadas
+echo "Limpiando imagenes no utilizadas..."
 sudo docker image prune -f
 
 # Reiniciar contenedores

@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM Script para reconstruir todas las imágenes Docker y reiniciar los contenedores
+REM Script para reconstruir todas las imagenes Docker y reiniciar los contenedores
 REM para el proyecto Refereezy en Windows
 
 REM Verificar si se ha proporcionado un argumento para el perfil
@@ -15,7 +15,12 @@ echo === Deteniendo los contenedores actuales ===
 cd /d "%~dp0"
 docker-compose down
 
-echo === Reconstruyendo las imágenes ===
+REM Eliminar contenedores existentes para evitar conflictos de nombres
+echo === Eliminando contenedores existentes que puedan causar conflictos ===
+docker rm -f docu sockets testdb testapi api 2>nul
+echo Contenedores eliminados o no existentes
+
+echo === Reconstruyendo las imagenes ===
 
 REM Reconstruir imagen para mkdocs (Documentation/Dockerfile)
 echo Reconstruyendo mi-mkdocs...
@@ -37,7 +42,7 @@ if "%PROFILE%"=="all" (
     set BUILD_TEST=no
     set BUILD_PROD=yes
 ) else (
-    echo Perfil no reconocido. Opciones válidas: all, test, prod
+    echo Perfil no reconocido. Opciones validas: all, test, prod
     exit /b 1
 )
 
@@ -52,7 +57,7 @@ if "!BUILD_TEST!"=="yes" (
     cd /d "%~dp0..\API"
     docker build -t api-app:test .
 ) else (
-    echo Omitiendo la construcción de imágenes de prueba...
+    echo Omitiendo la construcción de imagenes de prueba...
 )
 
 if "!BUILD_PROD!"=="yes" (
@@ -61,11 +66,11 @@ if "!BUILD_PROD!"=="yes" (
     cd /d "%~dp0..\API"
     docker build -t api-app:latest .
 ) else (
-    echo Omitiendo la construcción de imágenes de producción...
+    echo Omitiendo la construcción de imagenes de producción...
 )
 
-REM Eliminar imágenes no utilizadas
-echo Limpiando imágenes no utilizadas...
+REM Eliminar imagenes no utilizadas
+echo Limpiando imagenes no utilizadas...
 docker image prune -f
 
 REM Reiniciar contenedores

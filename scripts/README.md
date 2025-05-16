@@ -31,6 +31,8 @@ El proyecto utiliza perfiles de Docker Compose para permitir el despliegue selec
 - **docker-compose.yml**: Configuración de todos los servicios con perfiles
 - **rebuild_all_containers.bat**: Script para Windows que reconstruye y reinicia contenedores (soporta perfiles)
 - **rebuild_all_containers.sh**: Script para Linux/Mac que reconstruye y reinicia contenedores (soporta perfiles)
+- **clean_containers.bat**: Script para Windows que elimina todos los contenedores y limpia recursos Docker
+- **clean_containers.sh**: Script para Linux/Mac que elimina todos los contenedores y limpia recursos Docker
 
 ## Pasos para ejecutar los contenedores
 
@@ -140,11 +142,36 @@ Si prefieres ejecutar los pasos manualmente:
 
 ## Acceso a los servicios
 
+## Solución de problemas
+
+Si encuentras errores como "El nombre del contenedor ya está en uso" o conflictos similares, puedes utilizar los scripts de limpieza para eliminar todos los contenedores y empezar desde cero:
+
+### En Windows:
+```powershell
+.\clean_containers.bat
+```
+
+### En Linux/Mac:
+```bash
+# Dar permisos de ejecución (solo la primera vez):
+chmod +x clean_containers.sh
+# Ejecutar:
+./clean_containers.sh
+```
+
+Estos scripts:
+1. Detienen todos los contenedores en ejecución
+2. Eliminan los contenedores específicos del proyecto
+3. Limpian recursos de Docker no utilizados (imágenes, redes, etc.)
+
+Después de ejecutar el script de limpieza, puedes volver a ejecutar el script de reconstrucción con tu perfil preferido.
+
 Una vez que los contenedores estén en ejecución, puedes acceder a los servicios en:
 
 - Documentación: [http://localhost:8000](http://localhost:8000)
 - API de pruebas: [http://localhost:8888](http://localhost:8888)
 - API de producción: [http://localhost:8080](http://localhost:8080)
+- API de sockets: [http://localhost:3000](http://localhost:3000)
 
 ## Detener los contenedores
 
