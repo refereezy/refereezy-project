@@ -1,6 +1,15 @@
 @echo off
+setlocal enabledelayedexpansion
+
 REM Script para reconstruir todas las imágenes Docker y reiniciar los contenedores
 REM para el proyecto Refereezy en Windows
+
+REM Verificar si se ha proporcionado un argumento para el perfil
+set PROFILE=all
+if not "%~1"=="" set PROFILE=%~1
+
+echo Perfil seleccionado: %PROFILE%
+echo.
 
 echo === Deteniendo los contenedores actuales ===
 cd /d "%~dp0"
@@ -18,20 +27,42 @@ echo Reconstruyendo socket-server:latest...
 cd /d "%~dp0..\APPS\web"
 docker build -t socket-server:latest .
 
-REM Reconstruir imagen para test-db (API/test-db/Dockerfile)
-echo Reconstruyendo test-db:latest...
-cd /d "%~dp0..\API\test-db"
-docker build -t test-db:latest .
+if "%PROFILE%"=="all" (
+    set BUILD_TEST=yes
+    set BUILD_PROD=yes
+) else if "%PROFILE%"=="test" (
+    set BUILD_TEST=yes
+    set BUILD_PROD=no
+) else if "%PROFILE%"=="prod" (
+    set BUILD_TEST=no
+    set BUILD_PROD=yes
+) else (
+    echo Perfil no reconocido. Opciones válidas: all, test, prod
+    exit /b 1
+)
 
-REM Reconstruir imagen para test-api (API/Dockerfile)
-echo Reconstruyendo api-app:test...
-cd /d "%~dp0..\API"
-docker build -t api-app:test .
+if "!BUILD_TEST!"=="yes" (
+    REM Reconstruir imagen para test-db (API/test-db/Dockerfile)
+    echo Reconstruyendo test-db:latest...
+    cd /d "%~dp0..\API\test-db"
+    docker build -t test-db:latest .
 
-REM Reconstruir imagen para api (API/Dockerfile)
-echo Reconstruyendo api-app:latest...
-cd /d "%~dp0..\API"
-docker build -t api-app:latest .
+    REM Reconstruir imagen para test-api (API/Dockerfile)
+    echo Reconstruyendo api-app:test...
+    cd /d "%~dp0..\API"
+    docker build -t api-app:test .
+) else (
+    echo Omitiendo la construcción de imágenes de prueba...
+)
+
+if "!BUILD_PROD!"=="yes" (
+    REM Reconstruir imagen para api (API/Dockerfile)
+    echo Reconstruyendo api-app:latest...
+    cd /d "%~dp0..\API"
+    docker build -t api-app:latest .
+) else (
+    echo Omitiendo la construcción de imágenes de producción...
+)
 
 REM Eliminar imágenes no utilizadas
 echo Limpiando imágenes no utilizadas...
@@ -40,12 +71,23 @@ docker image prune -f
 REM Reiniciar contenedores
 echo === Reiniciando contenedores ===
 cd /d "%~dp0"
-docker-compose up -d
+
+if "%PROFILE%"=="all" (
+    echo Iniciando todos los contenedores...
+    docker-compose --profile common --profile test --profile prod up -d
+) else if "%PROFILE%"=="test" (
+    echo Iniciando contenedores comunes y de prueba...
+    docker-compose --profile common --profile test up -d
+) else if "%PROFILE%"=="prod" (
+    echo Iniciando contenedores comunes y de producción...
+    docker-compose --profile common --profile prod up -d
+)
 
 echo === Proceso completado ===
-echo Los contenedores han sido reconstruidos y reiniciados
+echo Los contenedores han sido reconstruidos y reiniciados para el perfil: %PROFILE%
 
 REM Mostrar contenedores en ejecución
 docker ps
 
+endlocal
 pause

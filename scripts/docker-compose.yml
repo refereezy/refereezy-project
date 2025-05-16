@@ -1,5 +1,5 @@
-version: '3.8'
     
+name: refereezy
 services:
   # mkdocs - Dockerfile ubicado en: ../Documentation/Dockerfile
   mkdocs:
@@ -12,6 +12,7 @@ services:
       - ../Documentation:/docs
     networks:
       - internal
+    profiles: [common, test, prod]
 
   # socket.io api + real time web - Dockerfile ubicado en: ../APPS/web/Dockerfile
   sockets:
@@ -34,7 +35,7 @@ services:
       - ../APPS/web/src:/app/src
     networks:
       - internal
-
+    profiles: [common, test, prod]
   # postgres testeo - Dockerfile ubicado en: ../API/test-db/Dockerfile
   test-db:
     image: test-db:latest
@@ -47,6 +48,7 @@ services:
       - POSTGRES_PASSWORD=${TEST_DB_PASS}
     networks:
       - internal
+    profiles: [test]
 
   # api testeo - Dockerfile ubicado en: ../API/Dockerfile
   test-api:
@@ -63,8 +65,8 @@ services:
       - DB_HOST=${TEST_DB_HOST}
     networks:
       - internal
-      
-  # api prod - Dockerfile ubicado en: ../API/Dockerfile
+    profiles: [test]
+        # api prod - Dockerfile ubicado en: ../API/Dockerfile
   api:
     image: api-app:latest
     container_name: api
@@ -79,6 +81,7 @@ services:
       - DB_HOST=${DB_HOST}
     networks:
       - internal
+    profiles: [prod]
 
 
 networks:

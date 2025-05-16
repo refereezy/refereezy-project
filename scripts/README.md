@@ -18,11 +18,19 @@ El proyecto Refereezy está compuesto por varios servicios:
 - **test-api**: API para entorno de pruebas (puerto 8888)
 - **api**: API para entorno de producción (puerto 8080)
 
+## Perfiles de Docker Compose
+
+El proyecto utiliza perfiles de Docker Compose para permitir el despliegue selectivo de servicios:
+
+- **common**: Servicios comunes (mkdocs, sockets)
+- **test**: Servicios de entorno de pruebas (test-db, test-api)
+- **prod**: Servicios de entorno de producción (api)
+
 ## Archivos principales
 
-- **docker-compose.yml**: Configuración de todos los servicios
-- **rebuild_all_containers.bat**: Script para Windows que reconstruye y reinicia todos los contenedores
-- **restar_all_containers.sh**: Script para Linux/Mac que reconstruye y reinicia todos los contenedores
+- **docker-compose.yml**: Configuración de todos los servicios con perfiles
+- **rebuild_all_containers.bat**: Script para Windows que reconstruye y reinicia contenedores (soporta perfiles)
+- **rebuild_all_containers.sh**: Script para Linux/Mac que reconstruye y reinicia contenedores (soporta perfiles)
 
 ## Pasos para ejecutar los contenedores
 
@@ -35,9 +43,16 @@ El proyecto Refereezy está compuesto por varios servicios:
    ```powershell
    cd path\to\refereezy-project\scripts
    ```
-3. Ejecuta el script de Windows:
+3. Ejecuta el script de Windows con el perfil deseado:
    ```powershell
-   .\rebuild_all_containers.bat
+   # Para todos los servicios (por defecto):
+   .\rebuild_all_containers.bat all
+   
+   # Solo para servicios comunes y de pruebas:
+   .\rebuild_all_containers.bat test
+   
+   # Solo para servicios comunes y de producción:
+   .\rebuild_all_containers.bat prod
    ```
 
 #### En Linux/Mac:
@@ -49,14 +64,39 @@ El proyecto Refereezy está compuesto por varios servicios:
    ```
 3. Dale permisos de ejecución al script (solo la primera vez):
    ```bash
-   chmod +x restar_all_containers.sh
+   chmod +x rebuild_all_containers.sh
    ```
-4. Ejecuta el script:
+4. Ejecuta el script con el perfil deseado:
    ```bash
-   ./restar_all_containers.sh
+   # Para todos los servicios (por defecto):
+   ./rebuild_all_containers.sh all
+   
+   # Solo para servicios comunes y de pruebas:
+   ./rebuild_all_containers.sh test
+   
+   # Solo para servicios comunes y de producción:
+   ./rebuild_all_containers.sh prod
    ```
 
-### Opción 2: Ejecución manual paso a paso
+### Opción 2: Usando Docker Compose directamente
+
+También puedes iniciar los servicios directamente con Docker Compose:
+
+```bash
+# Para iniciar todos los servicios
+docker-compose --profile common --profile test --profile prod up -d
+
+# Solo para servicios comunes y de pruebas
+docker-compose --profile common --profile test up -d
+
+# Solo para servicios comunes y de producción
+docker-compose --profile common --profile prod up -d
+
+# Para detener todos los servicios
+docker-compose down
+```
+
+### Opción 3: Ejecución manual paso a paso
 
 Si prefieres ejecutar los pasos manualmente:
 
@@ -84,11 +124,12 @@ Si prefieres ejecutar los pasos manualmente:
    docker build -t api-app:latest .
    ```
 
-2. **Iniciar los contenedores**:
+2. **Iniciar los contenedores con el perfil deseado**:
 
    ```bash
    cd ../scripts
-   docker-compose up -d
+   # Para iniciar todos los servicios
+   docker-compose --profile common --profile test --profile prod up -d
    ```
 
 3. **Verificar que los contenedores estén funcionando**:
