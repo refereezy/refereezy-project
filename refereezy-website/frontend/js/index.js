@@ -11,12 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // URLs de pago simuladas
         const paymentUrls = {
             exceptional: {
-                monthly: "https://ejemplo.com/pago/exceptional-mensual",
-                annual: "https://ejemplo.com/pago/exceptional-anual"
+                monthly: "https://buy.stripe.com/test_5kAaFV3kS3jW1fq7ss",
+                annual: "https://buy.stripe.com/test_aFa00l5I47BL8qx60O48001"
             },
             enterprise: {
-                monthly: "https://ejemplo.com/pago/enterprise-mensual",
-                annual: "https://ejemplo.com/pago/enterprise-anual"
+                monthly: "https://buy.stripe.com/test_eVqcN76M809j229bl848002",
+                annual: "https://buy.stripe.com/test_3cIeVf3zWbS136d1Ky48003"
             }
         };
         
