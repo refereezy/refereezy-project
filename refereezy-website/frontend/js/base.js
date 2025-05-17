@@ -5,7 +5,7 @@
 
 // Global API URL - centralized configuration
 // This URL should be updated to match the backend server's address: http://refereezy.smcardona.tech:8080
-const API_URL = "http://localhost:8080";
+const API_URL = "http://localhost:8888";
 
 /**
  * Shows a toast notification

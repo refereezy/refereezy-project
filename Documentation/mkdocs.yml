@@ -103,18 +103,17 @@ nav:
   - index.ca.md
   - index.es.md
 
-  # Empresa
   - Empresa:
     - empresa/empresa.md
 
   - Aplicació Rellotge:
-    - app-rellotge/app-rellotge.md
+    - apps_android/app_rellotge/aplicacio-rellotge.md
 
   - Aplicació Mòbil:
-    - app-mobile/app-mobile.md
+    - apps_android/app_mobile/app-mobile.md
 
   - Aplicació Web:
-    - app-web/app-web.md
+    - app_web/app-web.md
 
   - Sistemes:
     - sistemes/sistemes.md
