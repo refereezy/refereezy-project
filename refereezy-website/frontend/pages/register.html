@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="../style/register.css">
 </head>
 <body>
-    <div class="min-h-screen">
-        <!-- Navigation -->
+    <div class="min-h-screen">        <!-- Navigation -->
         <nav class="nav-bar">
             <div class="nav-container">
                 <div class="nav-content">
@@ -23,9 +22,25 @@
                         <a href="./planes.html" class="nav-item">Planes</a>
                         <a href="./login.html" class="login-button">Iniciar Sesión</a>
                     </div>
+                    
+                    <!-- Hamburger Menu for Mobile -->
+                    <div class="hamburger-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav">
+            <ul class="mobile-nav-links">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="./planes.html">Planes</a></li>
+            </ul>
+            <a href="./login.html" class="mobile-login-button">Iniciar Sesión</a>
+        </div>
 
         <!-- Register Form -->
         <main class="register-section">
@@ -74,8 +89,8 @@
                 </div>
             </div>
         </main>
-    </div>
-    <script src="../js/base.js"></script>
+    </div>    <script src="../js/base.js"></script>
     <script src="../js/register.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 </html>

@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="../style/arbitros.css">
 </head>
 <body>
-    <div class="min-h-screen">
-        <!-- Navigation -->
+    <div class="min-h-screen">        <!-- Navigation -->
         <nav class="nav-bar">
             <div class="nav-container">
                 <div class="nav-content">
@@ -24,10 +23,29 @@
                           <li><a href="./planes.html">Planes</a></li>
                           <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
                         </ul>
+                        
+                        <!-- Hamburger Menu for Mobile -->
+                        <div class="hamburger-menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </nav>
                 </div>
             </div>
         </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav">
+            <ul class="mobile-nav-links">
+                <li><a href="./equipos.html">Equipos</a></li>
+                <li><a href="./jugadores.html">Jugadores</a></li>
+                <li><a href="./arbitros.html">Árbitros</a></li>
+                <li><a href="./partidos.html">Partidos</a></li>
+                <li><a href="./planes.html">Planes</a></li>
+                <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+            </ul>
+        </div>
 
         <!-- Gestión de Árbitros Section -->
         <main class="referees-section">
@@ -87,9 +105,9 @@
                 </div>
             </div>
         </div>
-    </div>
-    <script src="../js/base.js"></script>
+    </div>    <script src="../js/base.js"></script>
     <script src="../js/listar-arbitros.js"></script>
     <script src="../js/crear-arbitros.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 </html>

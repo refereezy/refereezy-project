@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <div class="min-h-screen">
-        <!-- Navigation -->
+    <div class="min-h-screen">        <!-- Navigation -->
         <nav class="nav-bar">
             <div class="nav-container">
                 <div class="nav-content">
@@ -25,9 +24,25 @@
                         <a href="planes.html" class="nav-item">Planes</a>
                         <button class="login-button" onclick="window.location.href='./login.html'">Account</button>
                     </div>
+                    
+                    <!-- Hamburger Menu for Mobile -->
+                    <div class="hamburger-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav">
+            <ul class="mobile-nav-links">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="planes.html">Planes</a></li>
+                <li><a href="./login.html">Account</a></li>
+            </ul>
+        </div>
 
         <!-- Planes Section -->
         <main class="plans-section">
@@ -284,10 +299,11 @@
                     price.classList.toggle('active', !isAnnual);
                 });
                 annualPrices.forEach(price => {
-                    price.classList.toggle('active', isAnnual);
-                });
+                    price.classList.toggle('active', isAnnual);                });
             }
         });
     </script>
+    <script src="../js/base.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 </html>

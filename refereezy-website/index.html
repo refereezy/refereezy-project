@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <div class="min-h-screen">
-        <!-- Navigation -->
+    <div class="min-h-screen">        <!-- Navigation -->
         <nav class="nav-bar">
             <div class="nav-container">
                 <div class="nav-content">
@@ -23,15 +22,31 @@
                         <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="Refereezy Digital Sport" class="logo">
                     </div>
                     
-                    <!-- Navigation Links -->
+                    <!-- Navigation Links for Desktop -->
                     <div class="nav-links">
                         <a id="inicio" href="index.html" class="nav-item">Inicio</a>
                         <a href="./frontend/pages/planes.html" class="nav-item">Planes</a>
                         <button class="login-button" onclick="window.location.href='./frontend/pages/login.html'">Iniciar sesión</button>
                     </div>
+                    
+                    <!-- Hamburger Menu for Mobile -->
+                    <div class="hamburger-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav">
+            <ul class="mobile-nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="./frontend/pages/planes.html">Planes</a></li>
+            </ul>
+            <a href="./frontend/pages/login.html" class="mobile-login-button">Iniciar sesión</a>
+        </div>
 
         <!-- Hero Section Mejorado -->
         <main>
@@ -335,8 +350,8 @@
                 &copy; 2025 Refereezy. Todos los derechos reservados.
             </div>
         </footer>
-    </div>
-    <script src="frontend/js/base.js"></script>
+    </div>    <script src="frontend/js/base.js"></script>
     <script src="frontend/js/index.js"></script>
+    <script src="frontend/js/menu.js"></script>
 </body>
 </html>

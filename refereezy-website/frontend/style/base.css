@@ -98,6 +98,97 @@ body {
     margin-top: 70px;
 }
 
+/* Menú Hamburguesa para móvil */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    margin-right: 1.5rem;
+    z-index: 200;
+}
+
+.hamburger-menu span {
+    width: 100%;
+    height: 3px;
+    background-color: var(--text);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Mobile Nav */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    height: 100vh;
+    background-color: var(--nav-bg);
+    z-index: 150;
+    padding-top: 80px;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-nav.active {
+    right: 0;
+}
+
+.mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+
+.mobile-nav-links li {
+    margin: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-links li a {
+    display: block;
+    padding: 1.25rem 2rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.mobile-nav-links li a:hover {
+    color: var(--primary);
+    background-color: rgba(126, 217, 87, 0.1);
+}
+
+.mobile-login-button {
+    background-color: var(--primary);
+    color: black;
+    padding: 1.25rem 2rem;
+    text-align: center;
+    margin: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: block;
+    border-radius: 0.25rem;
+}
+
+.mobile-login-button:hover {
+    background-color: var(--hover);
+}
+
 
 .dashboard-main {
     max-width: 800px;
@@ -109,6 +200,20 @@ body {
 @media (max-width: 768px) {
     .nav-links {
         display: none;
+    }
+    
+    .hamburger-menu {
+        display: flex;
+    }
+    
+    .dashboard-main {
+        padding: 0 1rem;
+        margin-top: 3rem;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 20% auto;
     }
 }
 
