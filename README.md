@@ -1,5 +1,5 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/refereezy/refereezy-project)
-<div style="width: 100%;"><img src="logo.png" width="700px" style="margin: 0 auto;"> </div>
+<div style="width: 100%;"><img src="https://res.cloudinary.com/dcdbcstoj/image/upload/v1747515257/logos_equipos/ebxjrrsgzldsfhtmqmqj.png" width="700px" style="margin: 0 auto;"> </div>
 
 # Refereezy - Digitalitzem l'esport, automatitzem actes, proporcionem seguiment en directe.
 
@@ -22,10 +22,9 @@ Refereezy is a comprehensive platform designed to revolutionize sports match man
 
 This project is being developed by a team of 4 Higher Degree Computer Science students:
 
-- **Santiago Muñoz** - Lead Developer
-- **Ismael Younes** - Backend Developer
-- **Anguelina Levchenko** - Frontend Developer
-- **Jesus Guerrero** - Mobile Developer
+- **Santiago Muñoz**
+- **Ismael Younes**
+- **Anguelina Levchenko**
 
 ## Documentation
 

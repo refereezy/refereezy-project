@@ -1,40 +1,32 @@
-# Refereezy Documentation
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/refereezy/refereezy-project)
 
-## Platform Overview
+<div style="width: 100%;"><img src="https://res.cloudinary.com/dcdbcstoj/image/upload/v1747515257/logos_equipos/ebxjrrsgzldsfhtmqmqj.png" width="700px" style="margin: 0 auto;"> </div>
 
-Refereezy is a comprehensive platform designed to digitize sports management, with a specific focus on match organization, referee management, and real-time reporting. The platform consists of multiple components working together to provide a seamless experience for all users.
+# Refereezy - Digitalitzem l'esport, automatitzem actes, proporcionem seguiment en directe.
+
+> A modern platform for sports match management, referee reporting, and real-time match monitoring.
+
+## About The Project
+
+Refereezy is a comprehensive platform designed to revolutionize sports match management through digital innovation. Our system allows organizers to schedule private matches with their own players, enables referees to generate match reports in real-time, and provides live match monitoring through a web interface.
 
 ## Key Components
 
-### Website for Match Organization
-- Schedule private matches
-- Manage your own players and teams
-- Organize tournaments and leagues
+- **Website Portal**: Schedule matches, manage teams, and organize tournaments
+- **Mobile App**: For referees to record match incidents and manage timekeeping
+- **Watch App**: Companion app for smartwatches to quickly record incidents
+- **Web App**: Real-time display of ongoing matches and match reports
+- **API**: Backend system for data storage and management
+- **Real-time System**: Firebase integration for instant updates across all platforms
 
-### Mobile and Watch Apps for Referees
-- Record match incidents in real-time
-- Manage timekeeping
-- Generate official match reports
+## Team
 
-### Real-time Web Display
-- View live match progress
-- Follow incidents as they happen
-- Access completed match reports instantly
+This project is being developed by a team of 3 Higher Degree Computer Science students:
 
-### API & Data Storage
-- RESTful API for persistent data
-- Firebase integration for real-time updates
-- Secure and scalable architecture
+- **Santiago Muñoz**
+- **Ismael Younes**
+- **Anguelina Levchenko**
 
-## Getting Started
+## Documentation
 
-To begin exploring the Refereezy ecosystem, you can:
-
-1. Check out the [Company Overview](empresa/overview.md) to learn about our mission
-2. See our [Applications](apps/app_web/overview.md) documentation to understand each component
-3. If you're a developer, visit our [Development Guide](development/getting-started.md)
-4. For system administrators, the [Systems Documentation](sysadmin/overview.md) provides deployment details
-
----
-
-*Note for documentation contributors: This is a template structure. Please add detailed information about each component, with screenshots, diagrams, and step-by-step guides where appropriate.*
+For complete documentation, visit our [Documentation Portal](https://refereezy.smcardona.tech/docs/) or browse the `Documentation` folder in this repository.
