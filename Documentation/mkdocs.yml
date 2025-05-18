@@ -99,17 +99,13 @@ plugins:
 # TOC
 nav:
   # Introduction
-  - index.md
-  - index.ca.md
-  - index.es.md
+  - index.md  
 
   - Empresa:
     - empresa/empresa.md
 
-  - Aplicació Rellotge:
+  - Aplicacións Android:
     - apps_android/app_rellotge/aplicacio-rellotge.md
-
-  - Aplicació Mòbil:
     - apps_android/app_mobile/app-mobile.md
 
   - Aplicació Web:
