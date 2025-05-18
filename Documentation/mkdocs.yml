@@ -130,7 +130,6 @@ nav:
       - Technical Documentation: apps/app_mobile/technical.md
       - User Manual: apps/app_mobile/user-manual.md
       - Català: apps/app_mobile/app-mobile.ca.md
-      - Español: apps/app_mobile/app-mobile.es.md
     
     - Web App / Web:
       - Overview: apps/app_web/overview.md
@@ -138,14 +137,12 @@ nav:
       - Technical Documentation: apps/app_web/technical.md
       - User Manual: apps/app_web/user-manual.md
       - Català: apps/app_web/app-web.ca.md
-      - Español: apps/app_web/app-web.es.md
     
     - Website / Web Pública:
       - Overview: apps/website/overview.md
       - Features: apps/website/features.md
       - Technical Documentation: apps/website/technical.md
       - Català: apps/website/website.ca.md
-      - Español: apps/website/website.es.md
   
   - API Documentation:
     - Overview: api/overview.md
@@ -160,7 +157,6 @@ nav:
     - Database Schema: api/database-schema.md
     - Realtime Features: api/realtime.md
     - Català: api/api.ca.md
-    - Español: api/api.es.md
   
   - Development / Desenvolupament:
     - Getting Started: development/getting-started.md
@@ -170,7 +166,6 @@ nav:
     - Firebase Integration: development/firebase.md
     - Contributing: development/contributing.md
     - Català: development/desenvolupament.ca.md
-    - Español: development/desarrollo.es.md
   
   - System Administration / Sistemes:
     - Infrastructure Overview: sysadmin/overview.md
@@ -183,7 +178,6 @@ nav:
     - Network Configuration: sysadmin/network.md
     - Deployment: sysadmin/deployment.md
     - Català: sysadmin/sistemes.ca.md
-    - Español: sysadmin/sistemas.es.md
 
 
 
