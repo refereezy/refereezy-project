@@ -98,7 +98,6 @@ plugins:
 
 # TOC
 nav:
-  # Introduction
 
   - Sobre nosaltres:
     - Overview: empresa/overview.md
@@ -112,18 +111,15 @@ nav:
       - getting-started.md
     - Característiques: 
       - features.md
+
   - Aplicacions:
     - apps/index.md
     - Rellotge:
       - Overview: apps/app_rellotge/overview.md
-    
     - Mòbil:
       - Overview: apps/app_mobile/overview.md
-
-
     - Web de'Administració:
       - Overview: apps/app_web/overview.md
-    
     - Web Pública:
       - Overview: apps/website/overview.md
   
@@ -150,15 +146,15 @@ nav:
     - Contributing: development/contributing.md
 
   
-  - System Administration / Sistemes:
-    - Infrastructure Overview: sysadmin/overview.md
-    - Servers Configuration: 
-      - Server 1: sysadmin/servers/server1.md
-      - Server 2: sysadmin/servers/server2.md
-      - Mail Server: sysadmin/servers/mailserver.md
-    - AWS Setup: sysadmin/aws.md
-    - Network Configuration: sysadmin/network.md
-    - Deployment: sysadmin/deployment.md
+  - Administració de Sistemes:
+    - sysadmin/index.md
+    - Estructura de xarxa:
+      - estructura_xarxa.md
+    - Configuració equips físics: 
+      - Router: sysadmin/router.md
+      - Server 1: sysadmin/server1.md
+      - Server 2: sysadmin/server2.md
+    - Configuració al núvol: sysadmin/aws.md
 
 
 
