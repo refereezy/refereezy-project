@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
 
         // Carga con Glide el logo de Refereezy
         Glide.with(this)
-            .load("https://github.com/refereezy/refereezy-project/blob/main/Logo/6-sinfondo.png?raw=true")
+            .load(R.drawable.login_fondo)
             .into(findViewById(R.id.logo))
 
         // campos de login

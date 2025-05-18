@@ -7,7 +7,6 @@ This directory contains the FastAPI backend for the Refereezy platform. The API 
 - RESTful API endpoints for matches, teams, players, referees and clock management
 - PostgreSQL database for persistent data storage
 - Firebase integration for real-time updates
-- JWT authentication
 - Docker containerization
 
 ## Quick Start
