@@ -9,7 +9,6 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:background="@color/white"
         android:scaleType="fitCenter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
