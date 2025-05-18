@@ -101,9 +101,7 @@ nav:
   # Introduction
 
   - Sobre nosaltres:
-    - Overview: empresa/overview.md
-    - Team / Equip: empresa/team.md
-    - Vision / Visió: empresa/vision.md
+    - English: empresa/overview.md
     - Català: empresa/empresa.ca.md
     - Español: empresa/empresa.es.md
   
@@ -113,8 +111,8 @@ nav:
       - getting-started.md
     - Característiques: 
       - features.md
-
   - Aplicacions:
+    - apps/index.md
     - Watch App / Rellotge:
       - Overview: apps/app_rellotge/overview.md
       - Features: apps/app_rellotge/features.md
@@ -130,6 +128,21 @@ nav:
       - Technical Documentation: apps/app_mobile/technical.md
       - User Manual: apps/app_mobile/user-manual.md
       - Català: apps/app_mobile/app-mobile.ca.md
+    
+    - App Pairing / Aparellament:
+      - Overview: apps/app_pairing/overview.md
+      - Mobile App Pairing: apps/app_pairing/mobile_pairing.md
+      - Watch App Pairing: apps/app_pairing/watch_pairing.md
+      - Communication Flow: apps/app_pairing/communication_flow.md
+      - Technical Implementation: apps/app_pairing/technical_implementation.md
+      - Troubleshooting: apps/app_pairing/pairing_troubleshooting.md
+      - Català:
+        - Overview: apps/app_pairing/overview.ca.md
+        - Mobile App Pairing: apps/app_pairing/mobile_pairing.ca.md
+        - Watch App Pairing: apps/app_pairing/watch_pairing.ca.md
+        - Communication Flow: apps/app_pairing/communication_flow.ca.md
+        - Technical Implementation: apps/app_pairing/technical_implementation.ca.md
+        - Troubleshooting: apps/app_pairing/pairing_troubleshooting.ca.md
     
     - Web App / Web:
       - Overview: apps/app_web/overview.md
