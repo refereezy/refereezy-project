@@ -102,10 +102,9 @@ nav:
 
   - Sobre nosaltres:
     - Overview: empresa/overview.md
-    - Team / Equip: empresa/team.md
-    - Vision / Visió: empresa/vision.md
-    - Català: empresa/empresa.ca.md
-    - Español: empresa/empresa.es.md
+    - Equip: empresa/team.md
+    - Visió: empresa/vision.md
+
   
   - Introducció:
     - index.md
@@ -115,34 +114,32 @@ nav:
       - features.md
 
   - Aplicacions:
-    - Watch App / Rellotge:
+    - Rellotge:
       - Overview: apps/app_rellotge/overview.md
       - Features: apps/app_rellotge/features.md
       - Technical Documentation: apps/app_rellotge/technical.md
       - User Manual: apps/app_rellotge/user-manual.md
-      - Català: 
-        - apps/app_rellotge/aplicacio-rellotge.ca.md
-      - Español: apps/app_rellotge/aplicacio-rellotge.es.md
+
     
     - Mobile App / Mòbil:
       - Overview: apps/app_mobile/overview.md
       - Features: apps/app_mobile/features.md
       - Technical Documentation: apps/app_mobile/technical.md
       - User Manual: apps/app_mobile/user-manual.md
-      - Català: apps/app_mobile/app-mobile.ca.md
+
     
     - Web App / Web:
       - Overview: apps/app_web/overview.md
       - Features: apps/app_web/features.md
       - Technical Documentation: apps/app_web/technical.md
       - User Manual: apps/app_web/user-manual.md
-      - Català: apps/app_web/app-web.ca.md
+
     
-    - Website / Web Pública:
+    - Web Pública:
       - Overview: apps/website/overview.md
       - Features: apps/website/features.md
       - Technical Documentation: apps/website/technical.md
-      - Català: apps/website/website.ca.md
+
   
   - API Documentation:
     - Overview: api/overview.md
@@ -156,28 +153,27 @@ nav:
       - Clock: api/endpoints/clock.md
     - Database Schema: api/database-schema.md
     - Realtime Features: api/realtime.md
-    - Català: api/api.ca.md
+
   
-  - Development / Desenvolupament:
+  - Desenvolupament:
     - Getting Started: development/getting-started.md
     - Environment Setup: development/environment-setup.md
     - Architecture: development/architecture.md
     - Docker Containers: development/docker.md
     - Firebase Integration: development/firebase.md
     - Contributing: development/contributing.md
-    - Català: development/desenvolupament.ca.md
+
   
   - System Administration / Sistemes:
     - Infrastructure Overview: sysadmin/overview.md
     - Servers Configuration: 
-      - General: sysadmin/servers/general.md
       - Server 1: sysadmin/servers/server1.md
       - Server 2: sysadmin/servers/server2.md
       - Mail Server: sysadmin/servers/mailserver.md
     - AWS Setup: sysadmin/aws.md
     - Network Configuration: sysadmin/network.md
     - Deployment: sysadmin/deployment.md
-    - Català: sysadmin/sistemes.ca.md
+
 
 
 
