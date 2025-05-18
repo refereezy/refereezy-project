@@ -1,0 +1,161 @@
+<!-- Home interna tras el login -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel de Control - Refereezy</title>
+  <link rel="stylesheet" href="../style/base.css" />
+  <link rel="stylesheet" href="../style/dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+    <nav class="nav-bar">
+      <div class="nav-container">
+          <div class="nav-content">
+              <!-- Navigation Links -->
+              <nav class="dashboard-nav">
+                  <div class="nav-logo">Refereezy ⚽</div>
+                  <ul class="nav-links">
+                    <li><a href="./equipos.html">Equipos</a></li>
+                    <li><a href="./jugadores.html">Jugadores</a></li>
+                    <li><a href="./arbitros.html">Árbitros</a></li>
+                    <li><a href="./partidos.html">Partidos</a></li>
+                    <li><a href="./planes.html">Planes</a></li>
+                    <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+                  </ul>
+                  
+                  <!-- Hamburger Menu for Mobile -->
+                  <div class="hamburger-menu">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                  </div>
+              </nav>
+          </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav">
+      <ul class="mobile-nav-links">
+        <li><a href="./equipos.html">Equipos</a></li>
+        <li><a href="./jugadores.html">Jugadores</a></li>
+        <li><a href="./arbitros.html">Árbitros</a></li>
+        <li><a href="./partidos.html">Partidos</a></li>
+        <li><a href="./planes.html">Planes</a></li>
+        <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+      </ul>
+    </div>
+
+  <main class="min-h-screen dashboard-main">
+    
+
+    <h1>👋 Bienvenido a tu Panel de Control</h1>
+    <p class="subtitle">Gestiona todos tus recursos deportivos desde un solo lugar</p>
+    
+    <!-- Estadísticas del cliente -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-value" id="total-equipos">0</div>
+        <div class="stat-label">Equipos</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-running"></i>
+        </div>
+        <div class="stat-value" id="total-jugadores">0</div>
+        <div class="stat-label">Jugadores</div>
+      </div>
+        <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <div class="stat-value" id="total-arbitros">0</div>
+        <div class="stat-label">Árbitros</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-futbol"></i>
+        </div>
+        <div class="stat-value" id="total-partidos">0</div>
+        <div class="stat-label">Partidos</div>
+      </div>
+    </div>
+    
+    <!-- Accesos directos -->
+    <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary);">Accesos Rápidos</h2>
+    <div class="shortcuts-container">
+      <a href="./equipos.html" class="shortcut-card">
+        <div class="shortcut-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="shortcut-label">Gestionar Equipos</div>
+      </a>
+      
+      <a href="./jugadores.html" class="shortcut-card">
+        <div class="shortcut-icon">
+          <i class="fas fa-running"></i>
+        </div>
+        <div class="shortcut-label">Gestionar Jugadores</div>
+      </a>
+      
+      <a href="./arbitros.html" class="shortcut-card">
+        <div class="shortcut-icon">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <div class="shortcut-label">Gestionar Árbitros</div>
+      </a>
+      
+      <a href="./partidos.html" class="shortcut-card">
+        <div class="shortcut-icon">
+          <i class="fas fa-futbol"></i>
+        </div>
+        <div class="shortcut-label">Gestionar Partidos</div>
+      </a>
+      
+      <a href="./planes.html" class="shortcut-card">
+        <div class="shortcut-icon">
+          <i class="fas fa-certificate"></i>
+        </div>
+        <div class="shortcut-label">Cambiar Plan</div>
+      </a>
+    </div>
+    
+    <!-- Información del cliente -->
+    <div class="user-info-container">
+      <div class="user-info-header">
+        <h2 class="user-info-title">Información de tu cuenta</h2>
+      </div>
+      
+      <div class="user-info-content">
+        <div class="user-detail">
+          <span class="detail-label">Nombre</span>
+          <span class="detail-value" id="client-name">Cargando...</span>
+        </div>
+        
+        <div class="user-detail">
+          <span class="detail-label">Correo electrónico</span>
+          <span class="detail-value" id="client-email">Cargando...</span>
+        </div>
+        
+        <div class="user-detail">
+          <span class="detail-label">Plan actual</span>
+          <span class="plan-badge" id="client-plan">Cargando...</span>
+          <div class="plan-expiration">Expira: <span id="plan-expiration">Cargando...</span></div>
+        </div>
+      </div>
+    </div>  </main>
+  
+  <script src="../js/base.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/menu.js"></script>
+</html>

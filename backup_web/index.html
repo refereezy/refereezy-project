@@ -1,14 +1,19 @@
+<!-- Pàgina pública -->
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refereezy - Digital Sport</title>
+    <title>Refereezy - Gestión digital para el deporte</title>
+    <link rel="stylesheet" href="frontend/style/base.css">
     <link rel="stylesheet" href="frontend/style/styles.css">
+    <!-- Añadimos otros estilos relevantes para mostrar demostraciones -->
+    <link rel="stylesheet" href="frontend/style/planes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <div class="min-h-screen">
-        <!-- Navigation -->
+    <div class="min-h-screen">        <!-- Navigation -->
         <nav class="nav-bar">
             <div class="nav-container">
                 <div class="nav-content">
@@ -17,27 +22,44 @@
                         <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="Refereezy Digital Sport" class="logo">
                     </div>
                     
-                    <!-- Navigation Links -->
+                    <!-- Navigation Links for Desktop -->
                     <div class="nav-links">
-                        <a id="inicio" href="index.html" class="nav-item">Inicio<span class="separator"></span></a>
-                        <a id="equipos" href="frontend/pages/equipos.html" class="nav-item">Equipos<span class="separator"></span></a>
-                        <a id="jugadores" href="frontend/pages/jugadores.html" class="nav-item">Jugadores<span class="separator"></span></a>
-                        <a id="arbitros" href="frontend/pages/arbitros.html" class="nav-item">Arbitros<span class="separator"></span></a>
-                        <a id="partidos" href="frontend/pages/partidos.html" class="nav-item">Partidos<span class="separator"></span></a>
-                        <a id="planes" href="frontend/pages/planes.html" class="nav-item">Planes</a>
-                        <button class="login-button" onclick="window.location.href='frontend/pages/login.html'">Iniciar sesión</button>
+                        <a id="inicio" href="index.html" class="nav-item">Inicio</a>
+                        <a href="./frontend/pages/planes.html" class="nav-item">Planes</a>
+                        <button class="login-button" onclick="window.location.href='./frontend/pages/login.html'">Iniciar sesión</button>
+                    </div>
+                    
+                    <!-- Hamburger Menu for Mobile -->
+                    <div class="hamburger-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav">
+            <ul class="mobile-nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="./frontend/pages/planes.html">Planes</a></li>
+            </ul>
+            <a href="./frontend/pages/login.html" class="mobile-login-button">Iniciar sesión</a>
+        </div>
 
-        <!-- Hero Section -->
+        <!-- Hero Section Mejorado -->
         <main>
             <div class="hero-container">
                 <div class="hero-content">
                     <div class="hero-text">
-                        <h1>Bienvenido a Refereezy</h1>
-                        <p>Refereezy es la plataforma líder para la gestión de datos de fútbol, incluyendo equipos, partidos y árbitros.</p>
+                        <h1>Simplifica la gestión deportiva con Refereezy</h1>
+                        <p>La plataforma digital que revoluciona la forma de gestionar equipos, jugadores, árbitros y partidos de fútbol.</p>
+                        
+                        <div class="cta-buttons" style="margin-top: 2rem;">
+                            <a href="./frontend/pages/planes.html" class="cta-button cta-primary">Ver planes</a>
+                            <a href="./frontend/pages/register.html" class="cta-button cta-secondary">Registrarse</a>
+                        </div>
                     </div>
                     <!-- Background layers -->
                     <div class="hero-overlay"></div>
@@ -46,8 +68,290 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Sección de características principales -->
+            <section class="section">
+                <div class="section-title">
+                    <h2>Todo lo que necesitas en una sola plataforma</h2>
+                    <p>Refereezy te ofrece herramientas completas para la gestión de todos los aspectos de tu organización deportiva</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="feature-title">Gestión de Equipos</h3>
+                        <p class="feature-description">Administra los equipos de tu liga con facilidad, incluyendo colores, escudos y toda la información relevante.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h3 class="feature-title">Control de Jugadores</h3>
+                        <p class="feature-description">Mantén un registro detallado de todos los jugadores, incluyendo estadísticas, posiciones y datos personales.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3 class="feature-title">Árbitros Organizados</h3>
+                        <p class="feature-description">Asigna árbitros a los partidos y mantén un control sobre su desempeño y disponibilidad.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-futbol"></i>
+                        </div>
+                        <h3 class="feature-title">Partidos y Calendarios</h3>
+                        <p class="feature-description">Programa partidos fácilmente con un sistema intuitivo que te permite filtrar por equipos y fechas.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sección de demostración de equipos -->
+            <section class="section">
+                <div class="demo-container">
+                    <div class="demo-header">
+                        <h2 class="demo-title">Gestión de Equipos</h2>
+                        <div class="demo-actions">
+                            <button class="secondary-button">Vista previa</button>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-content">
+                        <div class="teams-demo-grid">
+                            <div class="team-demo-card">
+                                <div class="team-logo">
+                                    <span style="color: #000; font-weight: bold;">FC</span>
+                                </div>
+                                <h3>FC Barcelona</h3>
+                                <div class="team-colors">
+                                    <div class="team-color" style="background-color: #a50044;"></div>
+                                    <div class="team-color" style="background-color: #004d98;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="team-demo-card">
+                                <div class="team-logo">
+                                    <span style="color: #000; font-weight: bold;">RM</span>
+                                </div>
+                                <h3>Real Madrid</h3>
+                                <div class="team-colors">
+                                    <div class="team-color" style="background-color: #ffffff;"></div>
+                                    <div class="team-color" style="background-color: #00529f;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="team-demo-card">
+                                <div class="team-logo">
+                                    <span style="color: #000; font-weight: bold;">AM</span>
+                                </div>
+                                <h3>Atlético de Madrid</h3>
+                                <div class="team-colors">
+                                    <div class="team-color" style="background-color: #e63946;"></div>
+                                    <div class="team-color" style="background-color: #ffffff;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="team-demo-card">
+                                <div class="team-logo">
+                                    <span style="color: #000; font-weight: bold;">SV</span>
+                                </div>
+                                <h3>Sevilla FC</h3>
+                                <div class="team-colors">
+                                    <div class="team-color" style="background-color: #ffffff;"></div>
+                                    <div class="team-color" style="background-color: #f1333e;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección de demostración de partidos -->
+                <div class="demo-container">
+                    <div class="demo-header">
+                        <h2 class="demo-title">Gestión de Partidos</h2>
+                        <div class="demo-actions">
+                            <button class="secondary-button">Vista previa</button>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-content">
+                        <div class="matches-grid">
+                            <div class="matches-grid-header">
+                                <div>Fecha</div>
+                                <div>Equipos</div>
+                                <div>Árbitro</div>
+                                <div>Estado</div>
+                            </div>
+                            
+                            <div class="match-item">
+                                <div>05/05/2025 - 19:00</div>
+                                <div>FC Barcelona vs Real Madrid</div>
+                                <div>Carlos Gómez</div>
+                                <div><span style="color: #3498db;">Programado</span></div>
+                            </div>
+                            
+                            <div class="match-item">
+                                <div>10/05/2025 - 18:30</div>
+                                <div>Atlético de Madrid vs Sevilla FC</div>
+                                <div>María Rodríguez</div>
+                                <div><span style="color: #3498db;">Programado</span></div>
+                            </div>
+                            
+                            <div class="match-item">
+                                <div>12/05/2025 - 20:00</div>
+                                <div>Valencia CF vs Villarreal</div>
+                                <div>Pendiente asignar</div>
+                                <div><span style="color: #f39c12;">Sin árbitro</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Planes destacados -->
+            <section class="section">
+                <div class="section-title">
+                    <h2>Nuestros Planes</h2>
+                    <p>Elige el plan perfecto para tu organización deportiva</p>
+                </div>
+                
+                <!-- Billing Toggle -->
+                <div class="billing-toggle-container" style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                    <span class="billing-option" style="font-weight: 500; opacity: 0.7;">Mensual</span>
+                    <label class="billing-switch" style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                        <input type="checkbox" id="billingToggleHome" checked style="opacity: 0; width: 0; height: 0;">
+                        <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #444; border-radius: 34px; transition: .4s;"></span>
+                    </label>
+                    <span class="billing-option active" style="font-weight: 500; opacity: 0.7; color: var(--primary);">Anual <span style="background-color: var(--primary); color: black; padding: 0.2rem 0.5rem; border-radius: 1rem; font-size: 0.8rem; margin-left: 0.5rem; font-weight: bold;">Ahorra 20%</span></span>
+                </div>
+                
+                <div class="plans-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                    <!-- Plan Eazy -->
+                    <div class="plan-card eazy" data-plan="eazy" style="position: relative; background-color: #2b2b2b; border-radius: 1rem; padding: 2rem; text-align: center; border: 2px solid transparent; overflow: hidden;">
+                        <h2>Plan Eazy</h2>
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Captura%20de%20pantalla%202025-02-23%20001742-wPFQ6qYgU4MBerSjpBbLvZy18iGHam.png" alt="Plan Eazy" style="width: 80px; margin: 1rem auto;">
+                        <div style="margin-top: 1.5rem;">
+                            <span style="font-size: 1.8rem; font-weight: bold;">Gratis</span>
+                            <ul style="list-style: none; text-align: left; margin-top: 1.5rem;">
+                                <li style="margin-bottom: 0.5rem; display: flex; align-items: center;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> Prueba gratuita (1 partido)</li>
+                                <li style="margin-bottom: 0.5rem; display: flex; align-items: center;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> Incluye anuncios</li>
+                                <li style="margin-bottom: 0.5rem; display: flex; align-items: center; opacity: 0.6;"><i class="fas fa-times" style="color: #777; margin-right: 0.5rem;"></i> App Reloj</li>
+                            </ul>
+                        </div>
+                        <button onclick="window.location.href='./frontend/pages/register.html'" style="background-color: var(--primary); color: black; border: none; border-radius: 0.5rem; padding: 1rem; width: 100%; margin-top: 1.5rem; font-weight: 600; cursor: pointer;">Registrarse Gratis</button>
+                    </div>
+                    
+                    <!-- Plan Exceptional -->
+                    <div class="plan-card exceptional" data-plan="exceptional" style="position: relative; background-color: #2b2b2b; border-radius: 1rem; padding: 2rem; text-align: center; border: 2px solid transparent; overflow: hidden;">
+                        <h2>Plan Exceptional</h2>
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Captura%20de%20pantalla%202025-02-23%20001734-CjvzZQEOSRMca1AVXkiU6OoldmpO1U.png" alt="Plan Exceptional" style="width: 80px; margin: 1rem auto;">
+                        <div style="margin-top: 1.5rem;">
+                            <div class="monthly-price" style="display: none;">
+                                <span style="font-size: 1.8rem; font-weight: bold;">199'95€</span>
+                                <span style="font-size: 1rem; opacity: 0.7;">/mes</span>
+                            </div>
+                            <div class="annual-price" style="display: block;">
+                                <span style="font-size: 1.8rem; font-weight: bold;">174'99€</span>
+                                <span style="font-size: 1rem; opacity: 0.7;">/mes</span>
+                                <div style="font-size: 0.85rem; opacity: 0.7; margin-top: 0.5rem;">2.099'95€ facturados anualmente</div>
+                            </div>
+                            <ul style="list-style: none; text-align: left; margin-top: 1.5rem;">
+                                <li style="margin-bottom: 0.5rem; display: flex; align-items: center;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> App Reloj para árbitros</li>
+                                <li style="margin-bottom: 0.5rem; display: flex; align-items: center;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> App Móvil para árbitros</li>
+                                <li style="margin-bottom: 0.5rem; display: flex; align-items: center;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> App Web (crear y monitorizar)</li>
+                            </ul>
+                        </div>
+                        <button class="purchase-button-home" data-plan="exceptional" style="background-color: var(--primary); color: black; border: none; border-radius: 0.5rem; padding: 1rem; width: 100%; margin-top: 1.5rem; font-weight: 600; cursor: pointer;">Comprar Plan</button>
+                    </div>
+                    
+                    <!-- Plan Enterprise -->
+                    <div class="plan-card enterprise" data-plan="enterprise" style="position: relative; background-color: #2b2b2b; border-radius: 1rem; padding: 2rem; text-align: center; border: 2px solid transparent; overflow: hidden;">
+                        <h2>Plan Enterprise</h2>
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Captura%20de%20pantalla%202025-02-21%20165721-6LseEbk6HibT1qaDBocmUN4SVC8LgS.png" alt="Plan Enterprise" style="width: 80px; margin: 1rem auto;">
+                        <div style="margin-top: 1.5rem;">
+                            <div class="monthly-price" style="display: none;">
+                                <span style="font-size: 1.8rem; font-weight: bold;">1.499'95€</span>
+                                <span style="font-size: 1rem; opacity: 0.7;">/mes</span>
+                            </div>
+                            <div class="annual-price" style="display: block;">
+                                <span style="font-size: 1.8rem; font-weight: bold;">1.124'92€</span>
+                                <span style="font-size: 1rem; opacity: 0.7;">/mes</span>
+                                <div style="font-size: 0.85rem; opacity: 0.7; margin-top: 0.5rem;">13.499€ facturados anualmente</div>
+                            </div>
+                            <ul style="list-style: none; text-align: left; margin-top: 1.5rem;">
+                                <li style="margin-bottom: 0.5rem; display: flex; align-items: center;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> Todo incluido sin restricciones</li>
+                                <li style="margin-bottom: 0.5rem; display: flex; align-items: center;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> API personalizada</li>
+                                <li style="margin-bottom: 0.5rem; display: flex; align-items: center;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> Soporte 24/7</li>
+                            </ul>
+                        </div>
+                        <button class="purchase-button-home" data-plan="enterprise" style="background-color: var(--primary); color: black; border: none; border-radius: 0.5rem; padding: 1rem; width: 100%; margin-top: 1.5rem; font-weight: 600; cursor: pointer;">Comprar Plan</button>
+                    </div>
+                </div>
+                
+                <!-- CTA después de los planes -->
+                <div class="cta-section">
+                    <h2 style="font-size: 2rem; margin-bottom: 1rem;">¿Listo para comenzar?</h2>
+                    <p style="max-width: 600px; margin: 0 auto; margin-bottom: 2rem;">Únete a más de 500 organizaciones deportivas que ya están utilizando Refereezy para simplificar su gestión deportiva.</p>
+                    
+                    <div class="cta-buttons">
+                        <a href="./frontend/pages/register.html" class="cta-button cta-primary">Registrarse ahora</a>
+                        <a href="./frontend/pages/planes.html" class="cta-button cta-secondary">Ver todos los planes</a>
+                    </div>
+                </div>
+            </section>
         </main>
-    </div>
-    <script src="frontend/js/script.js"></script>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Refereezy</h3>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="./frontend/pages/planes.html">Planes</a></li>
+                        <li><a href="#">Sobre nosotros</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Recursos</h3>
+                    <ul>
+                        <li><a href="#">Centro de ayuda</a></li>
+                        <li><a href="#">Tutoriales</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Términos de servicio</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contáctanos</h3>
+                    <ul>
+                        <li><a href="mailto:info@refereezy.com">info@refereezy.com</a></li>
+                        <li><a href="tel:+34900123456">+34 900 123 456</a></li>
+                        <li><a href="#">Formulario de contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 Refereezy. Todos los derechos reservados.
+            </div>
+        </footer>
+    </div>    <script src="frontend/js/base.js"></script>
+    <script src="frontend/js/index.js"></script>
+    <script src="frontend/js/menu.js"></script>
 </body>
 </html>

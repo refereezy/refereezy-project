@@ -1,51 +1,50 @@
+<!-- Login -->
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - RefereeZY</title>
+    <link rel="stylesheet" href="../style/base.css">
     <link rel="stylesheet" href="../style/login.css">
 </head>
 <body>
-    <div class="min-h-screen">
-        <!-- Navigation -->
+    <div class="min-h-screen">        <!-- Navigation -->
         <nav class="nav-bar">
             <div class="nav-container">
                 <div class="nav-content">
                     <div class="logo-container">
-                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="RefereeZY Logo" class="logo">
+                        <a href="../../index.html">
+                            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="RefereeZY Logo" class="logo">
+                        </a>
                     </div>
                     <div class="nav-links">
-                        <a href="../../index.html" class="nav-item">
-                            Inicio
-                            <span class="separator"></span>
-                        </a>
-                        <a href="equipos.html" class="nav-item">
-                            Equipos
-                            <span class="separator"></span>
-                        </a>
-                        <a href="jugadores.html" class="nav-item">
-                            Jugadores
-                            <span class="separator"></span>
-                        </a>
-                        <a href="arbitros.html" class="nav-item">
-                            Árbitros
-                            <span class="separator"></span>
-                        </a>
-                        <a href="partidos.html" class="nav-item">
-                            Partidos
-                            <span class="separator"></span>
-                        </a>
-                        <a href="planes.html" class="nav-item">
-                            Planes
-                        </a>
-                        <button class="login-button">Iniciar sesión</button>
+                        <a href="../../index.html" class="nav-item">Inicio</a>
+                        <a href="./planes.html" class="nav-item">Planes</a>
+                        <a href="./register.html" class="login-button">Registrarse</a>
+                    </div>
+                    
+                    <!-- Hamburger Menu for Mobile -->
+                    <div class="hamburger-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav">
+            <ul class="mobile-nav-links">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="./planes.html">Planes</a></li>
+            </ul>
+            <a href="./register.html" class="mobile-login-button">Registrarse</a>
+        </div>
 
-        <!-- Rest of the login form content remains the same -->
+        <!-- Login Form -->
         <main class="login-section">
             <div class="container">
                 <div class="login-card">
@@ -55,24 +54,27 @@
                     </div>
                     
                     <div class="login-content">
+                        <h2>Iniciar Sesión</h2>
+                        
                         <div class="ball-container">
                             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/26bd-ibb8FTsp0OQFfRUZA1AMFXLju2Zoy1.png" alt="Soccer Ball" class="soccer-ball">
-                            <div class="form-container">
-                                <input type="text" placeholder="Correo o nombre de usuario" class="login-input">
-                                <input type="password" placeholder="Contraseña" class="login-input">
-                                <button class="login-submit-button">Iniciar Sesion</button>
-                            </div>
+                            <form class="form-container" id="loginForm">
+                                <input type="email" id="loginEmail" placeholder="Correo electrónico" class="login-input" required>
+                                <input type="password" id="loginPassword" placeholder="Contraseña" class="login-input" required>
+                                <button type="submit" class="login-submit-button">Iniciar Sesión</button>
+                            </form>
                         </div>
                         
                         <div class="register-section">
-                            <span>no tienes un cuenta?</span>
-                            <a href="#" class="register-button">registrate</a>
+                            <span>¿No tienes una cuenta?</span>
+                            <a href="./register.html" class="register-button">Registrarse</a>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-    </div>
+    </div>    <script src="../js/base.js"></script>
     <script src="../js/login.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 </html>

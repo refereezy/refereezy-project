@@ -1,32 +1,33 @@
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/refereezy/refereezy-project)
 
-<div style="width: 100%;"><img src="https://res.cloudinary.com/dcdbcstoj/image/upload/v1747515257/logos_equipos/ebxjrrsgzldsfhtmqmqj.png" width="700px" style="margin: 0 auto;"> </div>
+<div style="width: 100%;"><img src="https://i.postimg.cc/pXQNYB7R/4-sinfondo.png" width="700px" style="margin: 0 auto;"> </div>
 
-# Refereezy - Digitalitzem l'esport, automatitzem actes, proporcionem seguiment en directe.
 
-> A modern platform for sports match management, referee reporting, and real-time match monitoring.
+# Refereezy – Digitalitzem l'esport, automatitzem actes, proporcionem seguiment en directe
 
-## About The Project
+> Una plataforma moderna per a la gestió de partits esportius, actes arbitrals i monitoratge en temps real.
 
-Refereezy is a comprehensive platform designed to revolutionize sports match management through digital innovation. Our system allows organizers to schedule private matches with their own players, enables referees to generate match reports in real-time, and provides live match monitoring through a web interface.
+## Sobre el projecte
 
-## Key Components
+Refereezy és una plataforma integral dissenyada per revolucionar la gestió de partits esportius mitjançant la innovació digital. El nostre sistema permet als organitzadors programar partits privats amb els seus propis jugadors, facilita als àrbitres la generació d’actes en temps real, i ofereix un seguiment dels partits en directe a través d’una interfície web.
 
-- **Website Portal**: Schedule matches, manage teams, and organize tournaments
-- **Mobile App**: For referees to record match incidents and manage timekeeping
-- **Watch App**: Companion app for smartwatches to quickly record incidents
-- **Web App**: Real-time display of ongoing matches and match reports
-- **API**: Backend system for data storage and management
-- **Real-time System**: Firebase integration for instant updates across all platforms
+## Components principals
 
-## Team
+- **Portal web**: Programa partits, gestiona equips i organitza tornejos.
+- **Aplicació mòbil**: Perquè els àrbitres enregistrin incidències i gestionin el temps.
+- **App per a rellotge intel·ligent**: Aplicació complementària per registrar ràpidament les incidències.
+- **Aplicació web**: Visualització en temps real dels partits i dels actes arbitrals.
+- **API**: Sistema backend per a l’emmagatzematge i gestió de dades.
+- **Sistema en temps real**: Integració amb Firebase per a actualitzacions instantànies a totes les plataformes.
 
-This project is being developed by a team of 3 Higher Degree Computer Science students:
+## Equip
+
+Aquest projecte està sent desenvolupat per un equip de 3 estudiants de Grau Superior en Informàtica:
 
 - **Santiago Muñoz**
 - **Ismael Younes**
 - **Anguelina Levchenko**
 
-## Documentation
+## Documentació
 
-For complete documentation, visit our [Documentation Portal](https://refereezy.smcardona.tech/docs/) or browse the `Documentation` folder in this repository.
+Per consultar tota la documentació, visita el nostre [Portal de Documentació](http://refereezy.smcardona.tech:8000/docs) o navega per la carpeta `Documentation` dins d’aquest repositori.
+

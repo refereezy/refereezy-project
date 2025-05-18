@@ -17,7 +17,7 @@ copyright: Copyright &copy; 2024-2025 <a href="https://refereezy.smcardona.tech"
 # Documentation and theme
 theme:
   name: 'material'
-  logo: 'images/logo.svg'
+  logo: 'https://i.postimg.cc/pXQNYB7R/4-sinfondo.png'
   features:
     - toc.integrate
     - toc.follow
@@ -102,15 +102,14 @@ nav:
   - Sobre nosaltres:
     - Overview: empresa/overview.md
     - Equip: empresa/team.md
-    - Visió: empresa/vision.md
-
+    - Visió: empresa/visio.md
   
   - Introducció:
     - index.md
     - Primer Pasos: 
-      - getting-started.md
+      - introduccio/getting-started.md
     - Característiques: 
-      - features.md
+      - introduccio/features.md
 
   - Aplicacions:
     - apps/index.md
@@ -149,12 +148,14 @@ nav:
   - Administració de Sistemes:
     - sysadmin/index.md
     - Estructura de xarxa:
-      - estructura_xarxa.md
+      - sysadmin/estructura_xarxa.md
+    - Packet Tracer:
+      - sysadmin/packet_tracer/packet_tracer.md
     - Configuració equips físics: 
-      - Router: sysadmin/router.md
-      - Server 1: sysadmin/server1.md
-      - Server 2: sysadmin/server2.md
-    - Configuració al núvol: sysadmin/aws.md
+      - Router: sysadmin/sistemes/isard/router.md
+      - Server 1: sysadmin/sistemes/isard/server1.md
+      - Server 2: sysadmin/sistemes/isard/server2.md
+    - Configuració al núvol: sysadmin/sistemes/aws/aws.md
 
 
 
