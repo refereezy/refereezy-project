@@ -99,25 +99,29 @@ plugins:
 # TOC
 nav:
   # Introduction
-  - Introduction / Introducció:
-    - index.md
-    - Getting Started / Primer Pasos: getting-started.md
-    - Features / Característiques: features.md
 
-  - Company / Empresa:
+  - Sobre nosaltres:
     - Overview: empresa/overview.md
     - Team / Equip: empresa/team.md
     - Vision / Visió: empresa/vision.md
     - Català: empresa/empresa.ca.md
     - Español: empresa/empresa.es.md
+  
+  - Introducció:
+    - index.md
+    - Primer Pasos: 
+      - getting-started.md
+    - Característiques: 
+      - features.md
 
-  - Applications / Aplicacions:
+  - Aplicacions:
     - Watch App / Rellotge:
       - Overview: apps/app_rellotge/overview.md
       - Features: apps/app_rellotge/features.md
       - Technical Documentation: apps/app_rellotge/technical.md
       - User Manual: apps/app_rellotge/user-manual.md
-      - Català: apps/app_rellotge/aplicacio-rellotge.ca.md
+      - Català: 
+        - apps/app_rellotge/aplicacio-rellotge.ca.md
       - Español: apps/app_rellotge/aplicacio-rellotge.es.md
     
     - Mobile App / Mòbil:
