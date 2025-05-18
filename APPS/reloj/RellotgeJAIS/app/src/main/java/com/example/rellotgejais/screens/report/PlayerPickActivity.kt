@@ -18,6 +18,8 @@ import com.example.rellotgejais.models.TeamType
 
 class PlayerPickActivity : _BaseReportActivity() {
 
+    private var savingState: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
@@ -46,6 +48,9 @@ class PlayerPickActivity : _BaseReportActivity() {
             dorsal.text = player.dorsal.toString()
 
             inflater.setOnClickListener {
+                if (savingState) return@setOnClickListener
+
+
                 val incident = Incident(
                     type = type,
                     description = description?: type.name,
@@ -53,11 +58,11 @@ class PlayerPickActivity : _BaseReportActivity() {
                     player = player.toPlayerIncident(report.match)
                 )
 
-
+                savingState = true
                 // this automatically modifies the report and saves into database
                 ReportHandler.addIncident(report, incident)
                 socketHandler.notifyNewIncident(report.raw.id, incident.id)
-
+                savingState =  false
                 moveTo(ActionsActivity::class.java)
                 finish()
             }

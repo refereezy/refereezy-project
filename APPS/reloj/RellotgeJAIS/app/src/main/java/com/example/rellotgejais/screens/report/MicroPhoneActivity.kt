@@ -23,6 +23,8 @@ import com.example.rellotgejais.models.IncidentType.*
 import java.util.Locale
 
 class MicroPhoneActivity : _BaseReportActivity() {
+
+    private var savingState: Boolean = false
     private var description: String? = null
     private var micState: Boolean = false
     private val REQUEST_AUDIO_PERMISSION = 1
@@ -103,14 +105,18 @@ class MicroPhoneActivity : _BaseReportActivity() {
                 }
                 moveTo(TeamPickActivity::class.java, description)
             } else {
+                if (savingState) return@setOnClickListener
+
                 val incident = Incident(
                     type = type,
                     description = description ?: "", // Evita el !! y usa un valor por defecto
                     minute = timer.getElapsedMinutes(),
                 )
 
+                savingState = true
                 ReportHandler.addIncident(report, incident)
                 socketHandler.notifyNewIncident(report.raw.id, incident.id)
+                savingState = false
 
                 if (type == SUSPEND) {
                     endMatchReport()
