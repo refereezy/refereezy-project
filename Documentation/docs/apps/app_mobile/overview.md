@@ -36,9 +36,11 @@ The Refereezy Mobile Application is a comprehensive tool designed for sports ref
 
 ### Integration with Watch App
 
-- **Device Pairing**: Seamlessly connect with the Refereezy Watch Application
+- **Device Pairing**: Seamlessly connect with the Refereezy Watch Application through QR code scanning
 - **Data Synchronization**: Ensure consistent information across all referee devices
 - **Backup Function**: Mobile app serves as the primary data store if watch connectivity is lost
+- **Real-time Communication**: Bi-directional updates between mobile and watch apps
+- **Pairing Management**: Ability to pair and unpair with different watch devices as needed
 
 ## Technical Specifications
 

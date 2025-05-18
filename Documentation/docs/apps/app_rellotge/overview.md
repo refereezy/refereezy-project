@@ -36,9 +36,20 @@ The Refereezy Watch Application is a specialized tool designed for referees to m
 
 The Watch Application integrates with:
 
-- **Mobile Application** - For setup, configuration, and as a data backup
+- **Mobile Application** - For setup, configuration, and as a data backup through QR code pairing
 - **API** - For sending incident data to the central database
 - **Real-time Web Display** - For showing live match updates
+- **Socket.IO Services** - For maintaining real-time connections with paired devices
+
+### Pairing System
+
+The Watch Application features a sophisticated pairing system:
+
+- **QR Code Generation** - Creates unique secure tokens for establishing connections
+- **Referee Authentication** - Verifies referee identity during pairing process
+- **Secure Connection** - Establishes encrypted communication channels
+- **Persistent Pairing** - Maintains pairing information across app restarts
+- **Flexible Unpairing** - Allows reverting to unpaired state when needed
 
 ## Development Roadmap
 

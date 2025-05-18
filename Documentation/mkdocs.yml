@@ -112,34 +112,20 @@ nav:
       - getting-started.md
     - Característiques: 
       - features.md
-
   - Aplicacions:
+    - apps/index.md
     - Rellotge:
       - Overview: apps/app_rellotge/overview.md
-      - Features: apps/app_rellotge/features.md
-      - Technical Documentation: apps/app_rellotge/technical.md
-      - User Manual: apps/app_rellotge/user-manual.md
-
     
-    - Mobile App / Mòbil:
+    - Mòbil:
       - Overview: apps/app_mobile/overview.md
-      - Features: apps/app_mobile/features.md
-      - Technical Documentation: apps/app_mobile/technical.md
-      - User Manual: apps/app_mobile/user-manual.md
 
-    
-    - Web App / Web:
+
+    - Web de'Administració:
       - Overview: apps/app_web/overview.md
-      - Features: apps/app_web/features.md
-      - Technical Documentation: apps/app_web/technical.md
-      - User Manual: apps/app_web/user-manual.md
-
     
     - Web Pública:
       - Overview: apps/website/overview.md
-      - Features: apps/website/features.md
-      - Technical Documentation: apps/website/technical.md
-
   
   - API Documentation:
     - Overview: api/overview.md
