@@ -20,63 +20,6 @@ body {
     min-height: 100vh;
 }
 
-/* Navegación */
-.nav-bar {
-    background-color: var(--nav-background);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.nav-container {
-    max-width: 80rem;
-    margin: 0 auto;
-}
-
-.nav-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo-container {
-    padding: 1rem 1.5rem;
-}
-
-.logo {
-    height: 48px;
-    width: auto;
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-}
-
-.nav-item {
-    position: relative;
-    color: var(--text);
-    text-decoration: none;
-    padding: 1.5rem 2rem;
-    transition: color 0.3s;
-}
-
-.nav-item:hover {
-    color: var(--primary);
-}
-
-.separator {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 2px;
-    background-color: #404040;
-    transform: rotate(15deg);
-}
-
-.nav-item:last-child .separator {
-    display: none;
-}
-
 .login-button {
     background-color: var(--primary);
     color: black;
@@ -155,5 +98,245 @@ body {
     
     .hero-text p {
         font-size: 1.25rem;
+    }
+}
+
+ /* Estilos adicionales para la landing page */
+ .section {
+    max-width: 80rem;
+    margin: 4rem auto;
+    padding: 0 1rem;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.section-title h2 {
+    color: var(--primary);
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.section-title p {
+    color: var(--text);
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background-color: var(--nav-bg);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+.feature-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-description {
+    font-size: 1rem;
+    color: #d1d1d1;
+}
+
+.demo-container {
+    background-color: var(--nav-bg);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 3rem;
+}
+
+.demo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.demo-title {
+    font-size: 1.8rem;
+    color: var(--primary);
+}
+
+.demo-content {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.matches-grid-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+    background-color: #333;
+    padding: 1rem;
+    font-weight: bold;
+}
+
+.match-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(126, 217, 87, 0.2);
+}
+
+.teams-demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.team-demo-card {
+    background: linear-gradient(145deg, #333, #2a2a2a);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.team-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-colors {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.team-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.cta-section {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.cta-button {
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.cta-primary {
+    background-color: var(--primary);
+    color: black;
+}
+
+.cta-primary:hover {
+    background-color: var(--hover);
+    transform: scale(1.05);
+}
+
+.cta-secondary {
+    background-color: transparent;
+    color: var(--text);
+    border: 2px solid var(--primary);
+}
+
+.cta-secondary:hover {
+    background-color: rgba(126, 217, 87, 0.1);
+    color: var(--primary);
+}
+
+.footer {
+    background-color: #1a1a1a;
+    padding: 3rem 0;
+    margin-top: 6rem;
+}
+
+.footer-content {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.footer-column h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.footer-column ul {
+    list-style: none;
+}
+
+.footer-column ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-column ul li a {
+    color: #bbb;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-column ul li a:hover {
+    color: var(--primary);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 2rem;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.plan-card img {
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.277);
+}
+
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
     }
 }

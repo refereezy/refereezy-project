@@ -1,35 +1,34 @@
-# Company Overview
+# Resum de l'empresa
 
-## About Refereezy
+## Sobre Refereezy
 
-Refereezy is a project developed by a team of 4 students pursuing a Higher Degree in Computer Science. Our mission is to revolutionize sports management by digitizing match reporting, automating administrative tasks, and providing real-time monitoring capabilities.
+Refereezy és un projecte desenvolupat per un equip de 4 estudiants de Grau Superior en Informàtica. La nostra missió és revolucionar la gestió esportiva mitjançant la digitalització dels actes dels partits, l'automatització de tasques administratives i la incorporació de funcionalitats de seguiment en temps real.
 
-## Our Mission
+## La nostra missió
 
-We aim to streamline sports management through digital innovation, making it easier for:
+Volem optimitzar la gestió esportiva a través de la innovació digital, facilitant el treball a:
 
-- **Organizers** to schedule and manage matches
-- **Referees** to record incidents and generate reports efficiently
-- **Teams and players** to access match data and statistics
-- **Fans** to follow matches in real-time
+- **Organitzadors** per programar i gestionar partits.
+- **Àrbitres** per registrar incidències i generar actes amb eficiència.
+- **Equips i jugadors** per accedir a dades i estadístiques dels partits.
+- **Aficionats** per seguir els partits en temps real.
 
-## Our Team
+## El nostre equip
 
-Our team consists of four passionate developers with diverse skills:
+Som un equip format per quatre desenvolupadors amb perfils diversos i complementaris:
 
-- **Santiago Muñoz** - *Lead Developer*
-- **Ismael Younes** - *Backend Developer*
-- **Anguelina Levchenko** - *Frontend Developer*
-- **Jesus Guerrero** - *Mobile Developer*
+- **Santiago Muñoz** – *Desenvolupador Frontend i Backend*
+- **Ismael Younes** – *Desenvolupador Frontend i Backend*
+- **Anguelina Levchenko** – *Administradora de sistemes*
 
-## Our Vision
+## La nostra visió
 
-*[Document the long-term vision for Refereezy, including future features, expansion plans, and potential impact on sports management]*
+*[Documenteu aquí la visió a llarg termini de Refereezy: noves funcionalitats previstes, plans d’expansió i l’impacte potencial en el sector de la gestió esportiva]*
 
-## Contact Information
+## Informació de contacte
 
-*[Add contact details, social media links, and other relevant information]*
+*[Afegiu aquí dades de contacte, enllaços a xarxes socials i qualsevol informació rellevant]*
 
 ---
 
-*Note for documentation contributors: Add team photos, detailed bios, and project journey information. Include quotes from team members about their experience developing the platform.*
+*Nota per als col·laboradors de la documentació: Incloeu fotografies de l’equip, biografies detallades i informació sobre l’evolució del projecte. Afegiu també cites dels membres de l’equip sobre la seva experiència desenvolupant la plataforma.*

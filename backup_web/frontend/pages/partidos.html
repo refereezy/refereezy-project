@@ -4,32 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Partidos - RefereeZY</title>
+    <link rel="stylesheet" href="../style/base.css">
     <link rel="stylesheet" href="../style/partidos.css">
 </head>
 <body>
-    <div class="min-h-screen">
-        <!-- Navigation -->
+    <div class="min-h-screen">        <!-- Navigation -->
         <nav class="nav-bar">
             <div class="nav-container">
                 <div class="nav-content">
-                    <!-- Logo -->
-                    <div class="logo-container">
-                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="RefereeZY Logo" class="logo">
-                    </div>
-                    
                     <!-- Navigation Links -->
-                    <div class="nav-links">
-                        <a href="../../index.html" class="nav-item">Inicio<span class="separator"></span></a>
-                        <a href="equipos.html" class="nav-item">Equipos<span class="separator"></span></a>
-                        <a href="jugadores.html" class="nav-item">Jugadores<span class="separator"></span></a>
-                        <a href="arbitros.html" class="nav-item">Arbitros<span class="separator"></span></a>
-                        <a href="partidos.html" class="nav-item">Partidos<span class="separator"></span></a>
-                        <a href="planes.html" class="nav-item">Planes</a>
-                        <button class="login-button">Iniciar sesion</button>
-                    </div>
+                    <nav class="dashboard-nav">
+                        <div class="nav-logo">Refereezy ⚽</div>
+                        <ul class="nav-links">
+                          <li><a href="./equipos.html">Equipos</a></li>
+                          <li><a href="./jugadores.html">Jugadores</a></li>
+                          <li><a href="./arbitros.html">Árbitros</a></li>
+                          <li><a href="./partidos.html">Partidos</a></li>
+                          <li><a href="./planes.html">Planes</a></li>
+                          <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+                        </ul>
+                        
+                        <!-- Hamburger Menu for Mobile -->
+                        <div class="hamburger-menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </nav>
                 </div>
             </div>
         </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav">
+            <ul class="mobile-nav-links">
+                <li><a href="./equipos.html">Equipos</a></li>
+                <li><a href="./jugadores.html">Jugadores</a></li>
+                <li><a href="./arbitros.html">Árbitros</a></li>
+                <li><a href="./partidos.html">Partidos</a></li>
+                <li><a href="./planes.html">Planes</a></li>
+                <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+            </ul>
+        </div>
 
         <!-- Gestión de Partidos Section -->
         <main class="matches-section">
@@ -38,35 +54,233 @@
                     <!-- Título con diseño angular -->
                     <div class="title-container">
                         <div class="title-background"></div>
-                        <h1>Gestion de Partidos</h1>
+                        <h1>Gestión de Partidos</h1>
                     </div>
-
-                    <!-- Formulario -->
-                    <div class="form-container">
-                        <div class="input-group">
-                            <select class="team-select" id="localTeam">
-                                <option value="">Seleccione equipo local</option>
-                            </select>
+                    
+                    <!-- Filter Controls -->
+                    <div class="filter-container">
+                        <div class="filter-row">
+                            <!-- Primer equipo para filtrar -->
+                            <div class="filter-group">
+                                <label for="teamSearch1">Equipo 1:</label>
+                                <div class="team-search-container">
+                                    <input type="text" id="teamSearch1" class="team-search-input" placeholder="Buscar equipo...">
+                                    <div id="teamDropdown1" class="team-dropdown" style="display: none;">
+                                        <ul class="team-list"></ul>
+                                    </div>
+                                    <div id="selectedTeamInfo1" class="selected-team" style="display: none;">
+                                        Equipo seleccionado: <span id="selectedTeam1" class="selected-team-name"></span>
+                                    </div>
+                                </div>
+                            </div>
                             
-                            <select class="team-select" id="visitorTeam">
-                                <option value="">Seleccione equipo visitante</option>
-                            </select>
+                            <!-- Segundo equipo para filtrar -->
+                            <div class="filter-group">
+                                <label for="teamSearch2">Equipo 2:</label>
+                                <div class="team-search-container">
+                                    <input type="text" id="teamSearch2" class="team-search-input" placeholder="Buscar equipo...">
+                                    <div id="teamDropdown2" class="team-dropdown" style="display: none;">
+                                        <ul class="team-list"></ul>
+                                    </div>
+                                    <div id="selectedTeamInfo2" class="selected-team" style="display: none;">
+                                        Equipo seleccionado: <span id="selectedTeam2" class="selected-team-name"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="dateFromFilter">Desde:</label>
+                                <input type="date" id="dateFromFilter">
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="dateToFilter">Hasta:</label>
+                                <input type="date" id="dateToFilter">
+                            </div>
                         </div>
 
-                        <div class="datetime-group">
-                            <input type="date" class="date-input" id="matchDate">
-                            <input type="time" class="time-input" id="matchTime">
+                        <div class="filter-row">
+                            <!-- Filtro de árbitros -->
+                            <div class="filter-group">
+                                <label for="refereeSearch">Árbitro:</label>
+                                <div class="team-search-container">
+                                    <input type="text" id="refereeSearch" class="team-search-input" placeholder="Nombre o DNI del árbitro...">
+                                    <div id="refereeDropdown" class="team-dropdown" style="display: none;">
+                                        <ul class="team-list referee-list">
+                                            <li class="filter-option" data-value="assigned">Con árbitro</li>
+                                            <li class="filter-option" data-value="unassigned">Sin árbitro</li>
+                                            <li class="filter-option" data-value="all">No filtrar</li>
+                                            <div class="filter-separator"></div>
+                                            <!-- Los árbitros específicos se añadirán aquí -->
+                                        </ul>
+                                    </div>
+                                    <div id="selectedRefereeInfo" class="selected-team" style="display: none;">
+                                        Árbitro seleccionado: <span id="selectedReferee" class="selected-team-name"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="sortByFilter">Ordenar por:</label>
+                                <select id="sortByFilter">
+                                    <option value="date-asc">Fecha (más reciente)</option>
+                                    <option value="date-desc">Fecha (más antigua)</option>
+                                </select>
+                            </div>
                         </div>
-
-                        <div class="action-buttons">
-                            <button class="create-match-btn">Crear Partido</button>
-                            <button class="view-matches-btn">Ver Partidos</button>
+                        
+                        <div class="filter-actions">
+                            <button class="filter-btn secondary-button" id="clearFilterBtn">Limpiar</button>
+                            <button class="filter-btn secondary-button" id="applyFilterBtn">Aplicar filtros</button>
+                            <button class="primary-button create-match-btn" id="showCreateModalBtn">Crear Partido</button>
                         </div>
+                    </div>
+                    
+                    <!-- Matches Grid Container -->
+                    <div class="matches-grid-container">
+                        <div class="matches-grid-header">
+                            <div class="match-header-date">Fecha</div>
+                            <div class="match-header-teams">Equipos</div>
+                            <div class="match-header-referee">Árbitro</div>
+                            <div class="match-header-actions">Acciones</div>
+                        </div>
+                        <div id="matchesGrid" class="matches-grid">
+                            <!-- Match items will be inserted here by JS -->
+                            <div class="no-matches-message" id="noMatchesMessage">
+                                No hay partidos para mostrar
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination Controls -->
+                    <div class="pagination-controls">
+                        <button id="prevPageBtn" disabled>&laquo; Anterior</button>
+                        <span id="pageIndicator">Página 1 de 1</span>
+                        <button id="nextPageBtn" disabled>Siguiente &raquo;</button>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    <script src="../js/partidos.js"></script>
+    
+    <!-- Modal para Crear Partido -->
+    <div class="modal" id="createMatchModal">
+        <div class="modal-content">
+            <h2>Crear Nuevo Partido</h2>
+            <div class="modal-body">
+                <!-- Equipo Local -->
+                <div class="form-group">
+                    <label for="modalLocalTeamSearch">Equipo Local:</label>
+                    <div class="team-search-container" id="modalLocalTeamContainer">
+                        <input type="text" id="modalLocalTeamSearch" class="team-search-input" placeholder="Buscar equipo local...">
+                        <div id="modalLocalTeamDropdown" class="team-dropdown" style="display: none;">
+                            <ul class="team-list"></ul>
+                        </div>
+                        <div id="selectedLocalTeamInfo" class="selected-team" style="display: none;">
+                            Equipo seleccionado: <span id="selectedLocalTeamName" class="selected-team-name"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Equipo Visitante -->
+                <div class="form-group">
+                    <label for="modalVisitorTeamSearch">Equipo Visitante:</label>
+                    <div class="team-search-container" id="modalVisitorTeamContainer">
+                        <input type="text" id="modalVisitorTeamSearch" class="team-search-input" placeholder="Buscar equipo visitante...">
+                        <div id="modalVisitorTeamDropdown" class="team-dropdown" style="display: none;">
+                            <ul class="team-list"></ul>
+                        </div>
+                        <div id="selectedVisitorTeamInfo" class="selected-team" style="display: none;">
+                            Equipo seleccionado: <span id="selectedVisitorTeamName" class="selected-team-name"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="modalMatchDate">Fecha:</label>
+                        <input type="date" id="modalMatchDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modalMatchTime">Hora:</label>
+                        <input type="time" id="modalMatchTime" required>
+                    </div>
+                </div>
+                
+                <!-- Árbitro con búsqueda -->
+                <div class="form-group" id="modalRefereeContainer">
+                    <label for="modalRefereeSearch">Árbitro (opcional):</label>
+                    <div class="team-search-container">
+                        <input type="text" id="modalRefereeSearch" class="team-search-input" placeholder="Buscar árbitro por nombre o DNI...">
+                        <div id="modalRefereeDropdown" class="team-dropdown" style="display: none;">
+                            <ul class="team-list">
+                                <li data-id="">Sin asignar</li>
+                                <!-- Los árbitros se añadirán aquí -->
+                            </ul>
+                        </div>
+                        <div id="selectedModalRefereeInfo" class="selected-team" style="display: none;">
+                            Árbitro seleccionado: <span id="selectedModalRefereeName" class="selected-team-name"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="secondary-button" id="cancelCreateBtn">Cancelar</button>
+                <button class="primary-button" id="saveMatchBtn">Guardar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para Asignar/Cambiar Árbitro -->
+    <div class="modal" id="assignRefereeModal">
+        <div class="modal-content">
+            <h2>Asignar Árbitro</h2>
+            <div class="modal-body">
+                <div class="match-info" id="matchInfoForReferee"></div>
+                
+                <div class="form-group">
+                    <label for="assignRefereeSearch">Seleccionar Árbitro:</label>
+                    <div class="team-search-container">
+                        <input type="text" id="assignRefereeSearch" class="team-search-input" placeholder="Buscar árbitro por nombre o DNI...">
+                        <div id="assignRefereeDropdown" class="team-dropdown" style="display: none;">
+                            <ul class="team-list">
+                                <li data-id="">Sin asignar</li>
+                                <!-- Los árbitros se añadirán aquí -->
+                            </ul>
+                        </div>
+                        <div id="selectedAssignRefereeInfo" class="selected-team" style="display: none;">
+                            Árbitro seleccionado: <span id="selectedAssignRefereeName" class="selected-team-name"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="secondary-button" id="cancelAssignBtn">Cancelar</button>
+                <button class="primary-button" id="saveAssignBtn">Guardar</button>
+                <button class="danger-button" id="removeRefereeBtn">Quitar Árbitro</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmación para Eliminar -->
+    <div class="modal" id="deleteMatchModal">
+        <div class="modal-content">
+            <h2>Eliminar Partido</h2>
+            <p>¿Está seguro que desea eliminar este partido? Esta acción no se puede deshacer.</p>
+            <div class="match-info" id="matchInfoForDelete"></div>
+            
+            <div class="modal-buttons">
+                <button class="secondary-button" id="cancelDeleteBtn">Cancelar</button>
+                <button class="danger-button" id="confirmDeleteBtn">Eliminar</button>
+            </div>
+        </div>
+    </div>
+      <script src="../js/base.js"></script>
+    <script src="../js/listar-partidos.js"></script>
+    <script src="../js/crear-partidos.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 </html>

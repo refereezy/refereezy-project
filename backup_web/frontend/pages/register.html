@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - RefereeZY</title>
+    <link rel="stylesheet" href="../style/base.css">
+    <link rel="stylesheet" href="../style/register.css">
+</head>
+<body>
+    <div class="min-h-screen">        <!-- Navigation -->
+        <nav class="nav-bar">
+            <div class="nav-container">
+                <div class="nav-content">
+                    <div class="logo-container">
+                        <a href="../../index.html">
+                            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="RefereeZY Logo" class="logo">
+                        </a>
+                    </div>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-item">Inicio</a>
+                        <a href="./planes.html" class="nav-item">Planes</a>
+                        <a href="./login.html" class="login-button">Iniciar Sesión</a>
+                    </div>
+                    
+                    <!-- Hamburger Menu for Mobile -->
+                    <div class="hamburger-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav">
+            <ul class="mobile-nav-links">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="./planes.html">Planes</a></li>
+            </ul>
+            <a href="./login.html" class="mobile-login-button">Iniciar Sesión</a>
+        </div>
+
+        <!-- Register Form -->
+        <main class="register-section">
+            <div class="container">
+                <div class="register-card">
+                    
+                    <div class="register-content">
+                        <h2>Crear cuenta</h2>
+                        
+                        <form class="register-form" id="registerForm">
+                            <div class="form-group">
+                                <label for="registerName">Nombre de la organización</label>
+                                <input type="text" id="registerName" placeholder="Nombre de la organización" class="register-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="registerEmail">Correo electrónico</label>
+                                <input type="email" id="registerEmail" placeholder="Correo electrónico" class="register-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="registerPhone">Teléfono</label>
+                                <input type="tel" id="registerPhone" placeholder="Teléfono" class="register-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="registerPassword">Contraseña</label>
+                                <input type="password" id="registerPassword" placeholder="Contraseña" class="register-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="registerConfirmPassword">Confirmar contraseña</label>
+                                <input type="password" id="registerConfirmPassword" placeholder="Confirmar contraseña" class="register-input" required>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="register-submit-button">Registrarse</button>
+                            </div>
+                        </form>
+                        
+                        <div class="login-link">
+                            <span>¿Ya tienes una cuenta?</span>
+                            <a href="./login.html" class="login-button-link">Iniciar sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>    <script src="../js/base.js"></script>
+    <script src="../js/register.js"></script>
+    <script src="../js/menu.js"></script>
+</body>
+</html>

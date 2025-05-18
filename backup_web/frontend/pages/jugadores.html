@@ -4,32 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Jugadores - Refereezy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../style/base.css">
     <link rel="stylesheet" href="../style/jugadores.css">
 </head>
 <body>
-    <div class="min-h-screen">
-        <!-- Navigation -->
+    <div class="min-h-screen">        <!-- Navigation -->
         <nav class="nav-bar">
             <div class="nav-container">
                 <div class="nav-content">
-                    <!-- Logo -->
-                    <div class="logo-container">
-                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="Refereezy Digital Sport" class="logo">
-                    </div>
-                    
                     <!-- Navigation Links -->
-                    <div class="nav-links">
-                        <a href="../../index.html" class="nav-item">Inicio<span class="separator"></span></a>
-                        <a href="equipos.html" class="nav-item">Equipos<span class="separator"></span></a>
-                        <a href="jugadores.html" class="nav-item">Jugadores<span class="separator"></span></a>
-                        <a href="arbitros.html" class="nav-item">Arbitros<span class="separator"></span></a>
-                        <a href="partidos.html" class="nav-item">Partidos<span class="separator"></span></a>
-                        <a href="planes.html" class="nav-item">Planes</a>
-                        <button class="login-button">Iniciar sesion</button>
-                    </div>
+                    <nav class="dashboard-nav">
+                        <div class="nav-logo">Refereezy ⚽</div>
+                        <ul class="nav-links">
+                          <li><a href="./equipos.html">Equipos</a></li>
+                          <li><a href="./jugadores.html">Jugadores</a></li>
+                          <li><a href="./arbitros.html">Árbitros</a></li>
+                          <li><a href="./partidos.html">Partidos</a></li>
+                          <li><a href="./planes.html">Planes</a></li>
+                          <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+                        </ul>
+                        
+                        <!-- Hamburger Menu for Mobile -->
+                        <div class="hamburger-menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </nav>
                 </div>
             </div>
         </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav">
+            <ul class="mobile-nav-links">
+                <li><a href="./equipos.html">Equipos</a></li>
+                <li><a href="./jugadores.html">Jugadores</a></li>
+                <li><a href="./arbitros.html">Árbitros</a></li>
+                <li><a href="./partidos.html">Partidos</a></li>
+                <li><a href="./planes.html">Planes</a></li>
+                <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+            </ul>
+        </div>
 
         <!-- Gestión de Jugadores Section -->
         <main class="players-section">
@@ -38,25 +55,92 @@
                     <!-- Título con diseño angular -->
                     <div class="title-container">
                         <div class="title-background"></div>
-                        <h1>Gestion de Jugadores</h1>
+                        <h1>Gestión de Jugadores</h1>
                     </div>
 
-                    <!-- Formulario -->
-                    <div class="form-container">
-                        <div class="input-group">
-                            <input type="text" placeholder="Nombre del jugador" class="player-name-input">
-                            <input type="number" placeholder="Número" class="player-number-input">
+                    
+
+                    <!-- Filtros -->
+                    <div class="player-filters">
+                        <div class="filter-group">
+                            <label>Filtrar por equipo:</label>
+                            <div class="team-select-container">
+                                <div class="team-search-container">
+                                    <input type="text" placeholder="Buscar equipo..." class="team-search-input">
+                                    <div class="team-dropdown" style="display: none;">
+                                        <ul class="team-list"></ul>
+                                    </div>
+                                </div>
+                                <div class="selected-team">
+                                    <span>Equipo seleccionado: </span>
+                                    <span class="selected-team-name">Todos</span>
+                                </div>
+                            </div>
+                            <button class="reset-filter-btn">Resetear filtro</button>
+                        </div>
+                        <button class="toggle-form-btn"><i class="fas fa-plus"></i> Agregar jugador</button>
+                    </div>
+
+                    <!-- Listado de Jugadores -->
+                    <div class="players-container">
+                        <!-- Grid para listar jugadores -->
+                        <div class="players-grid">
+                            <!-- Headers y datos de jugadores serán insertados por JavaScript -->
                         </div>
 
-                        <div class="action-buttons">
-                            <button class="add-player-btn">Agregar jugador</button>
-                            <button class="view-players-btn">Ver mas Jugadores</button>
+                        <!-- Mensaje cuando no hay jugadores -->
+                        <div class="no-players-message" style="display: none;">
+                            <p>No hay jugadores registrados</p>
+                            <p>Agrega nuevos jugadores con el botón "Agregar jugador"</p>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+        
+        <!-- Modal para añadir jugadores -->
+        <div id="playerFormModal" class="modal">
+            <div class="modal-content">
+                <h2>Añadir nuevo jugador</h2>
+                <div class="input-group">
+                    <input type="text" placeholder="Nombre del jugador" class="player-name-input" required>
+                    <input type="number" placeholder="Número" class="player-number-input" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="text" placeholder="DNI del jugador" class="player-dni-input" required>
+                    <div class="team-select-container">
+                        <div class="team-search-container">
+                            <input type="text" placeholder="Buscar equipo..." class="form-team-search-input">
+                            <div class="form-team-dropdown team-dropdown" style="display: none;">
+                                <ul class="form-team-list team-list"></ul>
+                            </div>
+                        </div>
+                        <div class="selected-team">
+                            <span>Equipo seleccionado: </span>
+                            <span class="form-selected-team-name">Ninguno</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <label class="goalkeeper-label">
+                        <input type="checkbox" class="goalkeeper-checkbox">
+                        <span>¿Es portero?</span>
+                    </label>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="primary-button add-player-btn">Agregar jugador</button>
+                    <button class="secondary-button" id="closePlayerFormBtn">Cancelar</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <script src="../js/jugadores.js"></script>
+
+    <!-- Notification container - se añade dinámicamente cuando hay notificaciones -->    <script src="../js/base.js"></script>
+    <script src="../js/listar-jugadores.js"></script>
+    <script src="../js/crear-jugadores.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 </html>

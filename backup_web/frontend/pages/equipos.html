@@ -4,31 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Equipos - Refereezy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../style/base.css">
     <link rel="stylesheet" href="../style/equipos.css">
 </head>
 <body>
-    <div class="min-h-screen">
-        <!-- Navigation -->
+    <div class="min-h-screen">        <!-- Navigation -->
         <nav class="nav-bar">
             <div class="nav-container">
                 <div class="nav-content">
-                    <!-- Logo -->
-                    <div class="logo-container">
-                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imagen_2025-01-30_202931687-removebg-preview-w4t8ZB79AlGh5VocbZvtb2mOVMtpQi.png" alt="Refereezy Digital Sport" class="logo">
-                    </div>
                     <!-- Navigation Links -->
-                    <div class="nav-links">
-                        <a href="../../index.html" class="nav-item">Inicio<span class="separator"></span></a>
-                        <a href="equipos.html" class="nav-item">Equipos<span class="separator"></span></a>
-                        <a href="jugadores.html" class="nav-item">Jugadores<span class="separator"></span></a>
-                        <a href="arbitros.html" class="nav-item">Arbitros<span class="separator"></span></a>
-                        <a href="partidos.html" class="nav-item">Partidos<span class="separator"></span></a>
-                        <a href="planes.html" class="nav-item">Planes</a>
-                        <button class="login-button">Iniciar sesión</button>
-                    </div>
+                    <nav class="dashboard-nav">
+                        <div class="nav-logo">Refereezy ⚽</div>
+                        <ul class="nav-links">
+                          <li><a href="./equipos.html">Equipos</a></li>
+                          <li><a href="./jugadores.html">Jugadores</a></li>
+                          <li><a href="./arbitros.html">Árbitros</a></li>
+                          <li><a href="./partidos.html">Partidos</a></li>
+                          <li><a href="./planes.html">Planes</a></li>
+                          <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+                        </ul>
+                        
+                        <!-- Hamburger Menu for Mobile -->
+                        <div class="hamburger-menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </nav>
                 </div>
             </div>
         </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav">
+            <ul class="mobile-nav-links">
+                <li><a href="./equipos.html">Equipos</a></li>
+                <li><a href="./jugadores.html">Jugadores</a></li>
+                <li><a href="./arbitros.html">Árbitros</a></li>
+                <li><a href="./partidos.html">Partidos</a></li>
+                <li><a href="./planes.html">Planes</a></li>
+                <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+            </ul>
+        </div>
 
         <!-- Gestión de Equipos Section -->
         <main class="teams-section">
@@ -40,33 +58,76 @@
                         <h1>Gestión de Equipos</h1>
                     </div>
 
-                    <!-- Formulario -->
-                    <div class="form-container">
-                        <div class="input-group">
-                            <input type="text" placeholder="Nombre del equipo" class="team-name-input">
-                            <input type="text" placeholder="Color primario (ej. #FF0000)" class="primary-color-input">
-                            <input type="text" placeholder="Color secundario (ej. #0000FF)" class="secondary-color-input">
-                            <input type="number" placeholder="ID del cliente" class="client-id-input">
+                    <!-- Filtros y botón para agregar equipo -->
+                    <div class="team-filters">
+                        <div class="filter-group">
+                            <input type="text" placeholder="Buscar equipo..." class="team-search-input">
+                        </div>
+                        <button class="toggle-form-btn"><i class="fas fa-plus"></i> Agregar equipo</button>
+                    </div>
+
+                    <!-- Listado de Equipos -->
+                    <div class="teams-container">
+                        <!-- Grid para listar equipos -->
+                        <div class="teams-grid">
+                            <!-- Headers y datos de equipos serán insertados por JavaScript -->
                         </div>
 
-                        <div class="logo-section">
-                            <div class="logo-input-container">
-                                <button class="logo-upload-btn">Añadir logo del equipo</button>
-                            </div>
-                            <div class="logo-preview">
-                                <span>Vista previa del logo</span>
-                            </div>
-                        </div>
-
-                        <div class="action-buttons">
-                            <button class="add-team-btn">Agregar equipo</button>
-                            <button class="view-teams-btn">Ver más Equipos</button>
+                        <!-- Mensaje cuando no hay equipos -->
+                        <div class="no-teams-message" style="display: none;">
+                            <p>No hay equipos registrados</p>
+                            <p>Agrega nuevos equipos con el botón "Agregar equipo"</p>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-    </div>
-    <script src="../js/equipos.js"></script>
+        
+        <!-- Modal para añadir equipos -->
+        <div id="teamFormModal" class="modal">
+            <div class="modal-content">
+                <h2>Añadir nuevo equipo</h2>
+                <div class="input-group">
+                    <input type="text" placeholder="Nombre del equipo" class="team-name-input">
+                </div>
+                
+                <div class="color-section">
+                    <div class="color-wrapper">
+                        <div class="color-circle primary-color-circle">
+                            <span class="circle-number">1</span>
+                            <input type="color" class="color-picker primary-color-input">
+                        </div>
+                        <span>Color primario</span>
+                    </div>
+                    
+                    <div class="color-wrapper">
+                        <div class="color-circle secondary-color-circle">
+                            <span class="circle-number">2</span>
+                            <input type="color" class="color-picker secondary-color-input">
+                        </div>
+                        <span>Color secundario</span>
+                    </div>
+                </div>
+
+                <div class="logo-section">
+                    <div class="logo-input-container">
+                        <button class="logo-upload-btn">Añadir escudo del equipo</button>
+                        <button class="remove-logo-btn" style="display: none;">Quitar escudo</button>
+                    </div>
+                    <div class="logo-preview">
+                        <span>Vista previa del escudo</span>
+                    </div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="primary-button add-team-btn">Agregar equipo</button>
+                    <button class="secondary-button" id="closeTeamFormBtn">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>    <script src="../js/base.js"></script>
+    <script src="../js/listar-equipos.js"></script>
+    <script src="../js/crear-equipos.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 </html>
