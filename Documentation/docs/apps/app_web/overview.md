@@ -1,234 +1,87 @@
-# Web Application Overview
 
-## Introduction
+# Visió General de l'Aplicació Web Refereezy
 
-The Refereezy Web Application provides a comprehensive platform for sports match management, real-time match monitoring, and referee report generation. It serves as the central hub for administrators, team managers, and spectators to track matches and access historical data.
+## Introducció
 
-The web application is built with modern JavaScript frameworks and follows responsive design principles to ensure compatibility across devices. It integrates with the Refereezy API for data persistence and Firebase for real-time updates.
+L'aplicació web de Refereezy és una plataforma dissenyada per a la gestió d'informes d'àrbitres i la sincronització de rellotges en temps real. Aquesta aplicació serveix com a interfície central on es poden visualitzar els informes dels partits, gestionar els codis dels rellotges i proporcionar eines de diagnòstic per als àrbitres. Construïda amb tecnologies modernes, l'aplicació ofereix un rendiment robust i fiable.
 
-## Key Features
+## Arquitectura Tècnica
 
-### Match Management
+L'aplicació web està implementada amb les següents tecnologies:
 
-The web application provides comprehensive match management capabilities:
+- **Backend**: Node.js amb Express.js
+- **Frontend**: HTML, CSS, JavaScript
+- **Comunicació en temps real**: Socket.IO
+- **Base de dades**: Firebase Firestore
+- **Contenidorització**: Docker
 
-- **Match Creation**: Create new matches with teams, referees, and venues
-- **Match Scheduling**: Schedule matches with date, time, and location
-- **Match Groups**: Organize matches into tournaments, leagues, or other groups
-- **Team Management**: Create and manage teams and player rosters
-- **Referee Assignment**: Assign referees to matches and monitor their availability
+El backend actua com a servidor que gestiona les connexions al rellotge i proporciona endpoints API per a obtenir dades dels informes. El frontend ofereix una interfície d'usuari intuïtiva per a visualitzar aquesta informació.
 
-Example of the match creation interface:
+## Funcionalitats Principals
 
-![Match Creation Interface](../images/web/match-creation.png)
+### 1. Gestió de Codis de Rellotge
 
-### Real-time Match Tracking
+El sistema permet registrar i validar codis únics per als rellotges dels àrbitres. Cada codi de rellotge:
 
-During live matches, the web application offers:
+- És una cadena alfanumèrica única de 50 caràcters
+- Permet la sincronització entre dispositius mòbils i rellotges físics
+- Manté un estat (disponible, emparellat o treballant) que es pot consultar en qualsevol moment
 
-- **Live Scoreboard**: Real-time score updates
-- **Match Clock**: Synchronized match time display
-- **Incident Feed**: Live feed of match events (goals, cards, fouls)
-- **Team Statistics**: Real-time statistics for teams and players
-- **Lineup Visualization**: Visual representation of team formations
+Aquesta funcionalitat facilita que els àrbitres puguin connectar els seus dispositius mòbils amb els rellotges del partit, assegurant que el temps es gestiona de manera precisa i sincronitzada durant els esdeveniments esportius.
 
-### Report Generation and Viewing
+### 2. Visualització d'Informes de Partits
 
-After matches conclude, the web application facilitates:
+La plataforma mostra tots els informes de partits creats pels àrbitres, incloent:
 
-- **Automatic Report Generation**: Creates official match reports from collected data
-- **Report Editing**: Allows referees to review and modify reports
-- **PDF Export**: Exports reports in PDF format for official documentation
-- **Digital Signatures**: Supports digital signing of reports by referees and team representatives
-- **Report History**: Maintains an archive of all past match reports
+- Informació bàsica del partit (equips, data, àrbitre)
+- Detalls complets dels incidents durant el partit
+- Estats del partit (en curs o finalitzat)
+- Temps actual del partit
 
-### User Management
+L'aplicació obté aquestes dades de Firebase i les complementa amb informació addicional del backend de l'API, proporcionant una visió completa i detallada de cada partit.
 
-The web application provides comprehensive user management:
+### 3. Actualitzacions en Temps Real
 
-- **Multi-role Support**: Different access levels for administrators, referees, team managers, and spectators
-- **User Profiles**: Personalized profiles with role-specific dashboards
-- **Notification System**: In-app and email notifications for important events
-- **Activity Logs**: Tracking of user actions for accountability
+Un dels aspectes més destacats de l'aplicació és la seva capacitat per proporcionar actualitzacions en temps real mitjançant Socket.IO:
 
-## Technical Specifications
+- Els informes s'actualitzen instantàniament a totes les interfícies connectades
+- Els esdeveniments del partit (incidents, canvis en el temps) es reflecteixen immediatament
+- L'estat dels rellotges es monitora constantment
 
-### Frontend Architecture
+Aquesta funció garanteix que tots els usuaris vegin la mateixa informació actualitzada, independentment del dispositiu que utilitzin.
 
-The web application is built with:
+### 4. Eines de Prova i Diagnòstic
 
-- **Framework**: Next.js (React)
-- **State Management**: Redux
-- **Styling**: Tailwind CSS
-- **API Communication**: Axios
-- **Real-time Updates**: Firebase Realtime Database and Socket.IO
+L'aplicació inclou eines específiques per provar la connectivitat i diagnosticar problemes:
 
-The application follows a component-based architecture:
+- Registre i validació manual de codis de rellotge
+- Comprovació de l'estat de connexió dels rellotges
+- Registre d'esdeveniments per seguir la comunicació entre dispositius
 
-```mermaid
-graph TD
-    A[App Component] --> B[Authentication Module]
-    A --> C[Dashboard Module]
-    A --> D[Match Management Module]
-    A --> E[Report Module]
-    
-    C --> C1[Match List Component]
-    C --> C2[Calendar Component]
-    C --> C3[Statistics Component]
-    
-    D --> D1[Match Creator Component]
-    D --> D2[Match Editor Component]
-    D --> D3[Live Match Viewer Component]
-    
-    E --> E1[Report Generator Component]
-    E --> E2[Report Viewer Component]
-    E --> E3[Report Archive Component]
-```
+Aquestes eines són essencials per al manteniment i la resolució de problemes, permetent als administradors i àrbitres verificar que tot funciona correctament abans i durant els partits.
 
-### API Integration
+## Integració amb Altres Components
 
-The web application communicates with the Refereezy API for data operations:
+L'aplicació web s'integra amb altres components del sistema Refereezy:
 
-- **RESTful Endpoints**: Standard HTTP methods for CRUD operations
-- **JWT Authentication**: Secure token-based authentication
-- **Error Handling**: Comprehensive error handling and user feedback
+- **Aplicació Mòbil**: Rep i sincronitza informació a través de sockets
+- **Rellotge Físic**: Estableix comunicacions bidireccionals per actualitzar el temps del partit
+- **API Backend**: Recupera dades addicionals sobre equips, jugadors i àrbitres
+- **Firebase**: Emmagatzema i recupera informes i incidents
 
-### Real-time Implementation
+Aquesta integració permet un flux d'informació fluid entre tots els components del sistema.
 
-Real-time features are implemented through:
+## Seguretat i Rendiment
 
-- **Firebase Listeners**: For match data synchronization
-- **Socket.IO**: For low-latency updates and notifications
-- **Optimistic UI Updates**: For immediate feedback before server confirmation
+L'aplicació implementa diverses mesures de seguretat i optimització:
 
-Example Firebase integration:
+- Control d'accés per limitar el nombre de connexions per IP
+- Timeout de connexió per evitar connexions fantasma
+- Processament per lots de les sol·licituds de dades per millorar el rendiment
+- Validació de dades per evitar entrades malicioses
 
-```javascript
-// Initialize Firebase match listener
-const initializeMatchListener = (matchId) => {
-  const matchRef = firebase.database().ref(`matches/${matchId}`);
-  
-  matchRef.on('value', (snapshot) => {
-    const matchData = snapshot.val();
-    if (matchData) {
-      dispatch(updateMatchData(matchData));
-    }
-  });
-  
-  return () => matchRef.off(); // Cleanup function
-};
-```
+Aquestes mesures garanteixen que l'aplicació funcioni de manera segura i eficient, fins i tot amb un gran nombre d'usuaris simultanis.
 
-### Responsive Design
+## Conclusió
 
-The web application is designed to be responsive across:
-
-- Desktop browsers
-- Tablets
-- Mobile phones
-
-This is achieved through:
-
-- Tailwind CSS responsive classes
-- Flex and Grid layouts
-- Mobile-first approach to UI design
-- Device-specific optimizations
-
-## User Interface
-
-### Dashboard
-
-The dashboard provides a personalized overview based on user role:
-
-- **For Administrators**: System statistics, pending approvals, and recent activity
-- **For Referees**: Upcoming matches, recent reports, and personal statistics
-- **For Team Managers**: Team performance, player statistics, and match schedule
-- **For Spectators**: Featured matches, favorite teams, and live events
-
-### Match Viewer
-
-The match viewer provides a comprehensive view of ongoing and past matches:
-
-- **Scoreboard**: Prominent display of team scores
-- **Match Clock**: Current match time and period
-- **Team Information**: Logos, colors, and lineup
-- **Incident Timeline**: Chronological list of match events
-- **Statistics Panel**: Real-time statistics for teams and players
-
-### Report Interface
-
-The report interface allows for viewing and editing match reports:
-
-- **Structured Sections**: Organized by match phases and incident types
-- **Form Controls**: Intuitive input controls for data entry
-- **Validation**: Real-time validation of report data
-- **Preview Mode**: WYSIWYG preview of the final report
-- **Export Options**: Multiple format options for exporting reports
-
-## Integration with Other Refereezy Components
-
-### Mobile App Integration
-
-The web application works in tandem with the mobile app:
-
-- **Shared Authentication**: Single sign-on across platforms
-- **Data Synchronization**: Changes made in one platform reflect in the other
-- **Complementary Features**: Web for administration, mobile for on-field use
-
-### Watch App Integration
-
-Integration with the Refereezy watch app includes:
-
-- **Clock Synchronization**: Match time synchronized between web and watch
-- **Incident Reception**: Incidents recorded on the watch appear in the web interface
-- **Control Interface**: Web interface can control certain watch app functions
-
-### API Backend
-
-The web application depends on the API backend for:
-
-- **Data Persistence**: Storing match, team, and user data
-- **Business Logic**: Implementing complex business rules
-- **Authentication**: User authentication and authorization
-- **Integration**: Connection with external services
-
-## Security Features
-
-The web application incorporates several security measures:
-
-- **JWT Authentication**: Secure token-based user authentication
-- **Role-based Access Control**: Different permissions based on user roles
-- **Input Validation**: Client and server-side validation to prevent attacks
-- **HTTPS Enforcement**: Secure communication channel
-- **CSRF Protection**: Prevention of cross-site request forgery attacks
-- **Content Security Policy**: Mitigation of XSS vulnerabilities
-
-## Performance Optimization
-
-The web application is optimized for performance through:
-
-- **Code Splitting**: Loading only necessary JavaScript
-- **Lazy Loading**: Deferring load of non-critical components
-- **Server-side Rendering**: Faster initial page loads
-- **Caching Strategy**: Efficient caching of static assets and API responses
-- **Optimized Images**: Proper sizing and compression of images
-- **Minimal Dependencies**: Reducing third-party library usage
-
-## Development Roadmap
-
-Future enhancements planned for the web application:
-
-- **Enhanced Analytics**: Advanced statistics and visualizations
-- **Video Integration**: Embedding video clips of key match incidents
-- **Social Features**: Sharing and commenting on match events
-- **Internationalization**: Support for additional languages
-- **Accessibility Improvements**: Enhanced support for assistive technologies
-- **Dark Mode**: Alternative color scheme for low-light environments
-
-## Conclusion
-
-The Refereezy Web Application serves as a powerful platform for match management and real-time tracking. Its integration with mobile and watch applications creates a comprehensive ecosystem for digitalizing sports match officiating and reporting.
-
----
-
-*Note for documentation contributors: Add screenshots of key interfaces with annotations. Update feature descriptions as new functionality is implemented. Keep code examples current with the latest implementation patterns.*
+L'aplicació web de Refereezy representa un component fonamental en l'ecosistema de gestió d'arbitratge, oferint eines potents per a la visualització d'informes de partits i la gestió dels codis de rellotge. La seva arquitectura orientada a temps real assegura que tota la informació estigui actualitzada i sigui accessible per a tots els usuaris, millorant significativament l'experiència d'arbitratge en esdeveniments esportius.

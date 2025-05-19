@@ -113,35 +113,35 @@ nav:
   - Aplicacions:
     - apps/index.md
     - Web de'Administració:
-      - apps/app_web/overview.md
-    - Web Pública:
       - apps/website/overview.md
+    - Web Pública:
+      - apps/app_web/overview.md
     - Rellotge:
       - apps/app_rellotge/overview.md
     - Mòbil:
       - apps/app_mobile/overview.md
   
-  - API Documentation:
-    - Overview: api/overview.md
-    - Authentication: api/authentication.md
-    - Endpoints: 
-      - General: api/endpoints/general.md
-      - Matches: api/endpoints/matches.md
-      - Teams: api/endpoints/teams.md
-      - Players: api/endpoints/players.md
-      - Referees: api/endpoints/referees.md
-      - Clock: api/endpoints/clock.md
-    - Database Schema: api/database-schema.md
-    - Realtime Features: api/realtime.md
+  #- API Documentation:
+  #  - Overview: api/overview.md
+  #  - Authentication: api/authentication.md
+  #  - Endpoints: 
+  #    - General: api/endpoints/general.md
+  #    - Matches: api/endpoints/matches.md
+  #    - Teams: api/endpoints/teams.md
+  #    - Players: api/endpoints/players.md
+  #    - Referees: api/endpoints/referees.md
+  #    - Clock: api/endpoints/clock.md
+  #  - Database Schema: api/database-schema.md
+  #  - Realtime Features: api/realtime.md
 
   
-  - Desenvolupament:
-    - Getting Started: development/getting-started.md
-    - Environment Setup: development/environment-setup.md
-    - Architecture: development/architecture.md
-    - Docker Containers: development/docker.md
-    - Firebase Integration: development/firebase.md
-    - Contributing: development/contributing.md
+  #- Desenvolupament:
+  #  - Getting Started: development/getting-started.md
+  #  - Environment Setup: development/environment-setup.md
+  #  - Architecture: development/architecture.md
+  #  - Docker Containers: development/docker.md
+  #  - Firebase Integration: development/firebase.md
+  #  - Contributing: development/contributing.md
 
   
   - Administració de Sistemes:
