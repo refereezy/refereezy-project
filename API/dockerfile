@@ -1,7 +1,7 @@
 FROM python:3.10-slim
 
 # Exposa el port per HTTPS
-EXPOSE 80
+EXPOSE 443
 
 # Set the working directory directly to /app/api
 WORKDIR /app/api
@@ -16,7 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY api /app/api
 #COPY api/ssl /app/api/ssl
 
-#RUN chmod 600 /app/api/ssl/key.pem /app/api/ssl/cert.pem
+# Set appropriate permissions for SSL certificates
+RUN chmod 600 /app/api/ssl/key.pem /app/api/ssl/fullchain.pem
 
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "443", "--ssl-keyfile", "/app/api/ssl/key.pem", "--ssl-certfile", "/app/api/ssl/fullchain.pem"]
