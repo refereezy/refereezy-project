@@ -7,7 +7,7 @@ if (typeof io === "undefined") {
 } else {
 
     // create a socket connection to the server
-  const socket = io("http://localhost:3000", {
+  const socket = io(`http://${window.location.hostname}:3000`, {
     autoConnect: false,
     transports: ["websocket"],
   });

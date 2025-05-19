@@ -3,65 +3,409 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Refereezy - Testing Tools</title>
+  <title>Refereezy - Testing Console</title>
   <link rel="stylesheet" href="styles/index.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  <style>
+    .hidden {
+      display: none !important;
+    }
+    
+    .status-details {
+      margin-top: 8px;
+      font-size: 0.9em;
+      padding: 8px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+    }
+    
+    .event-log {
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: monospace;
+      border: 1px solid #ddd;
+      padding: 10px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+    }
+    
+    .event-log div {
+      border-bottom: 1px solid #eee;
+      padding: 6px 0;
+    }
+    
+    .monitor-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    
+    .monitor-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 16px;
+      background-color: #f8f9fa;
+      text-align: center;
+    }
+    
+    .monitor-value {
+      font-size: 2em;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+    
+    .btn-logout {
+      margin-left: 10px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .input-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    
+    .input-group input[type="number"] {
+      width: 80px;
+    }
+    
+    .status {
+      margin-top: 10px;
+    }
+    
+    .status.success {
+      color: #4CAF50;
+    }
+    
+    .status.error {
+      color: #f44336;
+    }
+    
+    .status.info {
+      color: #2196F3;
+    }
+    
+    /* Admin notice styling */
+    .admin-notice {
+      background-color: #fff3cd;
+      color: #856404;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      border-left: 4px solid #ffeeba;
+    }
+    
+    /* Mejoras de espaciado y diseño */
+    .section {
+      padding: 20px;
+      margin-bottom: 30px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+      width: 94%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: 600;
+      border: none;
+      background-color: #4a6bdf;
+      color: #fff;
+      transition: background-color 0.2s;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .btn:hover {
+      background-color: #3a5bbf;
+    }
+    
+    .note {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 10px;
+    }
+    
+    /* Estilos para el menú con logout */
+    .user-menu {
+      display: flex;
+      align-items: center;
+    }
+    
+    #logout-container {
+      margin-left: 15px;
+    }
+  </style>
 </head>
-<body>
-  <header class="main-header">
+<body>  <header class="main-header">
     <div class="container">
-      <h1><i class="fas fa-whistle"></i> Refereezy</h1>
+      <h1><i class="fas fa-futbol"></i> Refereezy</h1>
       <nav>
         <ul>
-          <li><a href="index.html">Clock Code Manager</a></li>
-          <li class="active"><a href="testing.html">Testing</a></li>
+          <li><a href="index.html">Dashboard</a></li>
+          <li class="active"><a href="testing.html">Testing Console</a></li>
           <li><a href="reports.html">Match Reports</a></li>
+          <li id="logout-container">
+            <button id="logoutBtn" class="btn-logout">Logout</button>
+          </li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    <section class="section">
-      <h2>Clock Code Registration</h2>
-      <div class="form-group">
-        <label for="clockCodeInput">Clock Code:</label>
-        <input type="text" id="clockCodeInput" placeholder="Enter clock code">
-      </div>
-      <button id="registerBtn" class="btn">Register Clock Code</button>
-      <div id="registerStatus" class="status"></div>
-    </section>
+    <div id="login-section" class="section">
+      <h2>Client Login</h2>
+      <div class="admin-notice">This testing console requires client authentication</div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Email:</label>
+          <input type="email" id="loginEmail" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password:</label>
+          <input type="password" id="loginPassword" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <div id="loginStatus" class="status"></div>
+      </form>
+    </div>
 
-    <section class="section">
-      <h2>Clock Code Validation</h2>
-      <div class="form-group">
-        <label for="validateCodeInput">Clock Code:</label>
-        <input type="text" id="validateCodeInput" placeholder="Enter clock code to validate">
+    <div id="testing-tools" class="hidden">
+      <h1>Socket.IO Testing Console</h1>
+      <p>Use this interface to test the real-time features of the Refereezy platform.</p>
+      
+      <section class="section">
+        <h2>System Monitoring</h2>
+        <div class="monitor-grid">
+          <div class="monitor-card">
+            <h3>Connected Devices</h3>
+            <div id="connectedDevices" class="monitor-value">0</div>
+          </div>
+          <div class="monitor-card">
+            <h3>Active Matches</h3>
+            <div id="activeMatchCount" class="monitor-value">0</div>
+          </div>
+          <div class="monitor-card">
+            <h3>Server Status</h3>
+            <div id="connectionStatus" class="status">Checking...</div>
+          </div>
+        </div>
+      </section>
+      
+      <div class="section-grid">
+        <section class="section">
+          <h2>Clock Registration</h2>
+          <div class="form-group">
+            <label for="clockCodeInput">Device Code:</label>
+            <input type="text" id="clockCodeInput" placeholder="Enter 50-char smartwatch code">
+          </div>
+          <div class="button-group">
+            <button id="registerBtn" class="btn">Register Smartwatch</button>
+            <button id="unregisterBtn" class="btn">Unregister Smartwatch</button>
+          </div>
+          <div id="registerStatus" class="status"></div>
+        </section>
+        
+        <section class="section">
+          <h2>Check Clock Status</h2>
+          <div class="form-group">
+            <label for="clockStatusInput">Device Code:</label>
+            <input type="text" id="clockStatusInput" placeholder="Enter smartwatch device code">
+          </div>
+          <button id="clockStatusBtn" class="btn">Check Status</button>
+          <div id="clockStatusResult" class="status"></div>
+        </section>
       </div>
-      <div class="form-group">
-        <label for="refereeIdInput">Referee ID:</label>
-        <input type="text" id="refereeIdInput" placeholder="Enter referee ID">
+      
+      <div class="section-grid">
+        <section class="section">
+          <h2>Referee Pairing (OLD, scrapped)</h2>
+          <div class="form-group">
+            <label for="validateCodeInput">Device Code:</label>
+            <input type="text" id="validateCodeInput" placeholder="Enter smartwatch device code" disabled>
+          </div>
+          <div class="form-group">
+            <label for="refereeIdInput">Referee ID:</label>
+            <input type="text" id="refereeIdInput" placeholder="Enter referee ID" disabled>
+          </div>
+          <button id="validateBtn" class="btn" disabled>Pair Referee with Smartwatch</button>
+          <div id="validateStatus" class="status"></div>
+        </section>
+        
+        <section class="section">
+          <h2>Referee Pairing (Advanced)</h2>
+          <div class="form-group">
+            <label for="pairCodeInput">Device Code:</label>
+            <input type="text" id="pairCodeInput" placeholder="Enter smartwatch device code">
+          </div>
+          <div class="form-group">
+            <label for="pairIdInput">Referee ID:</label>
+            <input type="number" id="pairIdInput" placeholder="ID">
+          </div>
+          <div class="form-group">
+            <label for="pairTokenInput">Token:</label>
+            <input type="text" id="pairTokenInput" placeholder="Authentication token">
+          </div>
+          <button id="pairBtn" class="btn">Pair with Smartwatch</button>
+          <div id="pairStatus" class="status"></div>
+        </section>
       </div>
-      <button id="validateBtn" class="btn">Validate Clock Code</button>
-      <div id="validateStatus" class="status"></div>
-    </section>
 
-    <section class="section">
-      <h2>Connection Status</h2>
-      <div id="connectionStatus" class="status">Disconnected</div>
-      <div id="eventLog" class="event-log"></div>
-    </section>
+      
+      <section class="section">
+        <h2>Clock Simulator</h2>
+        <div class="admin-notice">This section simulates events that would normally be sent by the smartwatch app</div>
+        
+        <div class="section-grid">
+          <div class="section">
+            <h3>Simulate Pairing Response</h3>
+            <div class="form-group">
+              <label for="simClockCodeInput">Clock Code:</label>
+              <input type="text" id="simClockCodeInput" placeholder="Enter 50-char smartwatch code">
+            </div>
+            <button id="simPairConfirmBtn" class="btn">Confirm Pairing</button>
+            <div id="simPairStatus" class="status"></div>
+          </div>
+          
+          <div class="section">
+            <h3>Simulate Report Processing</h3>
+            <div class="form-group">
+              <label for="simReportClockCode">Clock Code:</label>
+              <input type="text" id="simReportClockCode" placeholder="Enter smartwatch code">
+            </div>
+            <div class="form-group">
+              <label for="simReportId">Report ID:</label>
+              <input type="text" id="simReportId" placeholder="Enter report ID">
+            </div>
+            <div class="button-group">
+              <button id="simReportReceivedBtn" class="btn">Report Received</button>
+              <button id="simReportDoneBtn" class="btn">Report Done</button>
+            </div>
+            <div id="simReportStatus" class="status"></div>
+          </div>
+        </div>
+      </section>
+      
+      <div class="section-grid">
+        <section class="section">
+          <h2>Report Management</h2>
+          <div class="form-group">
+            <label for="reportIdInput">Report ID:</label>
+            <input type="text" id="reportIdInput" placeholder="Enter report ID">
+          </div>
+          <div class="form-group">
+            <label for="clockCodeForReportInput">Device Code:</label>
+            <input type="text" id="clockCodeForReportInput" placeholder="Enter smartwatch device code">
+          </div>
+          <div class="button-group">
+            <button id="sendReportBtn" class="btn">Send Report to Clock</button>
+            <button id="updateReportBtn" class="btn">Notify Report Updated</button>
+          </div>
+          <div id="reportTimerStatus" class="status"></div>
+        </section>
+        
+        <section class="section">
+          <h2>Timer Updates</h2>
+          <div class="form-group">
+            <label>Match Timer:</label>
+            <div class="input-group">
+              <input type="number" id="timerMinInput" placeholder="Min" min="0" max="90">
+              <span>:</span>
+              <input type="number" id="timerSecInput" placeholder="Sec" min="0" max="59">
+            </div>
+          </div>
+          <button id="updateTimerBtn" class="btn">Update Timer</button>
+          <p class="note">Uses the Report ID from the Report Management section</p>
+        </section>
+      </div>
+      
+      <section class="section">
+        <h2>Add Incident</h2>
+        <div class="form-group">
+          <label for="incidentReportIdInput">Report ID:</label>
+          <input type="text" id="incidentReportIdInput" placeholder="Enter report ID">
+        </div>
+        <div class="form-group">
+          <label for="incidentTypeInput">Incident Type:</label>
+          <select id="incidentTypeInput">
+            <option value="goal">Goal</option>
+            <option value="yellow-card">Yellow Card</option>
+            <option value="red-card">Red Card</option>
+            <option value="substitution">Substitution</option>
+            <option value="injury">Injury</option>
+            <option value="var">VAR Review</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="incidentMinuteInput">Minute:</label>
+          <input type="number" id="incidentMinuteInput" placeholder="Minute" min="0" max="90">
+        </div>
+        <div class="form-group">
+          <label for="incidentDescInput">Description:</label>
+          <textarea id="incidentDescInput" placeholder="Enter incident description" rows="3"></textarea>
+        </div>
+        <button id="addIncidentBtn" class="btn">Add Incident</button>
+        <div id="incidentStatus" class="status"></div>
+      </section>
+      
+      <section class="section">
+        <h2>Event Log</h2>
+        <div id="eventLog" class="event-log"></div>
+      </section>
+      
+    </div>
   </main>
 
   <footer class="main-footer">
     <div class="container">
-      <p>&copy; 2025 Refereezy - The Ultimate Referee Management Platform</p>
+      <p>&copy; 2025 Refereezy - Modern Football Match Management Platform</p>
     </div>
   </footer>
 
-  <!-- Do not remove, this is needed -->
+  <!-- Scripts -->
   <script src="/socket.io/socket.io.js"></script>
+  <script src="scripts/auth.js"></script>
   <script src="scripts/testing-socket.js"></script>
-  <script src="scripts/index.js"></script>
 </body>
 </html>

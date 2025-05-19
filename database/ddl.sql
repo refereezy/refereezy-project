@@ -1,4 +1,19 @@
--- PostgreSQL
+-- Create the database if it doesn't already exist
+CREATE DATABASE IF NOT EXIST refereezy;
+
+-- Connect to the newly created database
+\c refereezy
+
+-- Drop tables in the correct order to avoid foreign key conflicts
+DROP TABLE IF EXISTS PLAYER;
+DROP TABLE IF EXISTS MATCHES;
+DROP TABLE IF EXISTS REFEREE;
+DROP TABLE IF EXISTS TEAM;
+DROP TABLE IF EXISTS MATCH_GROUP;
+DROP TABLE IF EXISTS CLIENT;
+DROP TYPE IF EXISTS Plan;
+
+-- Tables
 CREATE TYPE Plan as ENUM ('Eazy', 'Exceptional', 'Enterprise');
 
 CREATE TABLE IF NOT EXISTS CLIENT (
@@ -31,20 +46,16 @@ CREATE TABLE IF NOT EXISTS TEAM (
     FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS CLOCK (
-    code VARCHAR(50) PRIMARY KEY
-);	
-
 CREATE TABLE IF NOT EXISTS REFEREE (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
 	password TEXT NOT NULL,
+    token TEXT NOT NULL,
     dni VARCHAR(20) UNIQUE NOT NULL,
 	clock_code VARCHAR(50),
     client_id INT NOT NULL,
 	
-    FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE,
-	FOREIGN KEY (clock_code) REFERENCES CLOCK(code) ON DELETE SET NULL
+    FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS MATCHES (
@@ -71,9 +82,8 @@ CREATE TABLE IF NOT EXISTS PLAYER (
     dni VARCHAR(20) UNIQUE NOT NULL,
     team_id INT,
     client_id INT NOT NULL,
+    is_goalkeeper BOOLEAN,
 	
     FOREIGN KEY (team_id) REFERENCES TEAM(id) ON DELETE SET NULL,
     FOREIGN KEY (client_id) REFERENCES CLIENT(id) ON DELETE CASCADE
 );
-
-

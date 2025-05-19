@@ -8,6 +8,17 @@ router.get('/api/status', (req, res) => {
   res.json({ status: 'API is running' });
 });
 
+// Endpoints para estadísticas
+router.get('/api/stats/devices', (req, res) => {
+  const count = Object.keys(clockSockets).length;
+  res.json({ count });
+});
+
+router.get('/api/stats/matches', (req, res) => {
+  const count = Object.values(clockSockets).filter(clock => clock.status === 'working').length;
+  res.json({ count });
+});
+
 // Get all reports in short form (for listing)
 router.get('/api/reports/short', async (req, res): Promise<any> => {
   try {

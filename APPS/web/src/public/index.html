@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Refereezy - Clock Code Manager</title>
+  <title>Refereezy - Football Match Management</title>
   <link rel="stylesheet" href="styles/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <header class="main-header">
     <div class="container">
-      <h1><i class="fas fa-whistle"></i> Refereezy</h1>
+      <h1><i class="fas fa-futbol"></i> Refereezy</h1>
       <nav>
         <ul>
-          <li class="active"><a href="index.html">Clock Code Manager</a></li>
-          <li><a href="testing.html">Testing</a></li>
+          <li class="active"><a href="index.html">Dashboard</a></li>
+          <li><a href="testing.html">Testing Console</a></li>
           <li><a href="reports.html">Match Reports</a></li>
         </ul>
       </nav>
@@ -26,41 +26,67 @@
       <h2>Welcome to Refereezy</h2>
       <div class="welcome-content">
         <div class="intro-text">
-          <p>Refereezy is a comprehensive platform designed for sports referees to manage match reports and timing efficiently.</p>
-          <p>Our system allows referees to connect their mobile devices with timing clocks using unique codes, ensuring synchronized and accurate match timing.</p>
+          <p>Refereezy is a comprehensive platform designed for football match management, providing tools for referees, teams, and competition organizers.</p>
+          <p>Our system connects mobile devices with smartwatches to record match incidents in real-time, ensuring accurate and efficient match reporting.</p>
         </div>
         <div class="app-features">
           <h3>Main Features:</h3>
           <ul class="features-list">
             <li>
-              <i class="fas fa-clock"></i>
+              <i class="fas fa-mobile-alt"></i>
               <div>
-                <h4>Clock Code Management</h4>
-                <p>Pair referee accounts with match clocks using unique codes for seamless timing synchronization.</p>
+                <h4>Mobile Apps for Referees</h4>
+                <p>Android application that allows referees to manage matches and record incidents quickly and efficiently.</p>
+              </div>
+            </li>
+            <li>
+              <i class="fas fa-stopwatch"></i>
+              <div>
+                <h4>Smartwatch Integration</h4>
+                <p>Record incidents in real-time using an Android smartwatch app, paired with your mobile device.</p>
               </div>
             </li>
             <li>
               <i class="fas fa-clipboard-list"></i>
               <div>
                 <h4>Match Reports</h4>
-                <p>Create, view, and manage comprehensive match reports including incidents, scores, and player information.</p>
+                <p>Generate and access detailed match reports with all incidents, scores, and player information.</p>
               </div>
             </li>
             <li>
-              <i class="fas fa-sync"></i>
+              <i class="fas fa-users"></i>
               <div>
-                <h4>Real-time Updates</h4>
-                <p>All match data is updated in real-time across connected devices using WebSocket technology.</p>
-              </div>
-            </li>
-            <li>
-              <i class="fas fa-tools"></i>
-              <div>
-                <h4>Testing Tools</h4>
-                <p>Access diagnostic tools to verify clock pairing functionality and WebSocket connections.</p>
+                <h4>Team Management</h4>
+                <p>Organize teams, players, and referees from the administrative dashboard.</p>
               </div>
             </li>
           </ul>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section stats-section">
+      <h2>System Statistics</h2>
+      <div class="stats-container">
+        <div class="stat-card">
+          <i class="fas fa-stopwatch"></i>
+          <div class="stat-value" id="activeWatches">--</div>
+          <div class="stat-label">Active Smartwatches</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-calendar-check"></i>
+          <div class="stat-value" id="activeMatches">--</div>
+          <div class="stat-label">Active Matches</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-file-alt"></i>
+          <div class="stat-value" id="totalReports">--</div>
+          <div class="stat-label">Total Reports</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-sync"></i>
+          <div class="stat-value" id="lastSync">--</div>
+          <div class="stat-label">Last Sync</div>
         </div>
       </div>
     </section>
@@ -71,21 +97,21 @@
         <div class="step">
           <div class="step-number">1</div>
           <div class="step-content">
-            <h3>Register Your Clock Code</h3>
-            <p>Use the <a href="testing.html">Testing</a> page to register a unique clock code for your match.</p>
+            <h3>Register Your Smartwatch</h3>
+            <p>Use the <a href="testing.html">Testing Console</a> to connect your smartwatch with our system.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-number">2</div>
           <div class="step-content">
-            <h3>Validate Connection</h3>
-            <p>Pair your referee ID with the registered clock code to establish a connection.</p>
+            <h3>Pair With Referee Account</h3>
+            <p>Connect your referee ID with the registered smartwatch to establish a connection.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-number">3</div>
           <div class="step-content">
-            <h3>Manage Reports</h3>
+            <h3>Manage Match Reports</h3>
             <p>View and manage all match reports on the <a href="reports.html">Match Reports</a> page.</p>
           </div>
         </div>
@@ -95,9 +121,14 @@
 
   <footer class="main-footer">
     <div class="container">
-      <p>&copy; 2025 Refereezy - The Ultimate Referee Management Platform</p>
+      <p>&copy; 2025 Refereezy - Modern Football Match Management Platform</p>
     </div>
   </footer>
+  
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="scripts/index.js"></script>
+</body>
+</html>
 
   <!-- Do not remove, this is needed -->
   <script src="/socket.io/socket.io.js"></script>

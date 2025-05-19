@@ -2,8 +2,8 @@
 
 -- Datos de prueba
 INSERT INTO CLIENT (name, plan, plan_expiration, email, password, phone) VALUES
-('John Doe', 'Eazy', '2025-12-31', 'john@example.com', '$2b$12$QIy0hUnHLN0rsNamEB00p.1lMy7Y.UrcU0klIvI5U9l8GNGvAl9qu', '1234567890'),
-('Alice Smith', 'Exceptional', '2025-11-30', 'alice@example.com', '$2b$12$B5pDqofT0YVKGuKITVb1buRl1JVbNF1B7ezsoYgvacRHB.4wDkWkm', '0987654321');
+('Institut TIC', 'Exceptional', '2025-12-31', 'client@iticbcn.cat', '$2b$12$QIy0hUnHLN0rsNamEB00p.1lMy7Y.UrcU0klIvI5U9l8GNGvAl9qu', '1234567890'), -- CONTRASEÑA 123
+('Real federacion de futbol Española', 'Enterprise', '2025-11-30', 'client@rfef.es', '$2b$12$B5pDqofT0YVKGuKITVb1buRl1JVbNF1B7ezsoYgvacRHB.4wDkWkm', '0987654321');  -- CONTRASEÑA 456
 
 INSERT INTO MATCH_GROUP (visibility, code, client_id) VALUES
 ('public', 'MG001', 1),
@@ -19,22 +19,41 @@ INSERT INTO TEAM (name, logo_url, primary_color, secondary_color, client_id) VAL
 
 INSERT INTO REFEREE (name, password, dni, clock_code, client_id, token) VALUES
 ('Mike Ref', 'password123', '12345678A', NULL, 1, '$2b$12$/88liRIt9od1TfvQDqIYj.3B3KdN0ZAv/gfNrfjXN/8aB1TPejxa.'),
-('Sarah Ref', 'password456', '87654321B', NULL, 2, '$2b$12$Airxgu62eyAsXRhwqp7ejujxdkdKR6c.t8lCXBdVdqWFr2OZdkuZe');
+('Sarah Ref', 'password456', '87654321B', NULL, 1, '$2b$12$Airxgu62eyAsXRhwqp7ejujxdkdKR6c.t8lCXBdVdqWFr2OZdkuZe');
 
-INSERT INTO MATCHES (date, matchgroup_id, client_id, local_team_id, visitor_team_id, referee_id) VALUES
-('2025-05-15 15:00:00', NULL, 1, 1, 2, 1),
-('2025-05-20 18:00:00', NULL, 1, 3, 1, NULL),
-('2025-05-25 20:00:00', NULL, 1, 2, 3, 1),
-('2025-06-01 16:00:00', NULL, 1, 1, 2, 2),
-('2025-06-01 17:00:00', NULL, 1, 3, 1, NULL),
-('2025-06-01 18:00:00', NULL, 1, 2, 3, NULL),
-('2025-06-01 19:00:00', NULL, 1, 3, 1, NULL),
-('2025-06-01 20:00:00', NULL, 1, 1, 2, NULL),
-('2025-06-01 21:00:00', NULL, 1, 1, 3, NULL),
-('2025-06-01 22:00:00', NULL, 1, 2, 1, NULL),
-('2025-06-01 23:00:00', NULL, 1, 3, 2, NULL),
-('2025-06-01 16:00:00', NULL, 1, 1, 3, NULL),
-('2025-06-01 17:00:00', NULL, 1, 1, 3, NULL);
+INSERT INTO MATCHES (date, client_id, local_team_id, visitor_team_id, referee_id) VALUES
+-- Matches for this week (May 19-25, 2025)
+('2025-05-19 18:00:00', 1, 1, 2, 1),    -- Barcelona vs Madrid
+('2025-05-20 19:30:00', 1, 3, 4, NULL), -- Milan vs Manchester United
+('2025-05-21 17:00:00', 1, 5, 1, 1),    -- Bayern Munich vs Barcelona
+('2025-05-22 20:00:00', 1, 2, 5, 2),    -- Madrid vs Bayern Munich
+('2025-05-23 18:30:00', 1, 4, 3, NULL), -- Manchester United vs Milan
+('2025-05-24 16:00:00', 1, 1, 4, NULL), -- Barcelona vs Manchester United
+('2025-05-25 20:30:00', 1, 5, 3, 1),    -- Bayern Munich vs Milan
+
+-- Matches for next week (May 26-June 1, 2025)
+('2025-05-27 19:00:00', 1, 2, 4, NULL), -- Madrid vs Manchester United
+('2025-05-29 17:30:00', 1, 3, 5, NULL), -- Milan vs Bayern Munich
+('2025-05-31 18:00:00', 1, 4, 1, 2),    -- Manchester United vs Barcelona
+
+-- Matches for early June
+('2025-06-02 19:30:00', 1, 5, 2, NULL), -- Bayern Munich vs Madrid
+('2025-06-04 18:00:00', 1, 1, 3, 1),    -- Barcelona vs Milan
+('2025-06-06 20:00:00', 1, 4, 5, NULL), -- Manchester United vs Bayern Munich
+('2025-06-08 17:00:00', 1, 2, 3, 2),    -- Madrid vs Milan
+
+-- Matches for mid June
+('2025-06-10 19:00:00', 1, 3, 2, NULL), -- Milan vs Madrid
+('2025-06-12 18:30:00', 1, 5, 4, 1),    -- Bayern Munich vs Manchester United
+('2025-06-14 16:00:00', 1, 1, 5, NULL), -- Barcelona vs Bayern Munich
+('2025-06-16 20:30:00', 1, 4, 2, NULL), -- Manchester United vs Madrid
+
+-- Matches for late June
+('2025-06-18 19:30:00', 1, 2, 1, 2),    -- Madrid vs Barcelona
+('2025-06-20 18:00:00', 1, 3, 1, NULL), -- Milan vs Barcelona
+('2025-06-22 20:00:00', 1, 4, 3, 1),    -- Manchester United vs Milan
+('2025-06-24 17:30:00', 1, 5, 2, NULL), -- Bayern Munich vs Madrid
+('2025-06-26 19:00:00', 1, 1, 4, 2);    -- Barcelona vs Manchester United
 
 INSERT INTO PLAYER (name, dorsal_number, dni, team_id, client_id, is_goalkeeper) VALUES
 -- Jugadores para el Team 1
@@ -83,10 +102,9 @@ INSERT INTO PLAYER (name, dorsal_number, dni, team_id, client_id, is_goalkeeper)
 ('Casemiro', 18, '47474747G', 4, 1, false),
 ('Christian Eriksen', 14, '48484848H', 4, 1, false),
 ('Jadon Sancho', 25, '49494949I', 4, 1, false),
-('Anthony Martial', 9, '50505050J', 4, 1, false);
+('Anthony Martial', 9, '50505050J', 4, 1, false),
 
 -- Jugadores para Bayern Munich (Team 5)
-INSERT INTO PLAYER (name, dorsal_number, dni, team_id, client_id, is_goalkeeper) VALUES
 ('Manuel Neuer', 1, '51515151K', 5, 2, true),
 ('Joshua Kimmich', 6, '52525252L', 5, 2, false),
 ('Leon Goretzka', 8, '53535353M', 5, 2, false),
