@@ -4,6 +4,14 @@ CREATE DATABASE refereezy;
 -- Connect to the newly created database
 \c refereezy
 
+-- Drop tables in the correct order to avoid foreign key conflicts
+DROP TABLE IF EXISTS PLAYER;
+DROP TABLE IF EXISTS MATCHES;
+DROP TABLE IF EXISTS REFEREE;
+DROP TABLE IF EXISTS TEAM;
+DROP TABLE IF EXISTS MATCH_GROUP;
+DROP TABLE IF EXISTS CLIENT;
+DROP TYPE IF EXISTS Plan;
 -- Tables
 CREATE TYPE Plan as ENUM ('Eazy', 'Exceptional', 'Enterprise');
 
