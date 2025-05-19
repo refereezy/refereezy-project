@@ -446,7 +446,7 @@ input:focus {
 
 /* Football themed elements */
 .main-header h1 i {
-  color: white;
+  color: black;
   background-color: var(--tertiary-color);
   border-radius: 50%;
   padding: 8px;
