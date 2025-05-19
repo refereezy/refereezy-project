@@ -42,13 +42,19 @@ try {
   const app = initializeApp(firebaseConfig);
   db = getFirestore(app);
   console.log('Firebase initialized successfully with project ID:', firebaseConfig.projectId);
-  
-  // Define the collection reference for reports
+    // Define the collection reference for reports
   REPORTS_COLLECTION = 'reports';
   reportsRef = collection(db, REPORTS_COLLECTION) as CollectionReference<Report>;
 
   // FastAPI backend URL
   REFEREEZY_API_URL = process.env.REFEREEZY_API_URL || 'http://localhost:8080';
+  
+  // Disable SSL certificate validation for Axios when working with localhost
+  // This helps avoid ERR_TLS_CERT_ALTNAME_INVALID errors during local development
+  if (!REFEREEZY_API_URL.includes("refereezy.smcardona.tech")) {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    console.log('SSL certificate validation disabled for local development');
+  }
 } catch (error) {
   console.error('Error initializing Firebase:', error);
   throw error;

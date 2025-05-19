@@ -12,7 +12,7 @@ INSERT INTO MATCH_GROUP (visibility, code, client_id) VALUES
 INSERT INTO TEAM (name, logo_url, primary_color, secondary_color, client_id) VALUES
 ('Barcelona', 'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/1200px-FC_Barcelona_%28crest%29.svg.png', '#ff0000', '#ffffff', 1),
 ('Madrid', 'https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png', '#0000ff', '#000000', 1),
-('Milan', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_of_AC_Milan.svg/1306px-Logo_of_AC_Milan.svg.png', '#00ff00', '#ffff00', 1);
+('Milan', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_of_AC_Milan.svg/1306px-Logo_of_AC_Milan.svg.png', '#00ff00', '#ffff00', 1),
 ('Manchester United', 'https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg', '#da291c', '#ffd100', 1),
 ('Bayern Munich', 'https://upload.wikimedia.org/wikipedia/commons/1/1f/FC_Bayern_München_logo_%282017%29.svg', '#dc052d', '#0066b2', 1);
 
@@ -71,10 +71,9 @@ INSERT INTO PLAYER (name, dorsal_number, dni, team_id, client_id, is_goalkeeper)
 ('Clarence Seedorf', 10, '19191919O', 3, 2, false),
 ('Kaká', 22, '20202020P', 3, 2, false),
 ('Andriy Shevchenko', 7, '21212121Q', 3, 2, false),
-('Zlatan Ibrahimović', 11, '22222222R', 3, 2, true);
+('Zlatan Ibrahimović', 11, '22222222R', 3, 2, true),
 
 -- Jugadores para Manchester United (Team 4)
-INSERT INTO PLAYER (name, dorsal_number, dni, team_id, client_id, is_goalkeeper) VALUES
 ('David de Gea', 1, '41414141A', 4, 1, true),
 ('Harry Maguire', 5, '42424242B', 4, 1, false),
 ('Raphaël Varane', 19, '43434343C', 4, 1, false),
