@@ -112,14 +112,14 @@ nav:
 
   - Aplicacions:
     - apps/index.md
-    - Rellotge:
-      - Overview: apps/app_rellotge/overview.md
-    - Mòbil:
-      - Overview: apps/app_mobile/overview.md
     - Web de'Administració:
-      - Overview: apps/app_web/overview.md
+      - apps/app_web/overview.md
     - Web Pública:
-      - Overview: apps/website/overview.md
+      - apps/website/overview.md
+    - Rellotge:
+      - apps/app_rellotge/overview.md
+    - Mòbil:
+      - apps/app_mobile/overview.md
   
   - API Documentation:
     - Overview: api/overview.md
