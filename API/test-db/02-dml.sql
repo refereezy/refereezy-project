@@ -14,7 +14,7 @@ INSERT INTO TEAM (name, logo_url, primary_color, secondary_color, client_id) VAL
 ('Madrid', 'https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png', '#0000ff', '#000000', 1),
 ('Milan', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_of_AC_Milan.svg/1306px-Logo_of_AC_Milan.svg.png', '#00ff00', '#ffff00', 1),
 ('Manchester United', 'https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg', '#da291c', '#ffd100', 1),
-('Bayern Munich', 'https://upload.wikimedia.org/wikipedia/commons/1/1f/FC_Bayern_München_logo_%282017%29.svg', '#dc052d', '#0066b2', 1);
+('Bayern Munich', 'https://logodownload.org/wp-content/uploads/2017/02/bayern-munich-logo-0.png', '#dc052d', '#0066b2', 1);
 
 
 INSERT INTO REFEREE (name, password, dni, clock_code, client_id, token) VALUES
