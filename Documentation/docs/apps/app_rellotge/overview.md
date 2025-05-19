@@ -1,49 +1,62 @@
-# Aplicació mòbil Refereezy – Documentació funcional
+# Aplicació rellotge Refereezy – Documentació 
 
 ## Introducció
 
-L’aplicació mòbil Refereezy ha estat desenvolupada per facilitar la gestió integral dels partits de futbol des de la perspectiva arbitral. Aquesta eina permet als àrbitres i assistents registrar, consultar i gestionar totes les incidències d’un partit, així com controlar el temps, la composició dels equips, les sancions i la comunicació amb altres dispositius, tot des d’un entorn centralitzat i accessible des del telèfon mòbil.
+L’aplicació per a rellotge Refereezy ha estat desenvolupada específicament per complementar la gestió arbitral des del dispositiu wearable, permetent que l’àrbitre pugui controlar i registrar els esdeveniments del partit sense necessitat de manipular el telèfon mòbil durant el joc. Aquesta eina està pensada per funcionar de manera sincronitzada amb l’aplicació mòbil Refereezy, facilitant la comunicació i la transferència d’informació en temps real entre dispositius.
+
+## Funcionament i flux de vinculació
+
+El rellotge no gestiona perfils d’usuari ni credencials pròpies. La vinculació entre rellotge i àrbitre es realitza sempre a través de l’aplicació mòbil. L’àrbitre inicia sessió al mòbil amb les seves credencials personals i, un cop autenticat, genera un codi QR des de l’app mòbil. El rellotge escaneja aquest codi QR per establir una connexió segura i temporal amb el perfil de l’àrbitre i els partits assignats. Aquesta vinculació permet que el rellotge rebi la informació necessària per operar durant el partit, sense emmagatzemar dades personals de manera persistent.
 
 ## Funcionalitats principals
 
-### Gestió de partits i informes
-
-L’aplicació permet la creació, consulta i modificació d’informes de partit. Cada informe recull informació detallada sobre el partit, incloent-hi dades dels equips, alineacions, incidències, gols, targetes i qualsevol altra acció rellevant. L’àrbitre pot iniciar un nou informe, continuar-ne un d’existent o revisar informes anteriors, amb la possibilitat d’editar qualsevol dada abans de la seva validació final.
-
-### Control d’alineacions i jugadors
-
-Refereezy ofereix una interfície per seleccionar i gestionar les alineacions dels equips. Es poden afegir, modificar o eliminar jugadors de la llista, assignar-los dorsals i rols (titular, suplent, capità, etc.), i registrar canvis durant el partit. El sistema permet identificar ràpidament els jugadors implicats en qualsevol incidència.
-
-### Registre d’incidències i accions
-
-L’aplicació facilita el registre de qualsevol incidència que es produeixi durant el partit: gols, targetes grogues i vermelles, lesions, substitucions, interrupcions, etc. Cada acció queda associada a un minut concret i a un jugador o equip, segons correspongui. El registre es pot fer de manera manual o mitjançant accions ràpides des de la pantalla principal del partit.
-
 ### Control del temps de joc
 
-El cronòmetre integrat permet iniciar, pausar i reprendre el temps de joc, així com afegir temps extra o registrar aturades. El temps es mostra de manera clara i es pot sincronitzar amb altres dispositius, com ara el rellotge intel·ligent connectat. El sistema registra automàticament els minuts de cada incidència segons l’estat del cronòmetre.
+El rellotge proporciona un cronòmetre central, accessible i fàcil d’utilitzar, que permet iniciar, pausar i reprendre el temps de joc amb un sol gest. També es poden afegir minuts extra o registrar aturades, i el sistema garanteix que qualsevol canvi en el temps es sincronitzi automàticament amb l’aplicació mòbil. Aquesta sincronització bidireccional assegura que tant el mòbil com el rellotge reflecteixin sempre l’estat real del partit.
 
-### Sincronització i connexió amb altres dispositius
+### Registre d’incidències
 
-Refereezy incorpora un sistema de sincronització en temps real amb el rellotge intel·ligent i, si escau, amb la plataforma centralitzada. La connexió es realitza mitjançant un sistema de parellament segur, habitualment a través de codis QR. Aquesta sincronització garanteix que totes les dades del partit es mantinguin actualitzades entre dispositius i permet la transferència d’informació sense pèrdua de dades.
+Des del rellotge es poden registrar ràpidament les incidències més habituals d’un partit: gols, targetes grogues i vermelles, lesions, interrupcions, baralles o qualsevol altra situació rellevant. El procés està optimitzat per minimitzar el temps d’interacció, utilitzant botons grans i accés directe a les accions més freqüents. Cada incidència queda associada automàticament al minut exacte segons el cronòmetre del dispositiu.
 
-### Validació i enviament de l’informe
+A més, per a incidències que requereixen una descripció més detallada (com lesions o incidents especials), el rellotge permet la introducció de notes mitjançant reconeixement de veu, aprofitant el micròfon integrat del dispositiu.
 
-Un cop finalitzat el partit, l’aplicació permet revisar l’informe complet, validar-lo i enviar-lo a la federació o entitat corresponent. El procés de validació inclou comprovacions automàtiques per evitar errors habituals (jugadors sense assignar, minuts incoherents, etc.). L’enviament es pot fer en línia o quedar pendent fins que hi hagi connexió a internet.
+### Gestió de l’acta i sincronització
 
-### Gestió de l’usuari i autenticació
+El rellotge no genera l’acta oficial, però sí que recull i transmet totes les dades d’incidències i temps a l’aplicació mòbil, que és la responsable de la generació i enviament de l’acta. La comunicació entre dispositius es realitza mitjançant sockets i canals xifrats, garantint la seguretat i la immediatesa en la transferència d’informació.
 
-L’aplicació gestiona la identificació de l’àrbitre mitjançant credencials personals i sistemes d’autenticació segura. Es poden gestionar diferents perfils d’àrbitre i mantenir l’historial d’informes associats a cada usuari.
+En tot moment, el rellotge mostra el marcador actualitzat i permet consultar les incidències registrades durant el partit, mantenint l’àrbitre informat sense necessitat de consultar el mòbil.
 
-## Integració amb altres components
+### Finalització i desconnexió
 
-L’aplicació mòbil Refereezy està dissenyada per treballar conjuntament amb el rellotge intel·ligent i la plataforma web. La integració amb el rellotge permet registrar incidències de manera ràpida i controlar el temps sense necessitat de manipular el telèfon. La plataforma web centralitza tots els informes i permet la seva consulta i gestió per part de la federació o altres agents autoritzats.
+En acabar el partit, el rellotge permet tancar el partit. si es nesesita es pot desvincular del perfil d’àrbitre mitjançant una acció explícita. Aquesta desconnexió es pot fer des del mateix rellotge, i implica l’eliminació de qualsevol referència temporal a l’àrbitre o al partit, preparant el dispositiu per a una nova vinculació en futurs encontres.
 
 ## Consideracions tècniques
 
-- L’aplicació requereix connexió a internet per a la sincronització i enviament d’informes, però permet el treball en mode offline amb sincronització posterior.
-- El sistema de parellament amb el rellotge utilitza codis QR i canals xifrats per garantir la seguretat de les dades.
-- L’aplicació està optimitzada per a dispositius Android i fa ús de notificacions, serveis en segon pla i persistència local de dades.
+- El rellotge requereix connexió a internet (WiFi o Bluetooth amb el mòbil) per a la sincronització en temps real de dades i incidències.
+- La vinculació es realitza exclusivament mitjançant codi QR generat per l’aplicació mòbil, i la connexió es manté només durant la durada del partit o fins a la desconnexió manual.
+- L’aplicació està optimitzada per a dispositius Wear OS i fa ús de serveis en segon pla per garantir la persistència de la connexió i la fiabilitat de la sincronització.
+- El sistema utilitza canals xifrats per a la transmissió de dades i no emmagatzema informació personal de manera persistent al rellotge.
 
-## Conclusions
+## Flux de treball típic
 
-Amb Refereezy proporcionem una solució completa per a la gestió arbitral dels partits de futbol, integrant totes les funcionalitats necessàries en una única aplicació mòbil. La seva arquitectura modular i la integració amb altres dispositius garanteixen una experiència eficient, segura i adaptada a les necessitats reals dels àrbitres.
+El funcionament habitual del rellotge Refereezy segueix la següent seqüència:
+
+1. **Vinculació**: L’àrbitre inicia sessió al mòbil i genera un codi QR. El rellotge escaneja aquest codi per vincular-se temporalment amb el perfil i els partits assignats.
+2. **Recepció de dades**: Un cop vinculat, el rellotge rep la informació del partit i mostra el cronòmetre i el marcador.
+3. **Control del partit**: Durant el partit, l’àrbitre utilitza el rellotge per gestionar el temps i registrar incidències de manera àgil i precisa.
+4. **Sincronització contínua**: Totes les accions realitzades al rellotge es transmeten immediatament al mòbil, i qualsevol canvi des del mòbil es reflecteix també al rellotge.
+5. **Finalització**: En acabar el partit, el rellotge permet tancar la sessió i es desvincula automàticament, eliminant qualsevol dada temporal.
+
+Aquesta seqüència està pensada per minimitzar la càrrega administrativa i maximitzar la concentració de l’àrbitre en el joc.
+
+## Requeriments del sistema
+
+Per al correcte funcionament de l’aplicació de rellotge, es requereixen les següents especificacions tècniques:
+
+- **Sistema operatiu**: Wear OS compatible amb Android 8.0 (Oreo) o superior.
+- **Connexió**: Accés a internet via WiFi o sincronització amb el mòbil via Bluetooth.
+- **Càmera**: No és necessari disposar de càmera al rellotge, ja que l’escaneig del QR es pot fer des del mòbil.
+- **Micròfon**: Recomanat per a la introducció de notes per veu en incidències especials.
+- **Espai d’emmagatzematge**: L’aplicació requereix un espai mínim, ja que no emmagatzema dades personals de manera persistent.
+
+L’aplicació està dissenyada per funcionar de manera eficient en dispositius de gamma mitjana i alta, i rep actualitzacions periòdiques per garantir la compatibilitat i la seguretat.
