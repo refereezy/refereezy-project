@@ -106,10 +106,9 @@ nav:
   
   - Introducció:
     - index.md
-    - Primer Pasos: 
+    - Primers Pasos: 
       - introduccio/getting-started.md
-    - Característiques: 
-      - introduccio/features.md
+
 
   - Aplicacions:
     - apps/index.md

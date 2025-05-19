@@ -21,14 +21,12 @@ Som un equip format per quatre desenvolupadors amb perfils diversos i complement
 - **Ismael Younes** – *Desenvolupador Frontend i Backend*
 - **Anguelina Levchenko** – *Administradora de sistemes*
 
-## La nostra visió
-
-*[Documenteu aquí la visió a llarg termini de Refereezy: noves funcionalitats previstes, plans d’expansió i l’impacte potencial en el sector de la gestió esportiva]*
 
 ## Informació de contacte
 
-*[Afegiu aquí dades de contacte, enllaços a xarxes socials i qualsevol informació rellevant]*
+- info@refereezy.com
+- +34 666 666 666
 
 ---
 
-*Nota per als col·laboradors de la documentació: Incloeu fotografies de l’equip, biografies detallades i informació sobre l’evolució del projecte. Afegiu també cites dels membres de l’equip sobre la seva experiència desenvolupant la plataforma.*
+
