@@ -1,23 +1,5 @@
 @import url('base.css'); /* Import base styles */
 
-/* Reset y variables */
-:root {
-    --bg: #202020;
-    --nav-bg: #2b2b2b;
-    --text: #ffffff;
-    --primary: #7ed957;
-    --secondary: #27c02e;
-    --hover: #6bc746;
-    --grid-bg: rgba(43, 43, 43, 0.8);
-    --grid-header: rgba(126, 217, 87, 0.9);
-    --row-hover: rgba(126, 217, 87, 0.2);
-    --form-bg: rgba(43, 43, 43, 0.95);
-    --error: #ff3838;
-    --border: #3a3a3a;
-    --dropdown-bg: #333333;
-    --dropdown-hover: #404040;
-    --dropdown-border: rgba(126, 217, 87, 0.3);
-}
 
 * {
     margin: 0;
@@ -114,7 +96,7 @@ body {
     border-radius: 0.5rem;
     color: var(--text);
     font-size: 1rem;
-    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    box-shadow: 0 0 10px var(--shadow);
     transition: box-shadow 0.3s;
 }
 
@@ -122,7 +104,7 @@ body {
 .filter-group input:focus,
 .team-search-input:focus {
     outline: none;
-    box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
+    box-shadow: 0 0 15px var(--shadow-hover);
 }
 
 .filter-actions {
@@ -465,14 +447,14 @@ body {
     border-radius: 0.5rem;
     color: var(--text);
     font-size: 1rem;
-    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    box-shadow: 0 0 10px var(--shadow);
     transition: box-shadow 0.3s;
 }
 
 .form-group select:focus,
 .form-group input:focus {
     outline: none;
-    box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
+    box-shadow: 0 0 15px var(--shadow-hover);
 }
 
 .form-row {

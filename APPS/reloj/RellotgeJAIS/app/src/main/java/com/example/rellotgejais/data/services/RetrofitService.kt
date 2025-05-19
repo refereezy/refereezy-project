@@ -2,7 +2,9 @@ package com.example.rellotgejais.data.services
 
 
 
-import com.example.rellotgejais.Config
+import com.example.rellotgejais.API_DOMAIN
+import com.example.rellotgejais.API_PORT
+import com.example.rellotgejais.API_PROTOCOL
 import com.example.rellotgejais.models.Clock
 import com.example.rellotgejais.models.PopulatedMatch
 import com.example.rellotgejais.models.Referee
@@ -56,7 +58,7 @@ interface RetrofitService {
 }
 
 object RetrofitManager {
-    private const val BASE_URL = "http://${Config.API_URL}:8080"
+    private const val BASE_URL = "$API_PROTOCOL://$API_DOMAIN:$API_PORT"
 
     //Desde aqui es posible colocar timeouts a las respuestas o asignar un Token si la app necesita uno
     private val client = getUnsafeOkHttpClient()

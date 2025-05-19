@@ -1,9 +1,10 @@
 /* Reset y variables */
+
+@import url('base.css');
+
 :root {
     --background: #202020;
     --nav-background: #2b2b2b;
-    --primary: #7ed957;
-    --primary-hover: #6bc746;
     --text: #ffffff;
 }
 
@@ -31,7 +32,7 @@ body {
 }
 
 .login-button:hover {
-    background-color: var(--primary-hover);
+    background-color: var(--hover);
 }
 
 /* Hero Section */
@@ -71,7 +72,7 @@ body {
     position: absolute;
     inset: 0;
     z-index: 10;
-    background: linear-gradient(to right, rgba(32, 32, 32, 0.9), rgba(126, 217, 87, 0.2));
+    background: linear-gradient(to right, rgba(32, 32, 32, 0.9), rgba(83, 205, 99, 0.26));
 }
 
 .hero-background {
@@ -261,7 +262,7 @@ body {
 
 .cta-primary {
     background-color: var(--primary);
-    color: black;
+    color: white;
 }
 
 .cta-primary:hover {

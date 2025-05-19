@@ -1,18 +1,6 @@
 /* Reset y variables */
 @import url('base.css');
 
-:root {
-    --bg: #202020;
-    --nav-bg: #2b2b2b;
-    --text: #ffffff;
-    --primary: #7ed957;
-    --secondary: #27c02e;
-    --hover: #6bc746;
-    --grid-bg: rgba(43, 43, 43, 0.8);
-    --grid-header: rgba(126, 217, 87, 0.9);
-    --row-hover: rgba(126, 217, 87, 0.2);
-    --form-bg: rgba(43, 43, 43, 0.95);
-}
 
 * {
     margin: 0;
@@ -95,14 +83,14 @@ body {
     border-radius: 0.5rem;
     color: var(--text);
     font-size: 1rem;
-    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    box-shadow: 0 0 10px var(--shadow);
     transition: box-shadow 0.3s;
     width: 300px;
 }
 
 .team-search-input:focus {
     outline: none;
-    box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
+    box-shadow: 0 0 15px var(--shadow-hover);
 }
 
 .toggle-form-btn {
@@ -271,13 +259,13 @@ body {
     border-radius: 0.5rem;
     color: var(--text);
     font-size: 1rem;
-    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    box-shadow: 0 0 10px var(--shadow);
     transition: box-shadow 0.3s;
 }
 
 .team-name-input:focus {
     outline: none;
-    box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
+    box-shadow: 0 0 15px var(--shadow-hover);
 }
 
 .color-section {
@@ -346,12 +334,12 @@ body {
     color: var(--text);
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    box-shadow: 0 0 10px var(--shadow);
 }
 
 .logo-upload-btn:hover {
     background-color: var(--nav-bg);
-    box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
+    box-shadow: 0 0 15px var(--shadow-hover);
 }
 
 .remove-logo-btn {
@@ -378,7 +366,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    box-shadow: 0 0 10px var(--shadow);
 }
 
 .logo-preview span {

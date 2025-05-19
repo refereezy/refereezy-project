@@ -1,15 +1,5 @@
 @import url('base.css'); /* Import base styles */
 
-:root {
-  --bg: #202020;
-  --nav-bg: #2b2b2b;
-  --text: #ffffff;
-  --primary: #22aeb3;
-  --hover: #6bc746;
-  --card-bg: #2b2b2b;
-  --card-border: #3a3a3a;
-  --card-hover: #3f3f3f;
-}
 
 body {
   margin: 0;

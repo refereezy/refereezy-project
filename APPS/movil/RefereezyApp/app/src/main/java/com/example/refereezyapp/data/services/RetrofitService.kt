@@ -1,6 +1,8 @@
 package com.example.refereezyapp.data.services
 
-import com.example.refereezyapp.Config
+import com.example.refereezyapp.API_DOMAIN
+import com.example.refereezyapp.API_PORT
+import com.example.refereezyapp.API_PROTOCOL
 import com.example.refereezyapp.data.models.Clock
 import com.example.refereezyapp.data.models.Match
 import com.example.refereezyapp.data.models.PopulatedMatch
@@ -72,8 +74,8 @@ interface RetrofitSecondaryService {
 }
 
 object RetrofitManager {
-    private const val API_URL = "http://${Config.API_URL}:8080"
-    private const val SOCKET_API_URL = "http://${Config.API_URL}:3000"
+    private const val API_URL = "${API_PROTOCOL}://${API_DOMAIN}:${API_PORT}"
+    private const val SOCKET_API_URL = "http://${API_DOMAIN}:3000"
 
     //Desde aqui es posible colocar timeouts a las respuestas o asignar un Token si la app necesita uno
     private val client = getUnsafeOkHttpClient()

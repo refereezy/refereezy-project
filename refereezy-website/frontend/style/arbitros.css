@@ -1,18 +1,6 @@
 /* Reset y variables */
 @import url('base.css'); /* Import base styles */
 
-:root {
-    --bg: #202020;
-    --nav-bg: #2b2b2b;
-    --text: #ffffff;
-    --primary: #7ed957;
-    --secondary: #27c02e;
-    --hover: #6bc746;
-    --grid-bg: rgba(43, 43, 43, 0.8);
-    --grid-header: rgba(126, 217, 87, 0.9);
-    --row-hover: rgba(126, 217, 87, 0.2);
-    --form-bg: rgba(43, 43, 43, 0.95);
-}
 
 * {
     margin: 0;
@@ -126,7 +114,7 @@ body {
     background-color: var(--grid-bg);
     border-radius: 0.5rem;
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    box-shadow: 0 0 10px var(--shadow);
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -204,7 +192,7 @@ body {
     border-radius: 0.5rem;
     color: var(--text);
     font-size: 1rem;
-    box-shadow: 0 0 10px rgba(126, 217, 87, 0.2);
+    box-shadow: 0 0 10px var(--shadow);
     transition: box-shadow 0.3s;
 }
 
@@ -212,7 +200,7 @@ body {
 .referee-dni-input:focus,
 .referee-password-input:focus {
     outline: none;
-    box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
+    box-shadow: 0 0 15px var(--shadow-hover);
 }
 
 .action-buttons {
