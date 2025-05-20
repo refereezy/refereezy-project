@@ -8,7 +8,7 @@ import io.socket.client.Socket
 
 object SocketService {
 
-    private val _socket = IO.socket("http://${Config.API_URL}:3000")
+    private val _socket = IO.socket("http://${Config.API_DOMAIN}:3000")
     val socket: Socket get() = _socket
     private val gson = Gson()
 

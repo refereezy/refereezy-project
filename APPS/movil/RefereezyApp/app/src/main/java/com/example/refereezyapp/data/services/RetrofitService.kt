@@ -1,8 +1,6 @@
 package com.example.refereezyapp.data.services
 
-import com.example.refereezyapp.API_DOMAIN
-import com.example.refereezyapp.API_PORT
-import com.example.refereezyapp.API_PROTOCOL
+import com.example.refereezyapp.Config
 import com.example.refereezyapp.data.models.Clock
 import com.example.refereezyapp.data.models.Match
 import com.example.refereezyapp.data.models.PopulatedMatch
@@ -66,19 +64,11 @@ interface RetrofitService {
 
 }
 
-interface RetrofitSecondaryService {
-
-    @GET("/api/report/status/{id}")
-    suspend fun getReportStatus(@Path("id") id: String): Response<String>
-
-}
 
 object RetrofitManager {
-    private const val API_URL = "${API_PROTOCOL}://${API_DOMAIN}:${API_PORT}"
-    private const val SOCKET_API_URL = "http://${API_DOMAIN}:3000"
+    private const val API_URL = "${Config.API_PROTOCOL}://${Config.API_DOMAIN}:${Config.API_PORT}"
 
     //Desde aqui es posible colocar timeouts a las respuestas o asignar un Token si la app necesita uno
-    private val client = getUnsafeOkHttpClient()
 
     private val gson = GsonBuilder()
         .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
@@ -89,19 +79,11 @@ object RetrofitManager {
         Retrofit.Builder()
             .baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(client)
+            .client(getUnsafeOkHttpClient())
             .build()
             .create(RetrofitService::class.java)
     }
 
-    val secondaryInstance: RetrofitSecondaryService by lazy {
-        Retrofit.Builder()
-            .baseUrl(SOCKET_API_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(client)
-            .build()
-            .create(RetrofitSecondaryService::class.java)
-    }
 }
 
 private fun getUnsafeOkHttpClient(): OkHttpClient {
@@ -123,7 +105,7 @@ private fun getUnsafeOkHttpClient(): OkHttpClient {
         )
 
         // Install the all-trusting trust manager
-        val sslContext = SSLContext.getInstance("SSL")
+        val sslContext = SSLContext.getInstance("TLS")
         sslContext.init(null, trustAllCerts, SecureRandom())
         // Create an ssl socket factory with our all-trusting manager
         val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory

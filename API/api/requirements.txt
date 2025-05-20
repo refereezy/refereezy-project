@@ -1,4 +1,4 @@
-uvicorn
+hypercorn
 dotenv
 requests
 fastapi

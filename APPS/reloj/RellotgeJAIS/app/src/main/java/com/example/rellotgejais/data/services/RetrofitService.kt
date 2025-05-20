@@ -2,9 +2,7 @@ package com.example.rellotgejais.data.services
 
 
 
-import com.example.rellotgejais.API_DOMAIN
-import com.example.rellotgejais.API_PORT
-import com.example.rellotgejais.API_PROTOCOL
+import com.example.rellotgejais.Config
 import com.example.rellotgejais.models.Clock
 import com.example.rellotgejais.models.PopulatedMatch
 import com.example.rellotgejais.models.Referee
@@ -24,6 +22,7 @@ import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
@@ -58,9 +57,8 @@ interface RetrofitService {
 }
 
 object RetrofitManager {
-    private const val BASE_URL = "$API_PROTOCOL://$API_DOMAIN:$API_PORT"
+    private const val BASE_URL = "${Config.API_PROTOCOL}://${Config.API_DOMAIN}:${Config.API_PORT}"
 
-    //Desde aqui es posible colocar timeouts a las respuestas o asignar un Token si la app necesita uno
     private val client = getUnsafeOkHttpClient()
 
     private val gson = GsonBuilder()
@@ -97,7 +95,7 @@ private fun getUnsafeOkHttpClient(): OkHttpClient {
         )
 
         // Install the all-trusting trust manager
-        val sslContext = SSLContext.getInstance("SSL")
+        val sslContext = SSLContext.getInstance("TLS")
         sslContext.init(null, trustAllCerts, SecureRandom())
         // Create an ssl socket factory with our all-trusting manager
         val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory

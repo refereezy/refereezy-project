@@ -61,7 +61,7 @@ class ConnectionViewModel : ViewModel() {
                 _connectionResult.postValue(true)
 
             } catch (e: Exception) {
-                Log.e("Retrofit", "Error de conexión: ${e.message}")
+                Log.e("Retrofit", "Error de conexión: ${e.message}", e)
                 _connectionResult.postValue(false)
             }
         }

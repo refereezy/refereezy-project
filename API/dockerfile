@@ -20,4 +20,4 @@ COPY api /app/api
 RUN chmod 600 /app/api/ssl/key.pem /app/api/ssl/fullchain.pem
 
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "443", "--ssl-keyfile", "/app/api/ssl/key.pem", "--ssl-certfile", "/app/api/ssl/fullchain.pem"]
+CMD ["hypercorn", "main:app", "-c", "hypercorn.toml"]
