@@ -1,23 +1,23 @@
-// This file is part of the WebSocket client for the live data feed.
-// It connects to the server and listens for incoming messages.
+// Este archivo es parte del cliente WebSocket para el feed de datos en vivo.
+// Se conecta al servidor y escucha los mensajes entrantes.
 
-// check if the io function is defined
+// verificar si la función io está definida
 if (typeof io === "undefined") {
-  console.error("Socket.IO client library not loaded.");
+  console.error("Biblioteca cliente Socket.IO no cargada.");
 } else {
 
-    // create a socket connection to the server
+    // crear una conexión socket al servidor
   const socket = io(`http://${window.location.hostname}:3000`, {
     autoConnect: false,
     transports: ["websocket"],
   });
 
 
-  // connect to the server
+  // conectar al servidor
   socket.connect();
 
-  // sets up the socket event listeners
-  // this function should be declared before executing the index.js file, maybe inside socket.js
+  // configura los event listeners del socket
+  // esta función debe declararse antes de ejecutar el archivo index.js, tal vez dentro de socket.js
   initializeSocket(socket);
 
 }

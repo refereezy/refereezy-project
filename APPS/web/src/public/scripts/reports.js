@@ -141,10 +141,9 @@ async function fetchReportsList() {
     const data = await response.json();
     appState.reports = data;
     
-    renderReportsList();
-  } catch (error) {
+    renderReportsList();  } catch (error) {
     console.error('Failed to fetch reports:', error);
-    showError('Failed to load reports. Please try again later.');
+    showError('Error al cargar los informes. Por favor, inténtalo de nuevo más tarde.');
   }
 }
 
@@ -159,19 +158,17 @@ async function fetchReportDetail(reportId) {
     const report = await response.json();
     appState.currentReport = report;
     
-    displayReportDetail(report);
-  } catch (error) {
+    displayReportDetail(report);  } catch (error) {
     console.error('Failed to fetch report details:', error);
-    showError('Failed to load report details. Please try again later.');
+    showError('Error al cargar los detalles del informe. Por favor, inténtalo de nuevo más tarde.');
   }
 }
 
 // Render the list of reports
-function renderReportsList() {
-  reportsList.innerHTML = '';
+function renderReportsList() {  reportsList.innerHTML = '';
   
   if (appState.reports.length === 0) {
-    reportsList.innerHTML = '<div class="no-reports">No reports found. Check back later.</div>';
+    reportsList.innerHTML = '<div class="no-reports">No se encontraron informes. Vuelve más tarde.</div>';
     return;
   }
   
@@ -179,7 +176,7 @@ function renderReportsList() {
   const filteredReports = filterReports();
   
   if (filteredReports.length === 0) {
-    reportsList.innerHTML = '<div class="no-reports">No reports match your filters.</div>';
+    reportsList.innerHTML = '<div class="no-reports">No hay informes que coincidan con tus filtros.</div>';
     return;
   }
   
@@ -261,14 +258,13 @@ function createReportElement(report) {
   // Set date
   const dateText = template.querySelector('.date-text');
   dateText.textContent = formatDate(report.match.raw.date);
-  
-  // Set referee
+    // Set referee
   const refereeName = template.querySelector('.referee-name');
-  refereeName.textContent = report.referee ? report.referee.name : 'Unknown';
+  refereeName.textContent = report.referee ? report.referee.name : 'Desconocido';
   
   // Set status
   const statusBadge = template.querySelector('.status-badge');
-  statusBadge.textContent = report.done ? 'Completed' : 'In Progress';
+  statusBadge.textContent = report.done ? 'Completado' : 'En Progreso';
   // Fix: Use classList.add with a single class name to avoid whitespace issues
   statusBadge.classList.add(report.done ? 'completed' : 'pending');
   
@@ -298,10 +294,9 @@ function displayReportDetail(report) {
   // Set match date and time
   const matchDateTime = template.querySelector('.match-date-time');
   matchDateTime.textContent = formatDateTime(report.match.raw.date);
-  
-  // Set status
+    // Set status
   const reportStatus = template.querySelector('.report-status-detail');
-  reportStatus.textContent = report.done ? 'Match Completed' : 'Match In Progress';
+  reportStatus.textContent = report.done ? 'Partido Completado' : 'Partido En Progreso';
   // Fix: Add each class separately instead of a space-separated string
   reportStatus.classList.add('status-badge');
   reportStatus.classList.add(report.done ? 'completed' : 'pending');
@@ -361,10 +356,9 @@ function displayReportDetail(report) {
   
   scoreHomeLarge.textContent = homeGoals;
   scoreAwayLarge.textContent = awayGoals;
-  
-  // Set referee info
+    // Set referee info
   const refereeName = template.querySelector('.referee-name-detail');
-  refereeName.textContent = report.referee ? report.referee.name : 'Unknown';
+  refereeName.textContent = report.referee ? report.referee.name : 'Desconocido';
   
   // Set timer values
   const timerValues = template.querySelector('.timer-values');
@@ -374,7 +368,7 @@ function displayReportDetail(report) {
   const incidentsList = template.querySelector('.incidents-list');
   
   if (report.incidents.length === 0) {
-    incidentsList.innerHTML = '<div class="no-incidents">No incidents recorded in this match yet.</div>';
+    incidentsList.innerHTML = '<div class="no-incidents">No hay incidentes registrados en este partido todavía.</div>';
   } else {
     // Sort incidents by minute
     const sortedIncidents = [...report.incidents].sort((a, b) => a.minute - b.minute);
@@ -442,24 +436,24 @@ function formatIncidentType(type) {
   switch(type) {
     case 'yellow-card':
     case 'YELLOW_CARD':
-      return 'Yellow Card';
+      return 'Tarjeta Amarilla';
     case 'red-card':
     case 'RED_CARD':
-      return 'Red Card';
+      return 'Tarjeta Roja';
     case 'goal':
     case 'GOAL':
-      return 'Goal';
+      return 'Gol';
     case 'substitution':
-      return 'Substitution';
+      return 'Sustitución';
     case 'injury':
     case 'LESION':
-      return 'Injury';
+      return 'Lesión';
     case 'FIGHT':
-      return 'Fight';
+      return 'Pelea';
     case 'SUSPEND':
-      return 'Suspension';
+      return 'Suspensión';
     case 'OTHER':
-      return 'Other';
+      return 'Otro';
     default:
       return type.charAt(0).toUpperCase() + type.slice(1);
   }
@@ -491,22 +485,21 @@ function getIncidentClass(type) {
   }
 }
 
-// Helper function: Format date (e.g., "April 16, 2023")
+// Helper function: Format date (e.g., "16 de abril de 2023")
 function formatDate(dateString) {
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-// Helper function: Format date and time (e.g., "April 16, 2023 at 15:30")
+// Helper function: Format date and time (e.g., "16 de abril de 2023 a las 15:30")
 function formatDateTime(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { 
+  const date = new Date(dateString);  return date.toLocaleDateString('es-ES', { 
     year: 'numeric', 
     month: 'long', 
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
-  });
+  }).replace(' a las', ' a las');
 }
 
 // Filter reports based on current filter settings
@@ -564,7 +557,7 @@ async function updateReportInList(updatedReport) {
 function showLoading() {
   reportsList.innerHTML = `
     <div class="loading-indicator">
-      <i class="fas fa-spinner fa-spin"></i> Loading reports...
+      <i class="fas fa-spinner fa-spin"></i> Cargando informes...
     </div>
   `;
 }

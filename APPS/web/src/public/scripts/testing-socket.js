@@ -22,9 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
           connectedDevices.textContent = data.count || '0';
-        })
-        .catch(error => {
-          console.error('Error fetching connected devices:', error);
+        })        .catch(error => {
+          console.error('Error al obtener dispositivos conectados:', error);
           connectedDevices.textContent = 'Error';
         });
     }
@@ -38,9 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
           activeMatchCount.textContent = data.count || '0';
-        })
-        .catch(error => {
-          console.error('Error fetching active matches:', error);
+        })        .catch(error => {
+          console.error('Error al obtener partidos activos:', error);
           activeMatchCount.textContent = 'Error';
         });
     }
@@ -54,11 +52,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (logoutBtn && document.getElementById('logout-container')) {
       document.getElementById('logout-container').style.display = 'block';
     }
-    
-    // Connect to socket server
+      // Connect to socket server
     connectSocket();
     
-    // Update stats every 10 seconds
+    // Actualizar estadísticas cada 10 segundos
     updateConnectedDevicesCount();
     updateActiveMatchesCount();
     setInterval(() => {
@@ -175,34 +172,33 @@ function initializeSocket(socket) {
 
   // Connection events
   socket.on("connect", () => {
-    console.log("Connected to server.");
-    connectionStatus.textContent = "Connected";
+    console.log("Conectado al servidor.");
+    connectionStatus.textContent = "Conectado";
     connectionStatus.className = "status success";
-    logEvent("Connected to server");
+    logEvent("Conectado al servidor");
   });
 
   socket.on("disconnect", () => {
-    console.log("Disconnected from server.");
-    connectionStatus.textContent = "Disconnected";
+    console.log("Desconectado del servidor.");
+    connectionStatus.textContent = "Desconectado";
     connectionStatus.className = "status error";
-    logEvent("Disconnected from server");
+    logEvent("Desconectado del servidor");
   });
-
   // Register clock code button handler
   if (registerBtn) {
     registerBtn.addEventListener('click', () => {
       const clockCode = clockCodeInput.value.trim();
       
       if (!clockCode) {
-        registerStatus.textContent = "Please enter a clock code";
+        registerStatus.textContent = "Por favor, introduzca un código de reloj";
         registerStatus.className = "status error";
         return;
       }
 
       socket.emit("register", clockCode);
-      registerStatus.textContent = "Registration sent! Waiting for confirmation...";
+      registerStatus.textContent = "¡Registro enviado! Esperando confirmación...";
       registerStatus.className = "status info";
-      logEvent(`Registering clock code: ${clockCode}`);
+      logEvent(`Registrando código de reloj: ${clockCode}`);
     });
   }
   

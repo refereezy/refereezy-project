@@ -2,7 +2,7 @@
 // Constants
 const API_URL = `https://${window.location.hostname || "localhost"}:8888`;
 
-// Check if user is authenticated
+// Verificar si el usuario está autenticado
 function getClientId() {
     return localStorage.getItem('client_id');
 }
@@ -11,13 +11,13 @@ function getUserType() {
     return localStorage.getItem('user_type');
 }
 
-// Function to validate email
+// Función para validar email
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
-// Function to show notifications
+// Función para mostrar notificaciones
 function showNotification(message, type = 'info') {
     const notificationElement = document.createElement('div');
     notificationElement.className = `notification ${type}`;
@@ -84,17 +84,17 @@ async function handleLogin(email, password, statusElement) {
     }
 }
 
-// Function to logout
+// Función para cerrar sesión
 function logout() {
     localStorage.removeItem('client_id');
     localStorage.removeItem('user_type');
     showNotification('Sesión cerrada correctamente', 'success');
     
-    // Redirect to login page
+    // Redirigir a la página de inicio de sesión
     window.location.reload();
 }
 
-// CSS for notifications
+// CSS para notificaciones
 const style = document.createElement('style');
 style.textContent = `
 .notification {

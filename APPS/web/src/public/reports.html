@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Refereezy - Match Reports</title>
+  <title>Refereezy - Informes de Partidos</title>
   <link rel="stylesheet" href="styles/reports.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -13,33 +13,32 @@
       <h1><i class="fas fa-futbol"></i> Refereezy</h1>
       <nav>
         <ul>
-          <li><a href="index.html">Dashboard</a></li>
-          <li><a href="testing.html">Testing Console</a></li>
-          <li class="active"><a href="reports.html">Match Reports</a></li>
+          <li><a href="index.html">Panel Principal</a></li>
+          <li><a href="testing.html">Consola de Pruebas</a></li>
+          <li class="active"><a href="reports.html">Informes de Partidos</a></li>
         </ul>
       </nav>
     </div>
   </header>
-
   <main class="container">
     <section class="section reports-list-section">
       <header class="section-header">
-        <h2>Recent Match Reports</h2>
+        <h2>Informes de Partidos Recientes</h2>
         <div class="filter-controls">
           <select id="filterStatus">
-            <option value="all">All Reports</option>
-            <option value="completed">Completed</option>
-            <option value="pending">In Progress</option>
+            <option value="all">Todos los Informes</option>
+            <option value="completed">Completados</option>
+            <option value="pending">En Progreso</option>
           </select>
           <input type="date" id="filterDate">
-          <button id="clearFilters" class="btn-secondary">Clear Filters</button>
+          <button id="clearFilters" class="btn-secondary">Limpiar Filtros</button>
         </div>
       </header>
       
       <div id="reportsList" class="reports-list">
         <!-- Reports will be loaded here dynamically -->
         <div class="loading-indicator">
-          <i class="fas fa-spinner fa-spin"></i> Loading reports...
+          <i class="fas fa-spinner fa-spin"></i> Cargando informes...
         </div>
       </div>
     </section>
@@ -54,14 +53,13 @@
       </div>
     </div>
   </div>
-
   <!-- Template for report list item -->
   <template id="reportItemTemplate">
     <div class="report-item" data-report-id="">
       <div class="match-info">
         <div class="match-teams">
           <div class="team team-home">
-            <img class="team-logo" src="" alt="Home Team">
+            <img class="team-logo" src="" alt="Equipo Local">
             <span class="team-name"></span>
           </div>
           <div class="match-score">
@@ -70,7 +68,7 @@
             <span class="score-away"></span>
           </div>
           <div class="team team-away">
-            <img class="team-logo" src="" alt="Away Team">
+            <img class="team-logo" src="" alt="Equipo Visitante">
             <span class="team-name"></span>
           </div>
         </div>
@@ -87,11 +85,10 @@
         </div>
       </div>
       <div class="report-actions">
-        <button class="btn-primary view-details">View Details</button>
+        <button class="btn-primary view-details">Ver Detalles</button>
       </div>
     </div>
   </template>
-
   <!-- Template for report detail -->
   <template id="reportDetailTemplate">
     <div class="report-detail">
@@ -103,13 +100,13 @@
 
       <div class="match-overview">
         <div class="team-detail team-home-detail">
-          <img class="team-logo-large" src="" alt="Home Team">
+          <img class="team-logo-large" src="" alt="Equipo Local">
           <h3 class="team-name-large"></h3>
           <div class="score-large score-home-large"></div>
         </div>
         <div class="match-vs">VS</div>
         <div class="team-detail team-away-detail">
-          <img class="team-logo-large" src="" alt="Away Team">
+          <img class="team-logo-large" src="" alt="Equipo Visitante">
           <h3 class="team-name-large"></h3>
           <div class="score-large score-away-large"></div>
         </div>
@@ -117,24 +114,23 @@
 
       <div class="report-meta">
         <div class="referee-info">
-          <h4>Referee</h4>
+          <h4>Árbitro</h4>
           <div class="referee-name-detail"></div>
         </div>
         <div class="match-timer">
-          <h4>Match Time</h4>
+          <h4>Tiempo de Partido</h4>
           <div class="timer-values"></div>
         </div>
       </div>
 
       <div class="incidents-section">
-        <h3>Match Incidents</h3>
+        <h3>Incidentes del Partido</h3>
         <div class="incidents-list">
           <!-- Incidents will be loaded here dynamically -->
         </div>
       </div>
     </div>
   </template>
-
   <!-- Template for incident item -->
   <template id="incidentItemTemplate">
     <div class="incident-item">
